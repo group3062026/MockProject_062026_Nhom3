@@ -1,0 +1,63 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 0: Phân quyền & Vai trò (RBAC),,
+1,roles,"Danh mục Vai trò: Lưu các vị trí trong viện (Admin, Bác sĩ, Y tá, Hộ lý, Kế toán...) để phân quyền truy cập.",,,
+2,permissions,"Danh mục Quyền chi tiết: Các hành động cụ thể trên hệ thống (Xem bệnh án, Phát thuốc, Sửa hóa đơn...). Có cột đánh dấu quyền nào nhạy cảm cần bảo mật.",,,
+3,role_permissions,Bảng trung gian nối Vai trò - Quyền: Xác định vai trò nào thì có những quyền hạn nào trong hệ thống.,,,
+,,,,roles -> role_permissions <-permissions (n-n),Một vai trò có nhiều quyền và một quyền nằm trong nhiều vai trò. Kết nối qua bảng trung gian role_permissions sử dụng khóa chính liên hợp.
+,,,,roles->users(1-n),"Một vai trò (như Nurse, Admin) có thể được gán cho nhiều nhân viên"
+,,,,users-> notifications(1-n),Một nhân viên có thể nhận được nhiều thông báo nhắc việc hoặc cảnh báo rủi ro hệ thống
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 1: Quản lý Người dùng & Bảo mật,,
+4,users,"Tài khoản Nhân viên: Lưu thông tin tài khoản đăng nhập của nhân viên viện dưỡng lão, trạng thái tài khoản và cấu hình bảo mật 2 lớp (MFA).",,,
+,,,,,
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 2 & 3: Địa chỉ & Cấu trúc hạ tầng viện,,
+5,addresses,"Kho dữ liệu Địa chỉ: Lưu địa chỉ chuẩn định dạng Mỹ (đường, thành phố, bang 2 ký tự, mã bưu chính Zipcode 5 hoặc 9 số) dùng chung cho cả viện, cư dân và người thân.",,addresses->facilities(1-n),Bảng địa chỉ dùng chung nối vào để xác định vị trí của chi nhánh viện
+6,facilities,Cơ sở / Chi nhánh: Thông tin về các chi nhánh của viện dưỡng lão (mỗi bang ở Mỹ có giấy phép hoạt động riêng).,,facilities->user_facilities<-users(n-n),"Một nhân viên có thể làm việc hoặc luân chuyển qua nhiều chi nhánh, một chi nhánh có nhiều nhân viên"
+7,user_facilities,Bảng trung gian Nhân viên - Cơ sở: Quản lý xem nhân viên đó đang làm việc tại chi nhánh nào (một người có thể hỗ trợ nhiều chi nhánh).,,facilities-> rooms(1-n),Một chi nhánh viện dưỡng lão chứa nhiều phòng chức năng/phòng ở
+8,rooms,Quản lý Phòng: Danh sách các phòng thuộc từng chi nhánh viện.,,rooms -> beds(1-n),"Một phòng ở chứa nhiều giường cụ thể (Giường A, Giường B...)"
+9,beds,"Quản lý Giường: Chi tiết các giường trong phòng kèm trạng thái (Trống, Đang có người, Đang bảo trì).",,,
+10,staffing_configs,Cấu hình Định mức Nhân sự: Quy định số giờ chăm sóc tối thiểu trên mỗi cư dân trong một ngày nhằm tuân thủ luật pháp Mỹ (CMS rule).,,,
+,,,,,
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 4 & 5: Mức độ chăm sóc & Hồ sơ cư dân (Residents),,
+11,care_levels,"Danh mục Mức độ chăm sóc: Các gói dịch vụ theo chuẩn Mỹ (Gia đình tự lập, Cần hỗ trợ, Chăm sóc đặc biệt cho người mất trí nhớ - Memory Care, Chăm sóc y tế tích cực...).",,addresses->residents(1-n),Lưu địa chỉ nhà riêng của cụ già trước khi nhập viện
+12,care_level_rates,Lịch sử Đơn giá: Lưu giá tiền theo ngày của từng mức độ chăm sóc tại từng cơ sở theo các mốc thời gian.,,beds->residents(1-1),"Tại một thời điểm, một chiếc giường chỉ gán cho duy nhất một cư dân đang lưu trú"
+13,residents,"Hồ sơ Cư dân: Lưu thông tin nhân khẩu học cơ bản của người già sống tại viện (Họ tên, ngày sinh, giới tính, giường đang nằm...).",,care_levels->care_level_rates<-facilities(1-n),Danh mục mức độ chăm sóc được cấu hình đơn giá theo ngày riêng biệt cho từng chi nhánh
+14,resident_sensitive_info,"Thông tin Cư dân Nhạy cảm: Lưu trữ các dữ liệu tối mật đã được mã hóa như Số an sinh xã hội (SSN), Mã hồ sơ y tế (MRN), Tài khoản ngân hàng.",,residents-> resident_sensitive_info(1-1),"Mối quan hệ 1-1 tuyệt đối để tách riêng thông tin nhạy cảm cao (SSN, bệnh án mã hóa) nhằm bảo mật HIPAA"
+15,resident_care_level_history,Lịch sử Gói chăm sóc: Ghi lại quá trình thay đổi mức độ chăm sóc của cụ già theo thời gian để làm căn cứ tính tiền.,,care_levels->resident_care_level_history<-residents(1-n),Lưu vết lịch sử thay đổi gói chăm sóc của cụ già theo thời gian.
+16,contacts,"Người liên hệ: Thông tin của thân nhân, người bảo hộ hoặc người liên hệ khẩn cấp của cư dân.",,addresse-> contact(1-n),Lưu địa chỉ nhà riêng của người thân/người bảo hộ
+17,resident_contacts,"Bảng trung gian Cư dân - Người liên hệ: Xác định mối quan hệ (con trai, con gái, vợ/chồng...), ai là người bảo hộ tài chính, ai chịu trách nhiệm thanh toán bao nhiêu %.",,resident->resident_contacts<-contacts(n-n),Bảng trung gian xử lý luồng một cụ già có nhiều con bảo hộ và một người con có thể gửi cả bố lẫn mẹ vào viện.
+,,,,,
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,"Nhóm 6 & 7: Phân hệ Tiếp nhận, Bệnh án điện tử (EHR) & Lập kế hoạch chăm sóc",,
+18,pre_admission_screenings,Sàng lọc trước nhập viện: Đánh giá tình trạng sức khỏe ban đầu của người già xem có đủ điều kiện tiếp nhận vào viện hay không.,,residents->pre_admission_screenings<-users(1-n),Một đợt sàng lọc sức khỏe trước nhập viện thuộc về một cư dân và do một nhân viên y tế thực hiện
+19,admissions,"Nhật ký Nhập viện / Xuất viện: Ghi lại ngày vào viện, ngày ra viện và lý do xuất viện của cư dân.",,resident->admissions<-facilities(1-n),Nhật ký ghi nhận các đợt nhập viện/xuất viện của cư dân tại từng chi nhánh
+20,clinical_records,"Ghi chú Lâm sàng: Lưu bệnh án, tiến triển bệnh, chẩn đoán của bác sĩ và kết quả xét nghiệm (Dữ liệu PHI bảo mật cao).",,resident>clinical_records<-users(1-n),Ghi chú bệnh án lâm sàng của cư dân do bác sĩ/y tá lập.
+21,assessments,Đánh giá định kỳ: Kết quả chấm điểm sinh hoạt hàng ngày (ADL score) để hệ thống gợi ý mức độ chăm sóc phù hợp.,,residents->assessments<-users(1-n),Các đợt đánh giá sức khỏe định kỳ của cụ già do y tá thực hiện
+22,assessment_metrics,"Danh mục Tiêu chí Đánh giá: Các bộ thước đo y tế chuẩn Mỹ dùng để đánh giá sức khỏe người già (ADL, Braden - nguy cơ loét tì đè, Morse - nguy cơ ngã).",,care_levels->assessments(1-n),Kết quả đánh giá sẽ đối chiếu với danh mục mức độ chăm sóc để hệ thống gợi ý gói dịch vụ phù hợp
+23,assessment_details,Chi tiết Điểm số: Điểm số cụ thể cho từng tiêu chí trong mỗi lần đánh giá.,,assessment_metrics->assessment_details<-assessments(1-n),Một đợt đánh giá tổng chứa nhiều điểm số chi tiết của từng tiêu chí đo lường y tế chuẩn Mỹ
+24,vital_signs,"Chỉ số Sinh tồn: Nhật ký ghi liên tục các chỉ số sức khỏe như Huyết áp, Nhịp tim, Nhiệt độ, Nhịp thở, Chỉ số Oxy trong máu (SpO2), Thang điểm đau.",,residents->vital_signs<-users(1-n),"Nhật ký ghi nhận liên tục các chỉ số sinh tồn (huyết áp, nhịp tim...) của cư dân do nhân viên đo"
+25,care_plans,Kế hoạch Chăm sóc: Phác đồ tổng thể chăm sóc cho từng cụ già.,,residents->care_plans(1-n),Phác đồ chăm sóc tổng thể được thiết lập cho từng cư dân.
+26,care_goals,"Mục tiêu Chăm sóc: Các mục tiêu cần đạt được trong phác đồ (Ví dụ: Cụ tự đi lại được sau 2 tuần, ổn định huyết áp...).",,care_plans->care_goals(1-n),Một phác đồ vĩ mô chia nhỏ ra thành nhiều mục tiêu ngắn hạn/dài hạn cần đạt
+27,care_interventions,"Can thiệp Chăm sóc: Giao việc cho các bộ phận chuyên trách (Y tá, Hộ lý, Chuyên viên vật lý trị liệu) dựa theo kế hoạch.",,care_plan->care_interventions(1-n),Một phác đồ chỉ định nhiều nhóm can thiệp y khoa cho từng bộ phận chuyên trách
+28,care_tasks,"Danh sách Nhiệm vụ chi tiết: Lịch trình công việc cụ thể theo giờ của Hộ lý (CNA) như: Đút cháo lúc 7h, lật người lúc 9h, hỗ trợ tắm rửa....",,care_interventions->care_tasks<-users(1-n),Nhóm can thiệp tự động sinh ra danh sách nhiệm vụ chi tiết theo giờ giao cho Hộ lý (assigned_cna_id) đi thực hiện.
+,,,,,
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 8 & 9: Phân hệ Quản lý Phát thuốc điện tử (eMAR) & Phân ca trực,residents->medication_orders<-users(1-n),Đơn thuốc do bác sĩ kê chỉ định đích danh cho một cư dân cụ thể
+29,medication_orders,"Y lệnh thuốc (Đơn thuốc): Đơn thuốc do bác sĩ kê, ghi rõ tên thuốc, liều lượng, đường uống/tiêm, và đánh dấu nếu là thuốc đặc trị kiểm soát nghiêm ngặt (Controlled substance).",,medication_orders->medication_schedules(1-n),Một đơn thuốc tự động sinh ra các mốc giờ phát thuốc cố định trong ngày dựa theo tần suất
+30,medication_schedules,Lịch mốc giờ uống thuốc: Tự động sinh ra các khung giờ phát thuốc trong ngày dựa trên tần suất của đơn thuốc (Ví dụ: 8h sáng - 8h tối).,,medication_order->medication_logs(1-n),Nhật ký lưu vết mỗi lần thực tế y tá mang thuốc cho cụ uống
+31,medication_logs,"Nhật ký phát thuốc thực tế: Ghi vết y tá đã cho cụ uống thuốc chưa, cụ có từ chối không, và có y tá khác chứng kiến đối với thuốc đặc trị không.",,users (Administered)->medication_logs<-users(Witnessed)(1-n),Ghi nhận chính xác y tá thực hiện phát thuốc và y tá thứ hai chứng kiến đối chiếu kép (nếu là thuốc gây nghiện/kiểm soát).
+32,shifts,"Danh mục Ca trực: Định nghĩa các ca làm việc tại viện (Ca Ngày, Ca Chiều, Ca Đêm) và giờ giấc cố định.",,facilities->facilities(1-n),"Khung giờ ca trực cố định (Sáng, Chiều, Đêm) được cấu hình theo từng chi nhánh"
+33,shift_assignments,"Phân ca thực tế: Lịch trực cụ thể của từng nhân viên theo ngày, hỗ trợ check-in / check-out khi vào ca.",,shifts->shift_assignments<-users(1-n),Lịch trực thực tế hằng ngày gán cụ thể cho từng nhân viên để theo dõi chấm công
+,,,,,
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 10: Phân hệ Tài chính & Bảo hiểm (Billing),,
+34,insurance_providers,"Nhà cung cấp Bảo hiểm: Danh mục các đơn vị bảo hiểm tại Mỹ bao gồm bảo hiểm chính phủ (Medicare, Medicaid) và bảo hiểm tư nhân.",,insurance_providers->resident_insurance_policies<-residents(1-n),Quản lý thông tin thẻ bảo hiểm y tế cụ thể của từng cư dân thuộc các hãng bảo hiểm
+35,resident_insurance_policies,Hợp đồng Bảo hiểm của Cư dân: Lưu thông tin thẻ bảo hiểm của từng cụ già (mã số thẻ được mã hóa bảo mật).,,residents->invoices(1-n),Hóa đơn tiền viện hằng tháng được xuất cho từng cư dân.
+36,invoices,"Hóa đơn: Quản lý tài chính cực chuẩn theo nghiệp vụ Mỹ, tự động bóc tách số tiền: Medicare trả bao nhiêu, Medicaid trả bao nhiêu, Bảo hiểm tư trả bao nhiêu, và phần gia đình phải tự bỏ tiền túi ra trả (Co-pay).",,invoices->invoice_line_items(1-n),"Một hóa đơn gồm nhiều dòng chi phí chi tiết (tiền phòng, tiền thuốc, tiền trị liệu...)"
+37,invoice_line_items,"Chi tiết Hóa đơn: Liệt kê từng khoản tiền cụ thể tạo nên hóa đơn (Tiền phòng, tiền dịch vụ chăm sóc, tiền thuốc, tiền trị liệu...).",,invoice->payments<-users(1-n),Một hóa đơn có thể có nhiều đợt giải ngân/thanh toán thực tế từ các nguồn và do kế toán viên duyệt
+38,payments,"Lịch sử Thanh toán: Lưu thông tin các đợt thanh toán, phương thức trả (Thẻ, Chuyển khoản ACH, Tiền mặt) và lưu mã Token thanh toán an toàn theo chuẩn PCI-DSS.",,,
+,,,,,
+STT,Tên bảng,Ý nghĩa / Chức năng nghiệp vụ,Nhóm 11 & 12: Quản lý Sự cố rủi ro & Nhật ký giám sát (Audit Logs cho HIPAA),,
+39,incident_severities,Danh mục Mức độ nghiêm trọng của sự cố: Phân loại từ nhẹ đến nặng để kích hoạt các kịch bản xử lý tự động.,,incident_severities->sla_configs(1-n),Mỗi mức độ nghiêm trọng của sự cố được cấu hình một thời hạn xử lý (SLA) riêng
+40,sla_configs,Cấu hình Thời hạn Xử lý (SLA): Quy định sự cố mức độ nào thì phải giải quyết và báo cáo trong vòng bao nhiêu tiếng.,,incident_severitie->incidents<-residents(1-n),Báo cáo tai nạn thực tế (như cụ bị ngã) gắn liền với cư dân và mức độ rủi ro tương ứng
+41,incidents,"Báo cáo Sự cố: Ghi nhận các tai nạn thực tế tại viện (Cụ già bị ngã, hộ lý phát nhầm thuốc, xích mích...), người báo cáo và thời hạn SLA phải xử lý.",,users->incidents(1-n),Lưu vết nhân viên nào đứng ra lập báo cáo sự cố
+42,chart_lock_events,"Sự kiện khóa hồ sơ tự động: Khi xảy ra sự cố nghiêm trọng (như cụ già bị ngã chấn thương nặng), hệ thống tự động khóa hồ sơ bệnh án không cho sửa đổi để phục vụ điều tra pháp lý.",,incidents->chart_lock_events<-users(1-n),"Sự cố nghiêm trọng kích hoạt lệnh khóa hồ sơ bệnh án, luồng mở khóa phải ghi nhận lý do và danh tính người duyệt mở"
+43,audit_logs,Nhật ký Ghi vết Thay đổi: Ghi lại 100% các hành động Thêm/Sửa/Xóa dữ liệu trên toàn hệ thống (Lưu cả trạng thái dữ liệu cũ và dữ liệu mới dưới dạng JSON để đối chiếu).,,user->audit_logs(1-n),
+44,phi_access_logs,"Nhật ký Xem thông tin (Trọng tâm HIPAA): Lưu lại thông tin bất cứ ai thực hiện hành động XEM/ĐỌC dữ liệu y tế của cụ già (ai xem, xem lúc nào, từ IP nào, lý do xem là gì) nhằm tuân thủ tuyệt đối luật pháp bảo mật y tế Mỹ.",,user>phi_access_logs(1-n),
+45,notifications,"Thông báo hệ thống: Lưu trữ và hiển thị các thông báo nhắc việc, cảnh báo sự cố cho nhân viên.",,,

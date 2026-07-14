@@ -1,0 +1,217 @@
+incident_severities ,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8
+id,level_name,chart_lock_trigger,,,,,,
+1,Low,0,,,,,,
+2,Medium,0,,,,,,
+3,Critical,1,,,,,,
+4,Emergency,1,,,,,,
+,,,,,,,,
+sla_configs,,,,,,,,
+id,sla_window_hrs,severity_id,,,,,,
+1,24,1,,,,,,
+2,12,2,,,,,,
+3,4,3,,,,,,
+4,2,4,,,,,,
+5,1,5,,,,,,
+,,,,,,,,
+ incidents,,,,,,,,
+id,incident_type,status,description,sla_deadline,resident_id,severity_id,reported_by,reported_at
+1,FALL,OPEN,Resident fell while walking to dining area.,,1,1,5,2026-07-04T08:00:00-04:00
+2,MEDICATION_ERROR,UNDER_INVESTIGATION,Wrong medication dosage administered.,,2,2,3,2026-07-04T08:05:00-04:00
+3,ALTERCATION,OPEN,Verbal altercation between two residents.,,3,3,7,2026-07-04T08:10:00-04:00
+4,SKIN_TEAR,CLOSED,Skin tear on left arm during transfer.,,4,4,2,2026-07-04T08:15:00-04:00
+5,FALL,OPEN,Resident slipped in bathroom.,,5,5,8,2026-07-04T08:20:00-04:00
+6,MEDICATION_ERROR,UNDER_INVESTIGATION,Missed insulin dose.,,6,1,4,2026-07-04T08:25:00-04:00
+7,ALTERCATION,OPEN,Argument over television channel.,,7,2,9,2026-07-04T08:30:00-04:00
+8,SKIN_TEAR,CLOSED,Skin tear during bed bath.,,8,3,1,2026-07-04T08:35:00-04:00
+9,FALL,OPEN,Fell from wheelchair.,,9,4,6,2026-07-04T08:40:00-04:00
+10,MEDICATION_ERROR,OPEN,Incorrect blood pressure medication given.,,10,5,10,2026-07-04T08:45:00-04:00
+11,FALL,UNDER_INVESTIGATION,Resident fell getting out of bed.,,11,1,5,2026-07-04T08:50:00-04:00
+12,MEDICATION_ERROR,CLOSED,Double dose of sedative administered.,,12,2,3,2026-07-04T08:55:00-04:00
+13,ALTERCATION,OPEN,Physical push between residents.,,13,3,7,2026-07-04T09:00:00-04:00
+14,SKIN_TEAR,OPEN,Skin tear on right leg.,,14,4,2,2026-07-04T09:05:00-04:00
+15,FALL,CLOSED,Fell while reaching for walker.,,15,5,8,2026-07-04T09:10:00-04:00
+16,MEDICATION_ERROR,OPEN,Allergy medication given to wrong resident.,,16,1,4,2026-07-04T09:15:00-04:00
+17,ALTERCATION,UNDER_INVESTIGATION,Dispute during meal time.,,17,2,9,2026-07-04T09:20:00-04:00
+18,SKIN_TEAR,OPEN,Skin tear from IV site.,,18,3,1,2026-07-04T09:25:00-04:00
+19,FALL,OPEN,Fell in hallway at night.,,19,4,6,2026-07-04T09:30:00-04:00
+20,MEDICATION_ERROR,CLOSED,Antibiotic given at wrong time.,,20,5,10,2026-07-04T09:35:00-04:00
+21,FALL,OPEN,Resident lost balance during physical therapy.,,1,1,5,2026-07-04T09:40:00-04:00
+22,MEDICATION_ERROR,UNDER_INVESTIGATION,Pain medication dosage error.,,2,2,3,2026-07-04T09:45:00-04:00
+23,ALTERCATION,OPEN,Conflict over personal belongings.,,3,3,7,2026-07-04T09:50:00-04:00
+24,SKIN_TEAR,OPEN,Skin tear during dressing change.,,4,4,2,2026-07-04T09:55:00-04:00
+25,FALL,CLOSED,Fell while using bathroom.,,5,5,8,2026-07-04T10:00:00-04:00
+26,MEDICATION_ERROR,OPEN,Blood thinner dosage mistake.,,6,1,4,2026-07-04T10:05:00-04:00
+27,ALTERCATION,OPEN,Argument with staff member.,,7,2,9,2026-07-04T10:10:00-04:00
+28,SKIN_TEAR,UNDER_INVESTIGATION,Multiple skin tears noted.,,8,3,1,2026-07-04T10:15:00-04:00
+29,FALL,OPEN,Fell from bed during sleep.,,9,4,6,2026-07-04T10:20:00-04:00
+30,MEDICATION_ERROR,OPEN,Wrong eye drop medication used.,,10,5,10,2026-07-04T10:25:00-04:00
+,,,,,,,,
+chart_lock_events,,,,,,,,
+id,locked_by_system,unlock_reason,incident_id,unlocked_by,event_time,,,
+1,1,Investigation completed and approved by medical director.,1,5,2026-07-04T07:00:00-04:00,,,
+2,1,Resident condition stabilized after review.,2,3,2026-07-04T07:05:00-04:00,,,
+3,1,Routine audit clearance.,3,,2026-07-04T07:10:00-04:00,,,
+4,1,Investigation completed.,4,7,2026-07-04T07:15:00-04:00,,,
+5,1,Medical director approval received.,5,2,2026-07-04T07:20:00-04:00,,,
+6,1,Resident condition stabilized.,6,8,2026-07-04T07:25:00-04:00,,,
+7,1,Routine audit clearance after 48 hours.,7,4,2026-07-04T07:30:00-04:00,,,
+8,1,Investigation completed.,8,9,2026-07-04T07:35:00-04:00,,,
+9,1,Approved by medical director.,9,1,2026-07-04T07:40:00-04:00,,,
+10,1,Stabilized after clinical review.,10,6,2026-07-04T07:45:00-04:00,,,
+11,1,Routine audit clearance.,11,,2026-07-04T07:50:00-04:00,,,
+12,1,Investigation completed.,12,10,2026-07-04T07:55:00-04:00,,,
+13,1,Medical director approval.,13,5,2026-07-04T08:00:00-04:00,,,
+14,1,Resident condition improved.,14,3,2026-07-04T08:05:00-04:00,,,
+15,1,Audit clearance granted.,15,7,2026-07-04T08:10:00-04:00,,,
+16,1,Investigation completed.,16,2,2026-07-04T08:15:00-04:00,,,
+17,1,Approved after review.,17,8,2026-07-04T08:20:00-04:00,,,
+18,1,Routine clearance.,18,4,2026-07-04T08:25:00-04:00,,,
+19,1,Medical director signed off.,19,9,2026-07-04T08:30:00-04:00,,,
+20,1,Stabilized and cleared.,20,1,2026-07-04T08:35:00-04:00,,,
+21,1,Investigation completed.,21,6,2026-07-04T08:40:00-04:00,,,
+22,1,Approved by director.,22,10,2026-07-04T08:45:00-04:00,,,
+23,1,Routine audit done.,23,,2026-07-04T08:50:00-04:00,,,
+24,1,Clinical review passed.,24,5,2026-07-04T08:55:00-04:00,,,
+25,1,Cleared after 48 hours.,25,3,2026-07-04T09:00:00-04:00,,,
+26,1,Investigation completed.,26,7,2026-07-04T09:05:00-04:00,,,
+27,1,Medical approval received.,27,2,2026-07-04T09:10:00-04:00,,,
+28,1,Stabilized condition.,28,8,2026-07-04T09:15:00-04:00,,,
+29,1,Routine clearance.,29,4,2026-07-04T09:20:00-04:00,,,
+30,1,Director approved unlock.,30,9,2026-07-04T09:25:00-04:00,,,
+31,1,Investigation completed.,1,1,2026-07-04T09:30:00-04:00,,,
+32,1,Cleared after review.,2,6,2026-07-04T09:35:00-04:00,,,
+33,1,Audit passed.,3,10,2026-07-04T09:40:00-04:00,,,
+34,1,Medical director approval.,4,5,2026-07-04T09:45:00-04:00,,,
+35,1,Final clearance granted.,5,3,2026-07-04T09:50:00-04:00,,,
+,,,,,,,,
+audit_logs,,,,,,,,
+id,table_name,record_id,action,old_data,new_data,performed_by,performed_at,ip_address
+1,incidents,1,INSERT,,"{""status"":""OPEN""}",1,2026-07-04T08:00:00-04:00,192.168.1.10
+2,incidents,2,UPDATE,"{""status"":""OPEN""}","{""status"":""UNDER_INVESTIGATION""}",3,2026-07-04T08:02:00-04:00,192.168.1.11
+3,chart_lock_events,1,INSERT,,"{""locked"":true}",7,2026-07-04T08:04:00-04:00,192.168.1.12
+4,residents,5,UPDATE,"{""room"":""101""}","{""room"":""102""}",2,2026-07-04T08:06:00-04:00,192.168.1.13
+5,users,8,INSERT,,"{""role"":""nurse""}",8,2026-07-04T08:08:00-04:00,192.168.1.14
+6,incidents,6,UPDATE,"{""status"":""OPEN""}","{""status"":""CLOSED""}",4,2026-07-04T08:10:00-04:00,192.168.1.15
+7,chart_lock_events,7,INSERT,,"{""locked"":true}",9,2026-07-04T08:12:00-04:00,192.168.1.16
+8,incidents,11,DELETE,"{""status"":""OPEN""}",,1,2026-07-04T08:14:00-04:00,192.168.1.17
+9,residents,12,UPDATE,,"{""notes"":""Updated""}",6,2026-07-04T08:16:00-04:00,192.168.1.18
+10,audit_logs,1,INSERT,,"{""action"":""UPDATE""}",10,2026-07-04T08:18:00-04:00,192.168.1.19
+11,incidents,15,UPDATE,"{""status"":""OPEN""}","{""status"":""UNDER_INVESTIGATION""}",5,2026-07-04T08:20:00-04:00,192.168.1.20
+12,chart_lock_events,10,INSERT,,"{""locked"":true}",3,2026-07-04T08:22:00-04:00,192.168.1.21
+13,users,14,UPDATE,"{""active"":1}","{""active"":0}",7,2026-07-04T08:24:00-04:00,192.168.1.22
+14,incidents,20,INSERT,,"{""status"":""OPEN""}",2,2026-07-04T08:26:00-04:00,192.168.1.23
+15,phi_access_logs,3,INSERT,,"{""access_type"":""VIEW""}",8,2026-07-04T08:28:00-04:00,192.168.1.24
+16,incidents,22,UPDATE,"{""status"":""OPEN""}","{""status"":""CLOSED""}",4,2026-07-04T08:30:00-04:00,192.168.1.25
+17,chart_lock_events,15,INSERT,,"{""locked"":true}",9,2026-07-04T08:32:00-04:00,192.168.1.26
+18,residents,18,UPDATE,,"{""alert"":""Fall risk""}",1,2026-07-04T08:34:00-04:00,192.168.1.27
+19,incidents,25,INSERT,,"{""status"":""OPEN""}",6,2026-07-04T08:36:00-04:00,192.168.1.28
+20,users,9,INSERT,,"{""role"":""admin""}",10,2026-07-04T08:38:00-04:00,192.168.1.29
+21,incidents,28,UPDATE,"{""status"":""OPEN""}","{""status"":""UNDER_INVESTIGATION""}",5,2026-07-04T08:40:00-04:00,192.168.1.30
+22,chart_lock_events,20,INSERT,,"{""locked"":true}",3,2026-07-04T08:42:00-04:00,192.168.1.31
+23,incidents,30,DELETE,"{""status"":""OPEN""}",,7,2026-07-04T08:44:00-04:00,192.168.1.32
+24,residents,22,UPDATE,,"{""notes"":""Allergy updated""}",2,2026-07-04T08:46:00-04:00,192.168.1.33
+25,audit_logs,15,INSERT,,"{""action"":""UPDATE""}",8,2026-07-04T08:48:00-04:00,192.168.1.34
+26,incidents,3,UPDATE,"{""status"":""OPEN""}","{""status"":""CLOSED""}",4,2026-07-04T08:50:00-04:00,192.168.1.35
+27,chart_lock_events,25,INSERT,,"{""locked"":true}",9,2026-07-04T08:52:00-04:00,192.168.1.36
+28,users,11,UPDATE,"{""active"":1}","{""active"":1}",1,2026-07-04T08:54:00-04:00,192.168.1.37
+29,incidents,8,INSERT,,"{""status"":""OPEN""}",6,2026-07-04T08:56:00-04:00,192.168.1.38
+30,phi_access_logs,12,INSERT,,"{""access_type"":""PRINT""}",10,2026-07-04T08:58:00-04:00,192.168.1.39
+,,,,,,,,
+phi_access_logs,,,,,,,,
+id,table_name,record_id,accessed_by,access_type,access_reason,ip_address,accessed_at,
+1,incidents,1,5,VIEW,Medical review for treatment planning,2026-07-04T07:10:00-04:00,10.0.0.10,
+2,incidents,2,3,PRINT,Incident investigation support,2026-07-04T07:12:00-04:00,10.0.0.11,
+3,incidents,3,7,EXPORT,HIPAA compliance audit,2026-07-04T07:14:00-04:00,10.0.0.12,
+4,incidents,4,2,DOWNLOAD,Routine care documentation,2026-07-04T07:16:00-04:00,10.0.0.13,
+5,incidents,5,8,VIEW,Medical review for treatment planning,2026-07-04T07:18:00-04:00,10.0.0.14,
+6,incidents,6,4,PRINT,Incident investigation support,2026-07-04T07:20:00-04:00,10.0.0.15,
+7,incidents,7,9,EXPORT,HIPAA compliance audit,2026-07-04T07:22:00-04:00,10.0.0.16,
+8,incidents,8,1,DOWNLOAD,Routine care documentation,2026-07-04T07:24:00-04:00,10.0.0.17,
+9,incidents,9,6,VIEW,Medical review for treatment planning,2026-07-04T07:26:00-04:00,10.0.0.18,
+10,incidents,10,10,PRINT,Incident investigation support,2026-07-04T07:28:00-04:00,10.0.0.19,
+11,incidents,11,5,EXPORT,HIPAA compliance audit,2026-07-04T07:30:00-04:00,10.0.0.20,
+12,incidents,12,3,DOWNLOAD,Routine care documentation,2026-07-04T07:32:00-04:00,10.0.0.21,
+13,incidents,13,7,VIEW,Medical review for treatment planning,2026-07-04T07:34:00-04:00,10.0.0.22,
+14,incidents,14,2,PRINT,Incident investigation support,2026-07-04T07:36:00-04:00,10.0.0.23,
+15,incidents,15,8,EXPORT,HIPAA compliance audit,2026-07-04T07:38:00-04:00,10.0.0.24,
+16,incidents,16,4,DOWNLOAD,Routine care documentation,2026-07-04T07:40:00-04:00,10.0.0.25,
+17,incidents,17,9,VIEW,Medical review for treatment planning,2026-07-04T07:42:00-04:00,10.0.0.26,
+18,incidents,18,1,PRINT,Incident investigation support,2026-07-04T07:44:00-04:00,10.0.0.27,
+19,incidents,19,6,EXPORT,HIPAA compliance audit,2026-07-04T07:46:00-04:00,10.0.0.28,
+20,incidents,20,10,DOWNLOAD,Routine care documentation,2026-07-04T07:48:00-04:00,10.0.0.29,
+21,incidents,21,5,VIEW,Medical review for treatment planning,2026-07-04T07:50:00-04:00,10.0.0.30,
+22,incidents,22,3,PRINT,Incident investigation support,2026-07-04T07:52:00-04:00,10.0.0.31,
+23,incidents,23,7,EXPORT,HIPAA compliance audit,2026-07-04T07:54:00-04:00,10.0.0.32,
+24,incidents,24,2,DOWNLOAD,Routine care documentation,2026-07-04T07:56:00-04:00,10.0.0.33,
+25,incidents,25,8,VIEW,Medical review for treatment planning,2026-07-04T07:58:00-04:00,10.0.0.34,
+26,incidents,26,4,PRINT,Incident investigation support,2026-07-04T08:00:00-04:00,10.0.0.35,
+27,incidents,27,9,EXPORT,HIPAA compliance audit,2026-07-04T08:02:00-04:00,10.0.0.36,
+28,incidents,28,1,DOWNLOAD,Routine care documentation,2026-07-04T08:04:00-04:00,10.0.0.37,
+29,incidents,29,6,VIEW,Medical review for treatment planning,2026-07-04T08:06:00-04:00,10.0.0.38,
+30,incidents,30,10,PRINT,Incident investigation support,2026-07-04T08:08:00-04:00,10.0.0.39,
+31,incidents,1,5,EXPORT,HIPAA compliance audit,2026-07-04T08:10:00-04:00,10.0.0.40,
+32,incidents,2,3,DOWNLOAD,Routine care documentation,2026-07-04T08:12:00-04:00,10.0.0.41,
+33,incidents,3,7,VIEW,Medical review for treatment planning,2026-07-04T08:14:00-04:00,10.0.0.42,
+34,incidents,4,2,PRINT,Incident investigation support,2026-07-04T08:16:00-04:00,10.0.0.43,
+35,incidents,5,8,EXPORT,HIPAA compliance audit,2026-07-04T08:18:00-04:00,10.0.0.44,
+,,,,,,,,
+notifications,,,,,,,,
+id,title,type,is_read,user_id,,,,
+1,New Critical Incident Reported,ALERT,0,5,,,,
+2,SLA Deadline Approaching,REMINDER,1,3,,,,
+3,Chart Lock Activated,WARNING,0,7,,,,
+4,Incident Status Updated,INFO,0,2,,,,
+5,New Critical Incident Reported,ALERT,1,8,,,,
+6,SLA Deadline Approaching,REMINDER,0,4,,,,
+7,Chart Lock Activated,WARNING,0,9,,,,
+8,Incident Status Updated,INFO,1,1,,,,
+9,New Critical Incident Reported,ALERT,0,6,,,,
+10,SLA Deadline Approaching,REMINDER,0,10,,,,
+11,Chart Lock Activated,WARNING,1,5,,,,
+12,Incident Status Updated,INFO,0,3,,,,
+13,New Critical Incident Reported,ALERT,0,7,,,,
+14,SLA Deadline Approaching,REMINDER,1,2,,,,
+15,Chart Lock Activated,WARNING,0,8,,,,
+16,Incident Status Updated,INFO,0,4,,,,
+17,New Critical Incident Reported,ALERT,1,9,,,,
+18,SLA Deadline Approaching,REMINDER,0,1,,,,
+19,Chart Lock Activated,WARNING,0,6,,,,
+20,Incident Status Updated,INFO,0,10,,,,
+21,New Critical Incident Reported,ALERT,1,5,,,,
+22,SLA Deadline Approaching,REMINDER,0,3,,,,
+23,Chart Lock Activated,WARNING,0,7,,,,
+24,Incident Status Updated,INFO,1,2,,,,
+25,New Critical Incident Reported,ALERT,0,8,,,,
+26,SLA Deadline Approaching,REMINDER,0,4,,,,
+27,Chart Lock Activated,WARNING,1,9,,,,
+28,Incident Status Updated,INFO,0,1,,,,
+29,New Critical Incident Reported,ALERT,0,6,,,,
+30,SLA Deadline Approaching,REMINDER,0,10,,,,
+31,Chart Lock Activated,WARNING,1,5,,,,
+32,Incident Status Updated,INFO,0,3,,,,
+33,New Critical Incident Reported,ALERT,0,7,,,,
+34,SLA Deadline Approaching,REMINDER,1,2,,,,
+35,Chart Lock Activated,WARNING,0,8,,,,
+,,,,,,,,
+insurance_providers,,,,,,,,
+id,provider_name,provider_type,,,,,,
+1,Medicare,Government,,,,,,
+2,Medicaid,Government,,,,,,
+3,Blue Cross Blue Shield,Private,,,,,,
+4,UnitedHealthcare,Private,,,,,,
+5,Aetna,Private,,,,,,
+6,Cigna Healthcare,Private,,,,,,
+7,Humana,Private,,,,,,
+8,Kaiser Permanente,Private,,,,,,
+9,Anthem Blue Cross,Private,,,,,,
+10,Molina Healthcare,Private,,,,,,
+11,CVS Health / Aetna Medicare,Private,,,,,,
+12,Wellcare,Private,,,,,,
+13,Health Net,Private,,,,,,
+14,Highmark Blue Cross Blue Shield,Private,,,,,,
+15,CareSource,Private,,,,,,
+16,AmeriHealth,Private,,,,,,
+17,Centene Corporation,Private,,,,,,
+18,Oscar Health,Private,,,,,,
+19,EmblemHealth,Private,,,,,,
+20,Independence Blue Cross,Private,,,,,,

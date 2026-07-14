@@ -10,26 +10,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApiResponse<T> {
-    private int code;
+    private int statusCode;
     private String message;
     private T data;
 
     // Helper method trả về thành công
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
-                .code(200)
+                .statusCode(200)
                 .message("Success")
                 .data(data)
                 .build();
     }
 
     // Helper method trả về lỗi
-    public static <T> ApiResponse<T> error(int code, String message) {
+    public static <T> ApiResponse<T> error(int statusCode, String message) {
         return ApiResponse.<T>builder()
-                .code(code)
+                .statusCode(statusCode)
                 .message(message)
                 .data(null)
                 .build();
     }
 }
+
 

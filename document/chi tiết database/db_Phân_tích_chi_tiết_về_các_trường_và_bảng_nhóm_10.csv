@@ -1,0 +1,95 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,insurance_providers
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự động tăng, định danh duy nhất cho từng nhà cung cấp bảo hiểm.",
+provider_name,NVARCHAR(200),NOT NULL,"Tên của hãng bảo hiểm (Ví dụ: Blue Cross Blue Shield, Aetna, hoặc các chương trình chính phủ).",
+provider_type,VARCHAR(20),"NOT NULL
+
+CHECK (phân loại)","Phân loại nguồn bảo hiểm: Bắt buộc phải nằm trong bộ lọc kiểm tra: MEDICARE (Bảo hiểm liên bang cho người già >65 tuổi), MEDICAID (Bảo hiểm tiểu bang hỗ trợ người thu nhập thấp), PRIVATE (Bảo hiểm tư nhân người dân tự mua), hoặc OTHER.",
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,resident_insurance_policies
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID để bảo mật.,
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang residents(id) để biết thẻ này thuộc về cụ nào.,
+insurance_provider_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang insurance_providers(id) để biết thẻ này thuộc hãng nào.,
+policy_number_encrypted,VARCHAR(512),NOT NULL,Số hợp đồng/Số thẻ bảo hiểm đã mã hóa: Tuyệt đối không lưu thô để tránh rò rỉ dữ liệu tài chính cá nhân.,
+group_number,NVARCHAR(100),,Mã nhóm bảo hiểm (nếu có).,
+effective_from,DATE,NOT NULL,Ngày thẻ bảo hiểm bắt đầu có hiệu lực.,
+effective_to,DATE,,Ngày hết hạn bảo hiểm. Nếu đang còn hạn thì để trống.,
+is_primary,BIT,"NOT NULL
+
+DEFAULT 0",Đánh dấu bảo hiểm chính: Một cụ già có thể có cả bảo hiểm chính phủ lẫn tư nhân. Hệ thống dùng cờ này để biết đơn vị nào sẽ bị trừ tiền trước.,
+is_deleted,BIT,"NOT NULL
+
+DEFAULT 0",Cờ xóa mềm tài liệu.,
+created_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời gian tạo bản ghi kèm theo múi giờ offset.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,invoices
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID.,
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại kết nối hóa đơn với cư dân.,
+billing_period_start,DATE,NOT NULL,Ngày bắt đầu chu kỳ tính tiền (Ví dụ: 2026-06-01).,
+billing_period_end,DATE,NOT NULL,Ngày kết thúc chu kỳ tính tiền (Ví dụ: 2026-06-30).,
+total_amount,"DECIMAL(18,2)",NOT NULL,Tổng số tiền hóa đơn: Tổng tất cả các chi phí phát sinh trong tháng.,
+medicare_covered_amount,"DECIMAL(18,2)","NOT NULL
+
+DEFAULT 0",Số tiền được chi trả bởi chương trình Medicare (Bảo hiểm chính phủ liên bang).,
+medicaid_covered_amount,"DECIMAL(18,2)","NOT NULL
+
+DEFAULT 0",Số tiền được chi trả bởi chương trình Medicaid (Bảo hiểm chính phủ bang).,
+private_insurance_covered_amount,"DECIMAL(18,2)","NOT NULL
+
+DEFAULT 0",Số tiền được chi trả bởi Bảo hiểm tư nhân của cụ già.,
+patient_responsibility_amount,"DECIMAL(18,2)","NOT NULL
+
+DEFAULT 0",Số tiền gia đình phải tự trả túi (Co-pay / Out-of-pocket): Phần chênh lệch còn lại sau khi các bên bảo hiểm đã trừ hết phần của họ.,
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'DRAFT'
+
+CHECK (trạng thái)","Trạng thái hóa đơn: DRAFT (Nháp), SENT (Đã gửi hóa đơn cho gia đình), PARTIALLY_PAID (Mới thanh toán một phần), PAID (Đã thanh toán đủ), OVERDUE (Quá hạn), VOID (Hóa đơn bị hủy/vô hiệu).",
+due_date,DATE,NOT NULL,Hạn chót phải hoàn thành thanh toán.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,invoice_line_items
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự động tăng.,
+invoice_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang bảng invoices(id).,
+description,NVARCHAR(255),NOT NULL,"Mô tả dòng chi phí (Ví dụ: ""Phòng Memory Care 30 ngày"", ""Phí phục vụ xe lăn"").",
+item_type,VARCHAR(30),"NOT NULL
+
+CHECK (phân loại)","Phân loại khoản phí: Bắt buộc phải thuộc danh mục: ROOM_BOARD (Tiền phòng và ăn uống), CARE_LEVEL (Phí dịch vụ theo gói chăm sóc), MEDICATION (Tiền thuốc men), THERAPY (Phí vật lý trị liệu), hoặc OTHER.",
+amount,"DECIMAL(18,2)",NOT NULL,Số tiền cụ thể của hạng mục này.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,payments
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+invoice_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới hóa đơn được thanh toán.,
+payer_type,VARCHAR(20),"NOT NULL
+
+CHECK (phân loại)","Đối tượng thực hiện thanh toán: Xác định ai là người vừa trả tiền, chỉ nhận: MEDICARE, MEDICAID, PRIVATE_INSURANCE, hoặc FAMILY (Gia đình cụ già tự đóng phần Co-pay).",
+payment_method,VARCHAR(20),"NOT NULL
+
+CHECK (phương thức)","Phương thức thanh toán: Chỉ nhận các chuẩn thanh toán phổ biến tại Mỹ: CREDIT_CARD (Thẻ tín dụng), ACH (Chuyển khoản điện tử trực tiếp từ ngân hàng Mỹ), CHECK (Sử dụng Séc giấy - rất phổ biến với người già Mỹ), CASH (Tiền mặt), hoặc INSURANCE_DIRECT (Bảo hiểm giải ngân trực tiếp cho viện).",
+amount,"DECIMAL(18,2)",NOT NULL,Số tiền thực tế vừa thanh toán trong đợt này.,
+payment_token_encrypted,VARCHAR(512),,"Mã Token thanh toán đã mã hóa (PCI-DSS core): Hệ thống tuyệt đối không lưu số thẻ tín dụng thô hoặc số tài khoản gốc của khách hàng vào database. Thay vào đó, cổng thanh toán (như Stripe, PayPal) trả về một mã Token ẩn danh, hệ thống sẽ mã hóa và lưu mã Token đó vào đây để phục vụ tái thanh toán an toàn.",
+received_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY","Khóa ngoại nối sang users(id), định danh chính xác kế toán viên nào đã duyệt/bấm xác nhận giao dịch này trên hệ thống.",
+paid_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm chính xác giao dịch thành công (kèm múi giờ của bang thực hiện).,

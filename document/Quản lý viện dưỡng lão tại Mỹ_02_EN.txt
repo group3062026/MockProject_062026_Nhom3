@@ -1,0 +1,34 @@
+To build a comprehensive nursing home management software (commonly referred to as an EHR/EMR & ERP system for Long-Term Care), the platform must be divided into interconnected core modules that seamlessly share data.
+Below is the architectural breakdown of these core modules, categorized into 4 primary functional groups:
+I. Clinical & Resident Care Group
+This is the "heart" of the system, where nurses, physicians, and certified nursing assistants (CNAs) interact on a daily basis.
+1. Intake & Electronic Health Records (EHR) Module
+Digital Charting: Stores comprehensive demographics, medical history, allergy lists, emergency contacts, and legal guardianships (such as Power of Attorney - POA).
+Intake Assessments: A suite of digital tools to evaluate vital signs and Activities of Daily Living (ADLs)—such as bathing, eating, transferring, and toileting—to automatically calculate and classify the resident's Level of Care (LOC).
+2. Care Planning Module
+Goal Setting: Allows the Director of Nursing (DON) to establish individualized, Person-Centered Care Plans on a daily, weekly, or monthly basis.
+Automated Task Assignment: Translates clinical care plans into actionable daily task checklists for CNAs, accessible via tablets or mobile devices.
+3. Electronic Medication Administration Record (eMAR) Module
+Smart Med-Pass Scheduling: Displays a real-time list of residents requiring medication within specific time windows, utilizing color-coded alerts (e.g., Green: Administered, Yellow: Upcoming, Red: Overdue).
+Advanced Verification: Supports barcode scanning of the resident’s wristband and the medication packaging to strictly enforce the "5 Rights" of medication administration (Right resident, Right medication, Right dose, Right route, Right time).
+Pharmacy Integration: Automatically transmits refill requests to partner long-term care (LTC) pharmacies when a resident's medication inventory hits a predefined reorder threshold.
+II. Operations & Workforce Group
+4. Staff Scheduling Module
+Mandated Staffing Ratios: The system automatically calculates the required number of nurses and CNAs based on the current resident census and acuity levels to ensure strict regulatory compliance.
+Shift Bourse (Open Shift Management): Enables staff to view and pick up open shifts, or swap shifts with peers via a mobile app, requiring only a one-tap approval from management.
+5. Dining & Dietary Module
+Dietary Filter Integration: Manages daily menus in alignment with physician orders (e.g., diabetic-friendly, mechanical soft, pureed, or low-sodium diets).
+Point of Sale / Tableside Ordering: Staff use tablets to take meal orders in the dining room, and the system automatically blocks any food items containing ingredients that trigger a resident's documented allergies.
+III. Billing & Financials Group
+6. Billing & Revenue Cycle Management (RCM) Module
+Multi-Payer Billing: Automatically splits claims and invoices (e.g., generating an invoice where insurance covers 80% and the family/private pay covers the remaining 20%).
+Claims Management: Integrates standard HIPAA EDI 837 transaction codes to submit claims to public (Medicare/Medicaid) or private commercial insurance clearinghouses, and ingests EDI 835 files to streamline Denial Management.
+IV. Compliance & Engagement Group
+7. Incident & Risk Management Module
+Incident Reporting: Digitalized workflows to immediately document falls, injuries, or medication errors. The system automatically locks the affected resident's chart at the time of the incident to preserve records for state surveyors.
+Wound Management: Allows clinicians to securely capture photos of pressure ulcers (bedsores), log measurements, and track healing progress over time on HIPAA-compliant storage for remote physician review.
+8. Family Portal Module
+Operational Transparency: A dedicated mobile application for residents' family members to view real-time health updates, scheduled recreational activities, daily menus, and securely pay care invoices online.
+💡 System Design Note
+When developing these modules, the system architecture must strictly adhere to the principle of Centralized Data Integration.
+Example of Data Flow: When Module 1 (EHR) updates a resident's status indicating a decline in mobility $\rightarrow$ Module 2 (Care Plan) automatically injects a "Transfer Assistance" task for the CNAs $\rightarrow$ Module 4 (Scheduling) recalibrates floor staffing to account for higher acuity $\rightarrow$ Module 6 (Billing) dynamically updates the monthly invoice to reflect the new, elevated Level of Care (LOC) rate.

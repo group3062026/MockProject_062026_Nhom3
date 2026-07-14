@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = exception.getErrorCode();
         log.warn("AppException: [Code: {}, Message: {}]", errorCode.getCode(), errorCode.getMessage());
         return ResponseEntity.status(errorCode.getStatusCode())
-                .body(ApiResponse.error(errorCode.getCode(), errorCode.getMessage()));
+                .body(ApiResponse.error(errorCode.getStatusCode().value(), errorCode.getMessage()));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
 
         log.warn("Validation error: {}", message);
         return ResponseEntity.status(errorCode.getStatusCode())
-                .body(ApiResponse.error(errorCode.getCode(), message));
+                .body(ApiResponse.error(errorCode.getStatusCode().value(), message));
     }
 
     @ExceptionHandler(value = {
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
         log.warn("Parameter error: {}", exception.getMessage());
         return ResponseEntity.status(errorCode.getStatusCode())
-                .body(ApiResponse.error(errorCode.getCode(), exception.getMessage()));
+                .body(ApiResponse.error(errorCode.getStatusCode().value(), exception.getMessage()));
     }
 
     @ExceptionHandler(value = Exception.class)
@@ -62,6 +62,7 @@ public class GlobalExceptionHandler {
         log.error("Uncategorized Exception: ", exception);
         ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
         return ResponseEntity.status(errorCode.getStatusCode())
-                .body(ApiResponse.error(errorCode.getCode(), errorCode.getMessage()));
+                .body(ApiResponse.error(errorCode.getStatusCode().value(), errorCode.getMessage()));
     }
 }
+

@@ -1,0 +1,27 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,roles
+id,BIGINT,"IDENTITY(1,1)PRIMARY KEY",Khóa chính tự động tăng. Định danh duy nhất cho từng vai trò trong hệ thống.,
+role_name,NVARCHAR(100),NOT NULLUNIQUE,"Tên của vai trò (Ví dụ: Admin, DON - Giám đốc điều dưỡng, RN - Y tá chính quy, CNA - Hộ lý, Billing - Kế toán). Giới hạn độc nhất để không bị trùng tên vai trò. ",
+description,NVARCHAR(500),,Mô tả chi tiết về phạm vi hoặc trách nhiệm của vai trò này để người quản trị dễ phân biệt khi cấp tài khoản.,
+is_deleted,BIT,NOT NULLDEFAULT 0,"Trường dùng cho Xóa mềm (Soft Delete). Khi một vai trò không còn dùng nữa, hệ thống chuyển thành 1 (True) thay vì xóa cứng, tránh làm lỗi các bản ghi nhân viên cũ từng thuộc vai trò này. ",
+created_at,DATETIMEOFFSET(0),NOT NULLDEFAULT SYSDATETIMEOFFSET(),"Thời gian tạo vai trò, lưu kèm múi giờ của từng bang tại Mỹ (offset chính xác đến từng bản ghi). ",
+updated_at,DATETIMEOFFSET(0),NOT NULLDEFAULT SYSDATETIMEOFFSET(),Thời gian cập nhật thông tin vai trò gần nhất.,
+,,,,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,role_permissions
+role_id,BIGINT,FOREIGN KEY roles(id),Khóa ngoại liên kết tới cột id của bảng roles. Trường này xác định quyền đang được gán cho vai trò nào,
+permission_id,BIGINT,FOREIGN KEY permissions(id),Khóa ngoại liên kết tới cột id của bảng permission. Trường này xác định mã quyền cụ thể nào đang được gán,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,permissions
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự động tăng, định danh duy nhất cho từng quyền.",
+action_code,NVARCHAR(100),"NOT NULL
+
+UNIQUE","Mã code của hành động, viết hoa cách nhau bằng dấu gạch dưới (Ví dụ: RESIDENT_PHI_VIEW - Xem thông tin y tế cư dân, MAR_ADMINISTER - Thực hiện phát thuốc, BILLING_EDIT - Sửa hóa đơn). Hệ thống sẽ check mã này ở tầng Code backend để chặn truy cập trái phép.",
+is_phi_sensitive,BIT,"NOT NULL
+
+DEFAULT 0","Trọng tâm bảo mật HIPAA: Đánh dấu quyền này có chạm vào dữ liệu sức khỏe cá nhân nhạy cảm (PHI - Protected Health Information) hay không. Nếu trường này bằng 1, bất cứ khi nào user thực hiện quyền này, hệ thống bắt buộc phải kích hoạt ghi vết vào bảng phi_access_logs để phục vụ thanh tra y tế Mỹ.",
+created_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()","Thời gian tạo quyền này trên hệ thống, kèm theo múi giờ.",
