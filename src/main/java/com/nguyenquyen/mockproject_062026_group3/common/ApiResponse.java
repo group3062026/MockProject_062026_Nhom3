@@ -22,4 +22,14 @@ public class ApiResponse<T> {
                 .data(data)
                 .build();
     }
+
+    // Helper method trả về lỗi
+    public static <T> ApiResponse<T> error(int code, String message) {
+        return ApiResponse.<T>builder()
+                .code(code)
+                .message(message)
+                .data(null)
+                .build();
+    }
 }
+
