@@ -1,0 +1,3 @@
+Questions,Answers,Actor
+"Trong bảng Users có password_hash, vậy làm sao để biết được password gốc là gì để login?",Bên mình có danh sách thông tin đăng nhập nha,
+"Hệ thống hiện tại mình thấy mới chỉ có bảng quản lý quy trình kê đơn và phát thuốc vậy bảng quản lý số lượng tồn kho, số lô và hạn sử dụng của thuốc  nằm ở đâu vậy ?",,

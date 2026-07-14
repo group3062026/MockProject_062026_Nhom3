@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CareLevelRepository extends JpaRepository<CareLevel, Long> {
+    java.util.List<CareLevel> findAllByIsDeleted(Boolean isDeleted);
 }
+

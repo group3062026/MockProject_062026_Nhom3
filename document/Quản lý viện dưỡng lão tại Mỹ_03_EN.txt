@@ -1,0 +1,38 @@
+The Intake Assessment operation is the first and most critical gateway for any nursing home in the United States. It is far more than just administrative paperwork; it serves as the legal and financial foundation that determines whether a facility has the clinical capability to accept a resident, how much to charge monthly, and what the specific nursing care protocol will look like.
+In the U.S., this operation is highly standardized through strictly regulated frameworks. Below are the specific operational and functional details of this module:
+1. The Two Assessment Phases (Pre-admission & Post-admission)
+The assessment process is divided into two distinct steps to ensure legal and clinical safety for the facility:
+Pre-admission Screening: Conducted before the senior officially admits to the facility (often taking place at their private residence or at the hospital prior to discharge). The primary goal is to determine if the facility's equipment and staffing levels can meet the applicant's clinical needs. For example, if an applicant suffers from severe schizophrenia and the facility is only a standard Assisted Living community, the facility is legally obligated to deny admission because it cannot guarantee a safe environment.
+Comprehensive Post-admission Assessment: Conducted within the first 14 days of the resident's official arrival. For Skilled Nursing Facilities (SNFs), the federally mandated assessment tool that must be used is the MDS (Minimum Data Set).
+2. The 5 Core Pillars of the Assessment Suite
+When designing software or executing this clinical operation, an interdisciplinary team (comprising the Director of Nursing, dietary specialists, and physical therapists) evaluates the resident based on 5 core categories:
+A. Activities of Daily Living (ADLs & IADLs) Assessment
+This is the direct metrics used to calculate service fees. The system scores capability ranging from "Independent" to "Total Dependence" across several categories:
+ADLs (Basic): Eating, bathing, personal hygiene, dressing, mobility/transferring (e.g., from bed to wheelchair), and toileting/bowel continence.
+IADLs (Instrumental): Ability to use a telephone, manage personal finances, or self-administer medication under light supervision.
+B. Cognitive & Neurological Status Assessment
+Measures mental alertness and orientation (e.g., does the resident know what day it is or where they are?).
+Utilizes standardized medical tests like BIMS (Brief Interview for Mental Status) or MMSE (Mini-Mental State Examination) to screen for Dementia or Alzheimer’s disease.
+Logs behavioral risks, such as wandering patterns, agitation, or combative behavior toward staff and other residents.
+C. Clinical Risk Assessments
+Fall Risk Assessment: Uses validated tools like the Morse Fall Scale or Hendrich II Scale to calculate risk factors. If a high score is recorded, the system automatically activates safety protocols (e.g., low-height beds, floor mats, or bed/chair exit alarm sensors).
+Pressure Ulcer Risk: Uses the Braden Scale to assess skin integrity, moisture levels, nutrition, and the resident's ability to reposition themselves.
+Dysphagia Screening: Assesses whether the resident has difficulty swallowing or a risk of choking, dictating texture modifications for their food orders.
+D. Mood & Behavioral Health Status
+Utilizes the PHQ-9 (Patient Health Questionnaire) to screen for signs of clinical depression, which frequently occur when an elderly individual experiences a sudden change in living environment.
+E. Financial & Legal Status Verification
+Verifies critical legal documents, including who holds the Medical Power of Attorney (POA) to make healthcare decisions if the resident becomes incapacitated, and whether the resident's Living Will specifies a DNR (Do Not Resuscitate) order.
+3. Downstream Outputs of the Intake Assessment Module
+Once the nursing team inputs all clinical indicators into the platform, the software processes the data to generate 3 vital operational outputs:
+[Intake Assessment Data Input] 
+        │
+        ├───> 1. Auto-populates Care Plan Tasks (Clinical Workflows)
+        ├───> 2. Classifies Government Payer Groups (RUGs/PDPM) -> Insurance
+        └───> 3. Determines Private Pay Tiers (Level of Care Pricing)
+Automated Care Plan Generation: If the assessment records a "Braden Score of 12 (High risk for pressure ulcers)", the software automatically injects a "Reposition resident every 2 hours" task into the floor CNAs' daily digital task checklists.
+Service Rate Optimization: For Private Pay residents, a higher dependency score on ADLs automatically places the resident into a higher service fee tier. For example: Tier 1 (Light assistance) at $4,000/month vs. Tier 4 (Total assistance) at $7,500/month.
+Federal Reimbursement Alignment: For Skilled Nursing Facilities receiving Medicare funds, the MDS assessment data runs through an algorithm to categorize the resident into a specific clinical group under the PDPM (Patient-Driven Payment Model). The U.S. government then reimburses the facility a fixed daily rate (Per Diem Rate) based entirely on this diagnostic assessment data.
+⚠️ Strict Regulatory Compliance
+In the U.S., intake and periodic assessment data cannot be arbitrarily altered after it has been electronically signed off.
+If a facility intentionally falsifies data to make a resident appear sicker than they are to maximize government reimbursement, it is classified as Medicare/Medicaid Fraud—a federal criminal offense carrying millions of dollars in fines and potential prison sentences.
+Conducted periodically (every 90 days) or whenever a resident experiences a Significant Change in Status, the nursing team must rerun this entire assessment workflow to re-verify protocols and billing adjustments.

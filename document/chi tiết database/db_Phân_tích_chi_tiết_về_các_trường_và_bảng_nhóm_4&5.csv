@@ -1,0 +1,126 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,care_levels
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự động tăng, định danh duy nhất cho từng mức độ chăm sóc.",
+level_code,VARCHAR(30),"NOT NULL
+
+UNIQUE
+
+CHECK (phân loại)","Mã mức độ: Buộc phải là duy nhất và chỉ chấp nhận 5 gói chuẩn Mỹ : 
+
+• INDEPENDENT_LIVING: Tự lập.
+
+• ASSISTED_LIVING: Cần hỗ trợ một phần.
+
+• MEMORY_CARE: Chăm sóc đặc biệt cho người mất trí nhớ/Alzheimer.
+
+• SKILLED_NURSING: Chăm sóc y tế tích cực (gần như bệnh viện).
+
+• HOSPICE: Chăm sóc giảm nhẹ cuối đời.",
+level_name,NVARCHAR(100),NOT NULL,"Tên hiển thị thân thiện của gói dịch vụ trên giao diện (Ví dụ: ""Memory Care Wing Services"").",
+is_deleted,BIT,"NOT NULL
+
+DEFAULT 0",Trường dùng cho Xóa mềm (Soft Delete).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,care_level_rates
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự động tăng.,
+care_level_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết đến bảng care_levels(id).,
+facility_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết đến bảng facilities(id). Giá gói Memory Care ở California chắc chắn sẽ khác giá ở Texas.,
+daily_rate,"DECIMAL(18,2)",NOT NULL,Đơn giá theo ngày: Số tiền phải trả cho 1 ngày ở viện (Nên dùng DECIMAL để tính toán tài chính chính xác).,
+effective_from,DATE,NOT NULL,Ngày đơn giá này bắt đầu có hiệu lực.,
+effective_to,DATE,,Ngày đơn giá hết hiệu lực. Nếu đang là giá hiện hành thì trường này để NULL.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,residents
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID: Ngăn chặn việc lộ thông tin hoặc đếm tổng số cụ già qua ID số tăng dần (Chống rò rỉ dữ liệu PHI).,
+first_name,NVARCHAR(100),NOT NULL,Tên của cụ già (Chuẩn Mỹ tách riêng).,
+middle_name,NVARCHAR(100),,Tên đệm.,
+last_name,NVARCHAR(100),NOT NULL,Họ của cụ già.,
+date_of_birth,DATE,NOT NULL,"Ngày sinh (Dùng kiểu DATE thuần, không cần lưu giờ).",
+gender,VARCHAR(20),"NULL
+
+CHECK (phân loại)","Giới tính, chỉ nhận: MALE, FEMALE, OTHER, UNDISCLOSED (Không tiết lộ).",
+marital_status,VARCHAR(20),,"Tình trạng hôn nhân (Single, Married, Widowed - Góa...).",
+religion_preference,NVARCHAR(100),,Tôn giáo (Rất quan trọng với người già Mỹ để viện sắp xếp chế độ tâm linh/lễ nguyện).,
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'PENDING'
+
+CHECK (trạng thái)","Trạng thái ở viện: 
+
+• PENDING: Chờ duyệt vào viện.
+
+• ACTIVE: Đang ở viện.
+
+• DISCHARGED: Đã xuất viện.
+
+• DECEASED: Đã qua đời.",
+is_chart_locked,BIT,"NOT NULL
+
+DEFAULT 0","Cờ khóa hồ sơ bệnh án: Nếu bằng 1 (True), toàn bộ thông tin lâm sàng của cụ già sẽ bị ""đóng băng"", không cho phép bất kỳ ai chỉnh sửa (Dùng khi xảy ra sự cố pháp lý).",
+address_id,BIGINT,"NULL
+
+FOREIGN KEY",Địa chỉ nhà riêng của cụ trước khi nhập viện (Nối sang addresses).,
+bed_id,UNIQUEIDENTIFIER,"NULL
+
+FOREIGN KEY",Giường cụ đang nằm (Nối sang bảng beds). Nếu xuất viện thì trường này clear về NULL.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,resident_sensitive_info
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự tăng của bảng bảo mật.,
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+UNIQUE
+
+FOREIGN KEY",Khóa ngoại nối duy nhất sang residents(id). Ràng buộc UNIQUE ép mối quan hệ là 1-1.,
+ssn_encrypted,VARCHAR(512),,"Số an sinh xã hội đã mã hóa: Dữ liệu thô gồm 9 số, sau khi mã hóa AES-256 sang chuỗi Base64 sẽ được lưu vào đây.",
+medical_record_number_encrypted,VARCHAR(512),,Mã hồ sơ y tế (MRN) đã mã hóa: Mã quản lý bệnh án quốc gia.,
+primary_insurance_id_encrypted,VARCHAR(512),,Mã số thẻ bảo hiểm gốc đã mã hóa.,
+bank_account_encrypted,VARCHAR(512),,Tài khoản ngân hàng đã mã hóa (Phục vụ việc tự động trừ tiền hàng tháng từ gia đình).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,resident_care_level_history
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+start_date,DATE,NOT NULL,Ngày bắt đầu áp dụng gói chăm sóc này cho cụ.,
+end_date,DATE,,Ngày kết thúc gói. Gói hiện tại đang dùng sẽ để trống (NULL).,
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại kết nối sang bảng residents(id).,
+care_level_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại kết nối sang danh mục care_levels(id).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,contacts
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+first_name / last_name,NVARCHAR(100),NOT NULL,Họ và tên của thân nhân.,
+phone_primary,NVARCHAR(20),NOT NULL,Số điện thoại chính để gọi khi có sự cố khẩn cấp.,
+email,NVARCHAR(255),,Email để nhận hóa đơn tiền viện hàng tháng.,
+address_id,BIGINT,"NULL
+
+FOREIGN KEY",Địa chỉ nhà riêng của thân nhân (Nối sang addresses).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,resident_contacts
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại kết nối sang residents(id).,
+contact_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại kết nối sang contacts(id).,
+relationship_type,VARCHAR(50),NOT NULL,"Mối quan hệ: Chỉ nhận các giá trị như SON (Con trai), DAUGHTER (Con gái), SPOUSE (Vợ/Chồng), LEGAL_GUARDIAN (Người bảo hộ pháp lý)....",
+is_guarantor,BIT,"NOT NULL
+
+DEFAULT 0",Người bảo hộ tài chính: Đánh dấu người này có phải là người đứng ra ký hợp đồng chi trả tiền viện hay không.,
+is_emergency_contact,BIT,"NOT NULL
+
+DEFAULT 0",Đánh dấu có phải là người liên hệ khẩn cấp đầu tiên khi cụ gặp sự cố không.,
+financial_responsibility_pct,"DECIMAL(5,2)","NULL
+
+CHECK (0 TO 100)","Tỷ lệ chịu trách nhiệm tài chính: Nếu gia đình thỏa thuận chia tiền viện (Ví dụ: Con cả chịu 50.00%, con út chịu 50.00% hóa đơn).",

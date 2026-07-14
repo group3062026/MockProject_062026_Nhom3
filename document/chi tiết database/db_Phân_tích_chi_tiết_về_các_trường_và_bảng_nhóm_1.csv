@@ -1,0 +1,43 @@
+users,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,users			
+id,BIGINT,"IDENTITY(1,1)PRIMARY KEY","Khóa chính dạng GUID: File thiết kế sử dụng chuỗi định danh tự động tăng (BIGINT) cho thực thể ""mặt tiền"" này. ",
+employee_code,NVARCHAR(50),"NOT NULL
+
+UNIQUE",Mã nhân viên: Mã định danh hành chính nội bộ của viện dưỡng lão (Ví dụ: STF-2026-001). Buộc phải là duy nhất để quản lý nhân sự.,
+email,NVARCHAR(255),"NOT NULL
+
+UNIQUE",Email công việc: Dùng làm tên đăng nhập (Username) và để nhận các thông báo hệ thống.,
+password_hash,NVARCHAR(300),NOT NULL,"Mật khẩu đã mã hóa: Tuyệt đối không lưu mật khẩu dạng chữ thô (plain text) để đảm bảo an toàn bảo mật hệ thống. Tầng ứng dụng sẽ hash mật khẩu (bằng BCrypt, Argon2...) trước khi lưu vào đây.",
+first_name,NVARCHAR(100),NOT NULL,Tên (First Name): Tách riêng theo quy chuẩn định dạng tên của Mỹ.,
+middle_name,NVARCHAR(100),,Tên đệm (Middle Name): Có thể để trống vì một số người Mỹ không có tên đệm.,
+last_name,NVARCHAR(100),NOT NULL,Họ (Last Name): Tách riêng để dễ dàng tìm kiếm và hiển thị danh sách nhân viên.,
+license_number,NVARCHAR(100),,Số chứng chỉ hành nghề: Dành cho các vị trí chuyên môn y tế bắt buộc tại Mỹ như Y tá chính quy (RN - Registered Nurse) hoặc Y tá thực hành (LPN - Licensed Practical Nurse). Giúp chứng minh nhân viên đủ điều kiện pháp lý khi thực hiện y lệnh.,
+phone_number,NVARCHAR(20),,Số điện thoại liên hệ: Dùng trong trường hợp khẩn cấp khi cần điều động nhân sự.,
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'ACTIVE'
+
+CHECK (status IN ('ACTIVE','INACTIVE','LOCKED'))","Trạng thái tài khoản:
+
+• ACTIVE: Đang hoạt động.  
+
+• INACTIVE: Đã nghỉ việc hoặc tạm nghỉ.  
+
+• LOCKED: Tài khoản bị khóa tự động (ví dụ do nhập sai mật khẩu quá nhiều lần) để ngăn chặn tấn công dò mật khẩu (Brute-force).",
+mfa_enabled,BIT,"NOT NULL
+
+DEFAULT 0","Xác thực 2 lớp (Multi-Factor Authentication): Theo luật HIPAA, khuyến nghị bắt buộc bật tính năng này cho các tài khoản có quyền tiếp cận thông tin y tế nhạy cảm (PHI) nhằm ngăn chặn việc lộ tài khoản.",
+last_login_at,DATETIMEOFFSET(0),,Thời gian đăng nhập cuối cùng: Lưu vết thời gian (kèm múi giờ) để quản lý thiết bị và phát hiện các lượt đăng nhập bất thường.,
+role_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Mã vai trò: Khóa ngoại liên kết chặt chẽ đến bảng roles(id) của Nhóm 0. Xác định nhân viên này thuộc bộ phận nào để phân bổ quyền hạn tương ứng.,
+is_deleted,BIT,"NOT NULL
+
+DEFAULT 0",Trường Xóa mềm (Soft Delete): Đánh dấu trạng thái tài khoản đã bị xóa khỏi hệ thống hay chưa.,
+deleted_at,DATETIMEOFFSET(0),,Thời gian xóa mềm: Ghi nhận chính xác thời điểm tài khoản bị vô hiệu hóa.,
+created_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời gian tạo tài khoản: Tự động ghi nhận giờ hệ thống (kèm múi giờ).,
+updated_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời gian cập nhật gần nhất: Ghi nhận thời điểm có bất kỳ thay đổi nào về thông tin tài khoản hoặc cấu hình bảo mật.,

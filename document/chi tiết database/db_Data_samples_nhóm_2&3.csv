@@ -1,0 +1,114 @@
+addresses,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9
+id,street_line1,street_line2,city,state,zip_code,address_type,is_deleted,created_at,updated_at
+1,4820 Oak Ridge Boulevard,,Sacramento,CA,95814,FACILITY,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+2,112 Sunset Avenue,,San Francisco,CA,94110,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+3,2280 Wilshire Terrace,Apt 4B,Los Angeles,CA,90005,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+4,965 Harbor View Lane,,San Diego,CA,92101,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+5,3401 Almaden Road,,San Jose,CA,95125,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+6,778 Lakeshore Drive,Unit 12,Oakland,CA,94610,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+7,156 Vine Hill Court,,Santa Rosa,CA,95401,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+8,890 Willow Pass Road,,Concord,CA,94520,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+9,421 Fig Garden Loop,,Fresno,CA,93704,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+10,1204 Ocean Boulevard,Apt 7,Long Beach,CA,90802,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+11,55 Crown Valley Parkway,,Anaheim,CA,92808,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+12,340 Mission Grove Drive,,Riverside,CA,92507,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+13,677 Stockdale Highway,,Bakersfield,CA,93309,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+14,229 Pacific Avenue,Unit 3,Stockton,CA,95204,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+15,908 Alton Parkway,,Irvine,CA,92618,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+16,147 Third Avenue,,Chula Vista,CA,91910,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+17,532 Mowry School Road,,Fremont,CA,94536,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+18,816 Yosemite Boulevard,,Modesto,CA,95354,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+19,271 Ventura Boulevard,Apt 9,Oxnard,CA,93030,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+20,963 Sierra Lakes Parkway,,Fontana,CA,92336,HOME,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+,,,,,,,,,
+facilities,,,,,,,,,
+id,facility_code,name,license_number,target_state,address_id,phone_number,is_deleted,created_at,updated_at
+1,NHMS-FAC-001,NHMS Demo Skilled Nursing Facility,CA-SNF-2026-000123,CA,1,1-916-555-100,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+2,NHMS-FAC-002,NHMS Secondary Care Facility,CA-SNF-2026-000456,CA,2,1-916-555-200,0,2026-06-30T09:00:00-07:00,2026-06-30T09:00:00-07:00
+,,,,,,,,,
+user_facilities,,,,,,,,,
+user_id,facility_id,is_primary,,,,,,,
+1,1,1,,,,,,,
+2,1,1,,,,,,,
+3,1,1,,,,,,,
+4,1,1,,,,,,,
+5,1,1,,,,,,,
+6,1,1,,,,,,,
+7,1,1,,,,,,,
+8,1,1,,,,,,,
+9,1,1,,,,,,,
+10,1,1,,,,,,,
+11,1,1,,,,,,,
+12,1,1,,,,,,,
+13,1,1,,,,,,,
+14,1,1,,,,,,,
+15,1,1,,,,,,,
+16,1,1,,,,,,,
+17,1,1,,,,,,,
+18,1,1,,,,,,,
+19,1,1,,,,,,,
+20,1,1,,,,,,,
+,,,,,,,,,
+staffing_configs,,,,,,,,,
+id,min_hrs_per_resident_day,warn_below_percentage,facility_id,created_at,,,,,
+1,3.50,90,1,2026-06-30T09:00:00-07:00,,,,,
+2,4.00,85,1,2026-06-30T09:00:00-07:00,,,,,
+,,,,,,,,,
+rooms,,,,,,,,,
+id,room_number,room_type,facility_id,is_deleted,,,,,
+1,101,PRIVATE,1,0,,,,,
+2,102,PRIVATE,1,0,,,,,
+3,103,SEMI_PRIVATE,1,0,,,,,
+4,104,SEMI_PRIVATE,1,0,,,,,
+5,105,SEMI_PRIVATE,1,0,,,,,
+6,106,SEMI_PRIVATE,1,0,,,,,
+7,107,PRIVATE,1,0,,,,,
+8,108,SEMI_PRIVATE,1,0,,,,,
+9,109,SEMI_PRIVATE,1,0,,,,,
+10,110,SEMI_PRIVATE,1,0,,,,,
+11,201,PRIVATE,1,0,,,,,
+12,202,PRIVATE,1,0,,,,,
+13,203,SEMI_PRIVATE,1,0,,,,,
+14,204,SEMI_PRIVATE,1,0,,,,,
+15,205,SEMI_PRIVATE,1,0,,,,,
+16,206,PRIVATE,1,0,,,,,
+17,207,SEMI_PRIVATE,1,0,,,,,
+18,208,PRIVATE,1,0,,,,,
+19,209,SEMI_PRIVATE,1,0,,,,,
+20,210,SEMI_PRIVATE,1,0,,,,,
+,,,,,,,,,
+beds,,,,,,,,,
+id,bed_number,status,room_id,,,,,,
+1,A,AVAILABLE,1,,,,,,
+2,A,AVAILABLE,2,,,,,,
+3,A,AVAILABLE,3,,,,,,
+4,B,AVAILABLE,3,,,,,,
+5,A,AVAILABLE,4,,,,,,
+6,B,AVAILABLE,4,,,,,,
+7,A,AVAILABLE,5,,,,,,
+8,B,AVAILABLE,5,,,,,,
+9,A,AVAILABLE,6,,,,,,
+10,B,AVAILABLE,6,,,,,,
+11,A,AVAILABLE,7,,,,,,
+12,A,AVAILABLE,8,,,,,,
+13,B,AVAILABLE,8,,,,,,
+14,A,AVAILABLE,9,,,,,,
+15,B,AVAILABLE,9,,,,,,
+16,A,AVAILABLE,10,,,,,,
+17,B,AVAILABLE,10,,,,,,
+18,A,AVAILABLE,11,,,,,,
+19,A,AVAILABLE,12,,,,,,
+20,A,AVAILABLE,13,,,,,,
+21,B,AVAILABLE,13,,,,,,
+22,A,AVAILABLE,14,,,,,,
+23,B,AVAILABLE,14,,,,,,
+24,A,AVAILABLE,15,,,,,,
+25,B,AVAILABLE,15,,,,,,
+26,A,AVAILABLE,16,,,,,,
+27,A,AVAILABLE,17,,,,,,
+28,B,AVAILABLE,17,,,,,,
+29,A,AVAILABLE,18,,,,,,
+30,A,AVAILABLE,19,,,,,,
+31,B,AVAILABLE,19,,,,,,
+32,A,AVAILABLE,20,,,,,,
+33,B,AVAILABLE,20,,,,,,

@@ -1,0 +1,302 @@
+#,Domain,Function,Description,URL/API,Method,Authorization,Header,RequestParam,RequestBody,Respone,Dev,Note,Reference
+1,http://localhost:8080,getMedicationOrders,"Returns list of medication orders, filterable by resident, status,
+ drug name.","/api/v1/medication-orders
+",GET,"Nurse, DON, System Administrator",Content-Type: application/json,"resident_id, status, search, page,
+page_size
+",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""medicationOrders"": [
+      {
+        ""id"": 1,
+        ""resident"": ""John Smith"",
+        ""drugName"": ""Aspirin"",
+        ""dosage"": ""81 mg"",
+        ""frequency"": ""Once Daily"",
+        ""status"": ""ACTIVE""
+      }
+    ]
+  }
+}",,,
+2,http://localhost:8080,"getMedicationOrderById
+",Returns detail of a single medication order.,/api/v1/medication-orders/{id},GET,"Nurse, DON, System Administrator",Content-Type: application/json,"id (path, required)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""id"": 1,
+    ""resident"": {
+      ""id"": 1,
+      ""displayName"": ""John Smith""
+    },
+    ""drugName"": ""Aspirin"",
+    ""dosage"": ""81 mg"",
+    ""route"": ""Oral"",
+    ""frequency"": ""Once Daily"",
+    ""isControlledSubstance"": false,
+    ""status"": ""ACTIVE"",
+    ""prescribedBy"": {
+      ""id"": 4,
+      ""name"": ""Dr. Brown""
+    },
+    ""createdAt"": ""2026-06-01T09:00:00-04:00"",
+    ""updatedAt"": ""2026-06-01T09:00:00-04:00""
+  }
+}",,,
+3,http://localhost:8080,createMedicationOrder,Creates a new medication order for a resident.,/api/v1/medication-orders,POST,"Nurse, DON, Doctor/Clinical Specialist",Content-Type: application/json,none,"{
+  ""residentId"": 1,
+  ""drugName"": ""Aspirin"",
+  ""dosage"": ""81 mg"",
+  ""route"": ""Oral"",
+  ""frequency"": ""Once Daily"",
+  ""isControlledSubstance"": false,
+  ""prescribedBy"": 4,
+  ""startDate"": ""2026-07-07"",
+  ""endDate"": ""2026-08-07""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Medication order created successfully."",
+  ""data"": {
+    ""id"": 25,
+    ""resident"": {
+      ""id"": 1,
+      ""displayName"": ""John Smith""
+    },
+    ""drugName"": ""Aspirin"",
+    ""dosage"": ""81 mg"",
+    ""route"": ""Oral"",
+    ""frequency"": ""Once Daily"",
+    ""isControlledSubstance"": false,
+    ""status"": ""ACTIVE"",
+    ""prescribedBy"": {
+      ""id"": 4,
+      ""name"": ""Dr. Brown""
+    },
+    ""startDate"": ""2026-07-07"",
+    ""endDate"": ""2026-08-07"",
+    ""createdAt"": ""2026-07-07T09:30:00-04:00""
+  }
+}",,,
+4,http://localhost:8080,updateMedicationOrder,Updates medication order information.,/api/v1/medication-orders/{id},PATCH,"Nurse, DON, Doctor/Clinical Specialist",Content-Type: application/json,"id (path, required)","{
+  ""dosage"": ""100 mg"",
+  ""frequency"": ""Twice Daily"",
+  ""status"": ""ACTIVE"",
+  ""endDate"": ""2026-09-30""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Medication order updated successfully."",
+  ""data"": {
+    ""id"": 1,
+    ""resident"": {
+      ""id"": 1,
+      ""displayName"": ""John Smith""
+    },
+    ""drugName"": ""Aspirin"",
+    ""dosage"": ""100 mg"",
+    ""route"": ""Oral"",
+    ""frequency"": ""Twice Daily"",
+    ""isControlledSubstance"": false,
+    ""status"": ""ACTIVE"",
+    ""prescribedBy"": {
+      ""id"": 4,
+      ""name"": ""Dr. Brown""
+    },
+    ""startDate"": ""2026-07-07"",
+    ""endDate"": ""2026-09-30"",
+    ""updatedAt"": ""2026-07-08T10:30:00-04:00""
+  }
+}",,,
+5,http://localhost:8080,deleteMedicationOrder,Soft deletes a medication order by setting is_deleted=true.,/api/v1/medication-orders/{id},DELETE,"DON, System Administrator",Content-Type: application/json,"id (path, required)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Medication order deleted successfully."",
+  ""data"": {
+    ""id"": 1,
+    ""isDeleted"": true,
+    ""deletedAt"": ""2026-07-08T14:30:00-04:00""
+  }
+}",,,
+6,http://localhost:8080,getMedicationSchedules,Returns medication schedules.,/api/v1/medication-schedules,GET,"Nurse, DON, System Administrator",Content-Type: application/json,"order_id, resident_id, is_active, date",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 1,
+    ""currentLimit"": 10,
+    ""hasNext"": false,
+    ""hasPrevious"": false
+  },
+  ""data"": {
+    ""medicationSchedules"": [
+      {
+        ""id"": 1,
+        ""resident"": {
+          ""id"": 1,
+          ""displayName"": ""John Smith""
+        },
+        ""medicationOrder"": {
+          ""id"": 1,
+          ""drugName"": ""Aspirin""
+        },
+        ""scheduledTime"": ""2026-07-08T08:00:00-04:00"",
+        ""status"": ""SCHEDULED"",
+        ""isActive"": true
+      }
+    ]
+  }
+}",,,
+7,http://localhost:8080,createMedicationSchedule,Creates schedule time for a medication order.,/api/v1/medication-schedules,POST,"Nurse, DON",Content-Type: application/json,none,"{
+  ""orderId"": 1,
+  ""scheduledTime"": ""2026-07-08T08:00:00-04:00"",
+  ""isActive"": true
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Medication schedule created successfully."",
+  ""data"": {
+    ""id"": 1,
+    ""orderId"": 1,
+    ""scheduledTime"": ""2026-07-08T08:00:00-04:00"",
+    ""isActive"": true
+  }
+}",,,
+8,http://localhost:8080,updateMedicationSchedule,Updates scheduled time or active status.,/api/v1/medication-schedules/{id},PATCH,"Nurse, DON",Content-Type: application/json,"id (path, required)","{
+  ""scheduledTime"": ""2026-07-08T09:00:00-04:00"",
+  ""isActive"": true
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Medication schedule updated successfully."",
+  ""data"": {
+    ""id"": 1,
+    ""orderId"": 1,
+    ""scheduledTime"": ""2026-07-08T09:00:00-04:00"",
+    ""isActive"": true
+  }
+}",,,
+9,http://localhost:8080,getTodayMedicationTasks,Returns today medication schedules for nurses.,/api/v1/medication-schedules/today,GET,"Nurse, DON",Content-Type: application/json,"resident_id, date, status",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""todayMedicationTasks"": [
+      {
+        ""scheduleId"": 1,
+        ""orderId"": 1,
+        ""residentId"": 1,
+        ""drugName"": ""Aspirin"",
+        ""dosage"": ""81 mg"",
+        ""route"": ""Oral"",
+        ""scheduledTime"": ""2026-07-08T08:00:00-04:00"",
+        ""isActive"": true
+      }
+    ]
+  }
+}",,,
+10,http://localhost:8080,getMedicationLogs,Returns medication administration history.,/api/v1/medication-logs,GET,"Nurse, DON, System Administrator",Content-Type: application/json,"order_id, resident_id, status, from_date, to_date",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 1,
+    ""currentLimit"": 10,
+    ""hasNext"": false,
+    ""hasPrevious"": false
+  },
+  ""data"": {
+    ""medicationLogs"": [
+      {
+        ""id"": 1,
+        ""orderId"": 1,
+        ""status"": ""Administered"",
+        ""isClinicallyJustified"": true,
+        ""overrideReason"": null,
+        ""administeredBy"": 7,
+        ""witnessedBy"": null,
+        ""loggedAt"": ""2026-06-02T08:05:00-04:00""
+      }
+    ]
+  }
+}",,,
+11,http://localhost:8080,createMedicationLog,Records medication administration result.,/api/v1/medication-logs,POST,Nurse,Content-Type: application/json,none,"{
+  ""orderId"": 1,
+  ""status"": ""Administered"",
+  ""isClinicallyJustified"": true,
+  ""overrideReason"": null,
+  ""administeredBy"": 7,
+  ""witnessedBy"": null,
+  ""loggedAt"": ""2026-07-08T08:05:00-04:00""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Medication log created successfully."",
+  ""data"": {
+    ""id"": 1,
+    ""orderId"": 1,
+    ""status"": ""Administered"",
+    ""loggedAt"": ""2026-07-08T08:05:00-04:00""
+  }
+}",,,
+12,http://localhost:8080,getMedicationLogById,Returns detail of a medication log.,/api/v1/medication-logs/{id},GET,"Nurse, DON, System Administrator",Content-Type: application/json,"id (path, required)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""id"": 1,
+    ""orderId"": 1,
+    ""status"": ""Administered"",
+    ""isClinicallyJustified"": true,
+    ""overrideReason"": null,
+    ""administeredBy"": 7,
+    ""witnessedBy"": null,
+    ""loggedAt"": ""2026-06-02T08:05:00-04:00""
+  }
+}",,,
+13,http://localhost:8080,recordMissedMedication,Records a missed medication dose with reason.,/api/v1/medication-logs/missed,POST,Nurse,Content-Type: application/json,none,"{
+  ""orderId"": 3,
+  ""overrideReason"": ""Resident sleeping"",
+  ""administeredBy"": 7,
+  ""loggedAt"": ""2026-07-08T08:20:00-04:00""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Missed medication recorded successfully."",
+  ""data"": {
+    ""id"": 3,
+    ""orderId"": 3,
+    ""status"": ""Missed"",
+    ""overrideReason"": ""Resident sleeping"",
+    ""administeredBy"": 7,
+    ""loggedAt"": ""2026-07-08T08:20:00-04:00""
+  }
+}",,,
+14,http://localhost:8080,recordRefusedMedication,Records resident refused medication.,/api/v1/medication-logs/refused,POST,Nurse,Content-Type: application/json,none,"{
+  ""orderId"": 8,
+  ""overrideReason"": ""Resident refused medication"",
+  ""administeredBy"": 9,
+  ""loggedAt"": ""2026-07-08T07:35:00-04:00""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Refused medication recorded successfully."",
+  ""data"": {
+    ""id"": 8,
+    ""orderId"": 8,
+    ""status"": ""Refused"",
+    ""overrideReason"": ""Resident refused medication"",
+    ""administeredBy"": 9,
+    ""loggedAt"": ""2026-07-08T07:35:00-04:00""
+  }
+}",,,
+15,http://localhost:8080,verifyMedicationBeforeAdministration,Verifies medication before administration.,/api/v1/medication-orders/{id}/verify,POST,Nurse,Content-Type: application/json,"id (path, required)","{
+  ""residentId"": 1,
+  ""drugName"": ""Aspirin"",
+  ""scheduledTime"": ""2026-07-08T08:00:00-04:00""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Medication verification successful."",
+  ""data"": {
+    ""verified"": true,
+    ""orderId"": 1,
+    ""residentId"": 1,
+    ""drugName"": ""Aspirin"",
+    ""requiresOverride"": false
+  }
+}",,,
+16,,,,,,,,,,,,,
+17,,,,,,,,,,,,,
+18,,,,,,,,,,,,,
+19,,,,,,,,,,,,,
+20,,,,,,,,,,,,,

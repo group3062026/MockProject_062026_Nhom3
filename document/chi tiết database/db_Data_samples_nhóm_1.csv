@@ -1,0 +1,23 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13,Unnamed: 14,Unnamed: 15,Unnamed: 16
+users,,,,,,,,,,,,,,,,
+id,employee_code,email,password_hash,first_name,middle_name,last_name,license_number,phone_number,status,mfa_enabled,last_login_at,role_id,is_deleted,deleted_at,created_at,updated_at
+1,NHMS-0001,rebecca.thompson@nhms-demo.local,$2b$12$P8vqVZj60CCCTWJISqSE2u3EFRbFyG315wTwmaun6uuNuwFmLdmrq1,Rebecca,,Thompson,CA-RN-100234,1-415-555-101,ACTIVE,0,,3,0,,2026-06-30 09:00:00 -07:00,2026-06-29T09:00:00-07:00
+2,NHMS-0002,daniel.brooks@nhms-demo.local,$$2b$12$iea3i2TqNaXHNcsIaPj/8esgGOwTs869f3lJurRNf9khEDsQ8CksC,Daniel,,Brooks,,1-415-555-102,ACTIVE,0,,5,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+3,NHMS-0003,maria.gonzalez@nhms-demo.local,$2b$12$.ld0bktQFT0N/IDH08LwSuuW7eOfsgPHb.IPiv6y6LwmeulfL7itm,Maria,,Gonzalez,,1-213-555-103,ACTIVE,0,,4,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+4,NHMS-0004,james.carter@nhms-demo.local,$2b$12$kt1GEMdicA8PrAHDkJRLm.KZPIgtTtXy/VUnwD3vmGAyFJl2oqQLy,James,,Carter,,1-213-555-104,ACTIVE,0,,4,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+5,NHMS-0005,angela.reyes@nhms-demo.local,$2b$12$QPcv7Ovk9N57QsX9pxzqnO/RUnkk7/dHsgjhw4fEIO/4O132njqF.,Angela,,Reyes,CA-RN-100561,1-619-555-105,ACTIVE,0,,1,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+6,NHMS-0006,michael.chen@nhms-demo.local,$2b$12$tRqrzm4ujPRf3e41CQVyzOnummTjQ3eYPgYuQH2fKl6Rd/T/dz.Pi,Michael,,Chen,CA-LPN-100562,1-619-555-106,ACTIVE,0,,1,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+7,NHMS-0007,sarah.patel@nhms-demo.local,$2b$12$Xz3TzfF17A/cnyF5R0GaY.WLU2nzETjqvY1sEEt9SoyZylY2b8e3W,Sarah,,Patel,CA-RN-100563,1-916-555-107,ACTIVE,0,,1,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+8,NHMS-0008,david.kim@nhms-demo.local,$2b$12$GUbsEFLmzOqtgyYJ5baMTeXUBCndC8kCvZucrb6Ph57lOQ.tCzTN.,David,,Kim,CA-LPN-100564,1-916-555-108,ACTIVE,0,,1,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+9,NHMS-0009,jessica.turner@nhms-demo.local,$2b$12$clnUhYAkVGRWKlLHin9SvObLF/MNeu/CXwkrZ9ODxRpweE7oRt8GW,Jessica,,Turner,CA-CNA-200011,1-408-555-109,ACTIVE,0,,2,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+10,NHMS-0010,brian.walker@nhms-demo.local,$2b$12$ojNQptHkP1gF6Wb5RUBWweW9U64j8Pk59gX6zU4CXRBZvh8HAkIP.,Brian,,Walker,CA-CNA-200012,1-408-555-110,ACTIVE,0,,2,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+11,NHMS-0011,ashley.rodriguez@nhms-demo.local,$2b$12$zVS2HPxtHMAFEb/vpUYuTOYWpW3YM.yH5FriYj5YSq9n7JUYA2xVm,Ashley,,Rodriguez,CA-CNA-200013,1-510-555-111,ACTIVE,0,,2,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+12,NHMS-0012,kevin.nguyen@nhms-demo.local,$2b$12$ioY3jnpaKESC/sEgxQ.3d.rjvKHcXHWyW8Cy32fng2Qam92.ai/zW,Kevin,,Nguyen,CA-CNA-200014,1-510-555-112,ACTIVE,0,,2,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+13,NHMS-0013,laura.simmons@nhms-demo.local,$2b$12$.g4olKXMao5n1VoRNd1IMuhU4psupan3caYqo.5WBlXIpTC36iSU.,Laura,,Simmons,CA-CNA-200015,1-707-555-113,ACTIVE,0,,2,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+14,NHMS-0014,robert.alvarez@nhms-demo.local,$2b$12$n9vwOh...bbCe9rZzmOpD.P6nqdY8DRGQjF63pnB2IQI7NC7DDe.i,Robert,,Alvarez,CA-NHA-300021,1-925-555-114,ACTIVE,0,,6,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+15,NHMS-0015,susan.whitfield@nhms-demo.local,$2b$12$FlMOpxZftCIfhu2aisJ/K.SPRBV0mKSJ0ZK4vOH03gduJ6HpSvHh.,Susan,,Whitfield,CA-MD-400031,1-415-555-115,ACTIVE,0,,7,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+16,NHMS-0016,kimberly.ross@nhms-demo.local,$2b$12$tEvkeWWAXCnMt8dPe8rBquFPYq/AC6vfmTNZCYMMwCvaRkrvTwcSK,Kimberly,,Ross,,1-213-555-116,ACTIVE,0,,8,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+17,NHMS-0017,patricia.nguyen@nhms-demo.local,$2b$12$C8iXL3g/qWuqC7Za6RBoF.bFw9udVgWxNw2RlXIwuSgPylkwfjGIy,Patricia,,Nguyen,,1-619-555-117,ACTIVE,0,,9,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+18,NHMS-0018,thomas.baker@nhms-demo.local,$2b$12$bBcxnvTk2R6.4Nj.cXtPY.2pGfg0yzO6CaXx6kb5hnHH3Lhw5hkli,Thomas,,Baker,,1-916-555-118,ACTIVE,0,,10,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+19,NHMS-0019,nancy.ortiz@nhms-demo.local,$2b$12$DY2bSk6VY5dO7e6gyUIAgeh7hIXQR1UlzDH5eOvGeoVirUXpUQsQK,Nancy,,Ortiz,,1-408-555-119,ACTIVE,0,,11,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
+20,NHMS-0020,olivia.martinez@nhms-demo.local,$2b$12$PYDZ73r9rVrK4CcwAhgiuuazlPG1IJ0C2ONZ7zfXeHlqIzCNJHzn2,Olivia,,Martinez,CA-RN-100565,1-707-555-120,ACTIVE,0,,1,0,,2026-06-29T09:00:00-07:00,2026-06-29T09:00:00-07:00
