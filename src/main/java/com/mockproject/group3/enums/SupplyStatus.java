@@ -1,0 +1,8 @@
+package com.mockproject.group3.enums;
+
+public enum SupplyStatus {
+    OK,
+    LOW_STOCK,
+    OUT_OF_STOCK
+}
+

@@ -1,4 +1,4 @@
-package com.nguyenquyen.mockproject_062026_group3;
+package com.mockproject.group3;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,3 +11,4 @@ class MockProject062026Group3ApplicationTests {
     }
 
 }
+
