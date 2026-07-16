@@ -1,105 +1,131 @@
 package com.nguyenquyen.mockproject_062026_group3.controller;
 
 import com.nguyenquyen.mockproject_062026_group3.common.ApiResponse;
-import com.nguyenquyen.mockproject_062026_group3.common.SecurityUtils;
-import com.nguyenquyen.mockproject_062026_group3.dto.MedicationDtos;
-import com.nguyenquyen.mockproject_062026_group3.service.MedicationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nguyenquyen.mockproject_062026_group3.dto.request.CreateMedicationOrderRequest;
+import com.nguyenquyen.mockproject_062026_group3.dto.request.DiscontinueMedicationOrderRequest;
+import com.nguyenquyen.mockproject_062026_group3.dto.request.GetMedicationOrdersRequest;
+import com.nguyenquyen.mockproject_062026_group3.dto.response.*;
+import com.nguyenquyen.mockproject_062026_group3.exception.AppException;
+import com.nguyenquyen.mockproject_062026_group3.exception.ErrorCode;
+import com.nguyenquyen.mockproject_062026_group3.service.MedicationOrderService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/medication-orders")
+@RequestMapping("/api/v1")
+@RequiredArgsConstructor
+@Slf4j
 public class MedicationOrderController {
 
-    @Autowired
-    private MedicationService medicationService;
+    private final MedicationOrderService medicationOrderService;
 
-    @Autowired
-    private SecurityUtils securityUtils;
+    @GetMapping("/medication-orders")
+    public ResponseEntity<ApiResponse<MedicationOrderListResponse>> getMedicationOrders(
+            @RequestHeader(value = "X-Facility-ID", required = true) Long facilityId,
+            @RequestParam(required = false) Long residentId,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "20") Integer limit) {
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getMedicationOrders(
-            @RequestParam(value = "resident_id", required = false) Long residentId,
-            @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "search", required = false) String search) {
-        securityUtils.checkRoles("Nurse", "DON", "System Administrator", "Doctor/Clinical Specialist");
-        Map<String, Object> data = new HashMap<>();
-        data.put("medicationOrders", medicationService.getMedicationOrders(residentId, status, search));
-        return ResponseEntity.ok(ApiResponse.success(data));
-    }
+        log.info("GET /medication-orders - facilityId: {}, residentId: {}, status: {}, search: {}, page: {}, limit: {}",
+                facilityId, residentId, status, search, page, limit);
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getMedicationOrderById(@PathVariable("id") Long id) {
-        securityUtils.checkRoles("Nurse", "DON", "System Administrator", "Doctor/Clinical Specialist");
-        Map<String, Object> data = new HashMap<>();
-        data.put("medicationOrder", medicationService.getMedicationOrderById(id));
-        return ResponseEntity.ok(ApiResponse.success(data));
-    }
+        if (facilityId == null) {
+            throw new AppException(ErrorCode.MAR_FACILITY_REQUIRED);
+        }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<Map<String, Object>>> createMedicationOrder(
-            @RequestBody MedicationDtos.MedicationOrderCreateRequest request) {
-        securityUtils.checkRoles("Nurse", "DON", "Doctor/Clinical Specialist");
-        Map<String, Object> data = new HashMap<>();
-        data.put("medicationOrder", medicationService.createMedicationOrder(request));
-        ApiResponse<Map<String, Object>> response = ApiResponse.<Map<String, Object>>builder()
-                .statusCode(201)
-                .message("Medication order created successfully.")
-                .data(data)
+        GetMedicationOrdersRequest request = GetMedicationOrdersRequest.builder()
+                .residentId(residentId)
+                .status(status)
+                .search(search)
+                .page(page)
+                .limit(limit)
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        MedicationOrderListResponse response = medicationOrderService.getMedicationOrders(facilityId, request);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> updateMedicationOrder(
-            @PathVariable("id") Long id,
-            @RequestBody MedicationDtos.MedicationOrderUpdateRequest request) {
-        securityUtils.checkRoles("Nurse", "DON", "Doctor/Clinical Specialist");
-        Map<String, Object> data = new HashMap<>();
-        data.put("medicationOrder", medicationService.updateMedicationOrder(id, request));
-        return ResponseEntity.ok(ApiResponse.<Map<String, Object>>builder()
-                .statusCode(200)
-                .message("Medication order updated successfully.")
-                .data(data)
-                .build());
+    @GetMapping("/medication-orders/{orderId}")
+    public ResponseEntity<ApiResponse<MedicationOrderDetailResponse>> getMedicationOrderDetail(
+            @RequestHeader(value = "X-Facility-ID", required = true) Long facilityId,
+            @PathVariable Long orderId) {
+
+        log.info("GET /medication-orders/{} - facilityId: {}", orderId, facilityId);
+
+        if (facilityId == null) {
+            throw new AppException(ErrorCode.MAR_FACILITY_REQUIRED);
+        }
+
+        if (orderId == null) {
+            throw new AppException(ErrorCode.INVALID_PARAMETER);
+        }
+
+        MedicationOrderDetailResponse response = medicationOrderService.getMedicationOrderDetail(facilityId, orderId);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> deleteMedicationOrder(@PathVariable("id") Long id) {
-        securityUtils.checkRoles("DON", "System Administrator");
-        Map<String, Object> data = new HashMap<>();
-        data.put("medicationOrder", medicationService.deleteMedicationOrder(id));
-        return ResponseEntity.ok(ApiResponse.<Map<String, Object>>builder()
-                .statusCode(200)
-                .message("Medication order deleted successfully.")
-                .data(data)
-                .build());
+    @PostMapping("/medication-orders")
+    public ResponseEntity<ApiResponse<CreateMedicationOrderResponse>> createMedicationOrder(
+            @RequestHeader(value = "X-Facility-ID", required = true) Long facilityId,
+            @RequestBody CreateMedicationOrderRequest request) {
+
+        log.info("POST /medication-orders - facilityId: {}, residentId: {}, drugName: {}",
+                facilityId, request.getResidentId(), request.getDrugName());
+
+        if (facilityId == null) {
+            throw new AppException(ErrorCode.MAR_FACILITY_REQUIRED);
+        }
+
+        CreateMedicationOrderResponse response = medicationOrderService.createMedicationOrder(facilityId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
     }
 
-    @PostMapping("/{id}/verify")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> verifyMedicationBeforeAdministration(
-            @PathVariable("id") Long id,
-            @RequestBody MedicationDtos.VerifyMedicationRequest request) {
-        securityUtils.checkRoles("Nurse");
-        Map<String, Object> data = new HashMap<>();
-        data.put("verification", medicationService.verifyMedicationBeforeAdministration(id, request));
-        return ResponseEntity.ok(ApiResponse.<Map<String, Object>>builder()
-                .statusCode(200)
-                .message("Medication verification completed.")
-                .data(data)
-                .build());
+    @PatchMapping("/medication-orders/{orderId}/discontinue")
+    public ResponseEntity<ApiResponse<DiscontinueMedicationOrderResponse>> discontinueMedicationOrder(
+            @RequestHeader(value = "X-Facility-ID", required = true) Long facilityId,
+            @PathVariable Long orderId,
+            @RequestBody DiscontinueMedicationOrderRequest request) {
+
+        log.info("PATCH /medication-orders/{}/discontinue - facilityId: {}, reason: {}",
+                orderId, facilityId, request.getDiscontinueReason());
+
+        if (facilityId == null) {
+            throw new AppException(ErrorCode.MAR_FACILITY_REQUIRED);
+        }
+
+        if (orderId == null) {
+            throw new AppException(ErrorCode.INVALID_PARAMETER);
+        }
+
+        DiscontinueMedicationOrderResponse response = medicationOrderService.discontinueMedicationOrder(
+                facilityId, orderId, request);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    @GetMapping("/mar/med-pass/resident/{residentId}/pending")
+    public ResponseEntity<ApiResponse<PendingMedicationResponse>> getResidentPendingMedications(
+            @RequestHeader(value = "X-Facility-ID", required = true) Long facilityId,
+            @PathVariable Long residentId,
+            @RequestParam(required = false) String time) {
+
+        log.info("GET /mar/med-pass/resident/{}/pending - facilityId: {}, time: {}",
+                residentId, facilityId, time);
+
+        if (facilityId == null) {
+            throw new AppException(ErrorCode.MAR_FACILITY_REQUIRED);
+        }
+
+        if (residentId == null) {
+            throw new AppException(ErrorCode.INVALID_PARAMETER);
+        }
+
+        PendingMedicationResponse response = medicationOrderService.getResidentPendingMedications(
+                facilityId, residentId, time);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

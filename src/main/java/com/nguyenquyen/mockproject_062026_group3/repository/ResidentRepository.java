@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 @Repository
 public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
@@ -24,5 +26,8 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
             @Param("bedId") Long bedId,
             @Param("search") String search,
             Pageable pageable);
+    @Query("SELECT r FROM Resident r WHERE r.bed.room.facility.id = :facilityId AND r.status = :status AND r.isDeleted = false")
+    List<Resident> findByFacilityIdAndStatus(@Param("facilityId") Long facilityId, @Param("status") String status);
+
 }
 
