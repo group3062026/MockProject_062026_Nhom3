@@ -1,21 +1,15 @@
 package com.nguyenquyen.mockproject_062026_group3.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,4 +46,23 @@ public class CarePlan {
     @Column(name = "updated_at", nullable = false)
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+    @Column(name = "review_due_date")
+    private LocalDate reviewDueDate; // Ngày đến hạn đánh giá (Ví dụ chu kỳ 90 ngày)
+
+    @Column(name = "review_trigger", length = 50)
+    private String reviewTrigger;
+
+    @Column(name = "version", nullable = false)
+    @Builder.Default
+    private Integer version = 1;     // Luôn bắt đầu từ V1
+
+    @Column(name = "parent_plan_id")
+    private Long parentPlanId;       // Trỏ về ID của bản kế hoạch gốc
+
+    @OneToMany(mappedBy = "carePlan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CareGoal> careGoals;
+
+    @OneToMany(mappedBy = "carePlan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CareIntervention> careInterventions;
 }

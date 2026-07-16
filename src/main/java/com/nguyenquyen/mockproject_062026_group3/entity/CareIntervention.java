@@ -30,7 +30,11 @@ public class CareIntervention {
 
     @Column(name = "assigned_role", nullable = false, length = 50)
     private String assignedRole;
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)", nullable = false)
+    private String description;
 
+    @Column(name = "frequency", length = 100)
+    private String frequency;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "care_plan_id", nullable = false)
     private CarePlan carePlan;

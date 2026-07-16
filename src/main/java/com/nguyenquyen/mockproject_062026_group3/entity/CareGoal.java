@@ -30,7 +30,8 @@ public class CareGoal {
 
     @Column(name = "status", nullable = false, length = 20)
     private String status; // IN_PROGRESS, ACHIEVED, NOT_MET
-
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)", nullable = false)
+    private String description;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "care_plan_id", nullable = false)
     private CarePlan carePlan;
