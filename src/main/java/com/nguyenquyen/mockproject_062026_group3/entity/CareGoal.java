@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,17 +22,40 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "care_goals")
+@Table(name="care_goals")
 public class CareGoal {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(name = "status", nullable = false, length = 20)
-    private String status; // IN_PROGRESS, ACHIEVED, NOT_MET
+  @Id
+  @GeneratedValue
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "care_plan_id", nullable = false)
-    private CarePlan carePlan;
+
+  @Column(name="care_area_name")
+  private String careAreaName;
+
+
+  @Column(name="source_type")
+  private String sourceType;
+
+
+  @Column(name="goal_description")
+  private String goalDescription;
+
+
+  @Column(name="measure")
+  private String measure;
+
+
+  @Column(name="target_date")
+  private LocalDate targetDate;
+
+
+  private String status;
+
+
+  @ManyToOne
+  @JoinColumn(name="care_plan_id")
+  private CarePlan carePlan;
+
 }

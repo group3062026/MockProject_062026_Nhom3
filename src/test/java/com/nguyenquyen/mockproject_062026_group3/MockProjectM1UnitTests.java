@@ -3,6 +3,7 @@ package com.nguyenquyen.mockproject_062026_group3;
 import com.nguyenquyen.mockproject_062026_group3.common.AuditLoggingHelper;
 import com.nguyenquyen.mockproject_062026_group3.common.EncryptionUtils;
 import com.nguyenquyen.mockproject_062026_group3.dto.*;
+import com.nguyenquyen.mockproject_062026_group3.dto.request.ESignApproveRequest;
 import com.nguyenquyen.mockproject_062026_group3.entity.*;
 import com.nguyenquyen.mockproject_062026_group3.exception.AppException;
 import com.nguyenquyen.mockproject_062026_group3.repository.*;
@@ -26,6 +27,28 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MockProjectM1UnitTests {
+
+  @Mock
+  private CarePlanRepository carePlanRepository;
+
+  @Mock
+  private CareGoalRepository careGoalRepository;
+
+  @Mock
+  private CareInterventionRepository careInterventionRepository;
+
+  @Mock
+  private CareTaskRepository careTaskRepository;
+
+  @Mock
+  private ResidentCareLevelHistoryRepository residentCareLevelHistoryRepository;
+
+  @Mock
+  private AuditLogRepository auditLogRepository;
+
+
+  @InjectMocks
+  private CarePlanService carePlanService;
 
     @Mock
     private CareLevelRepository careLevelRepository;
@@ -263,4 +286,166 @@ public class MockProjectM1UnitTests {
         assertEquals("encrypted_ssn_decrypted", response.getSsn());
         verify(auditLoggingHelper, times(1)).logPhiAccess("resident_sensitive_info", "1", "VIEW", "Audit check");
     }
+  // --- CarePlanService Tests ---
+
+  @Test
+  public void testGetCarePlanDetail_Success() {
+
+    Resident resident = Resident.builder()
+        .id(1L)
+        .firstName("Robert")
+        .lastName("Hayes")
+        .build();
+
+
+    CarePlan carePlan = CarePlan.builder()
+        .id(1L)
+        .status("PENDING_REVIEW")
+        .significantChangeFlag(false)
+        .resident(resident)
+        .build();
+
+
+    when(carePlanRepository.findById(1L))
+        .thenReturn(Optional.of(carePlan));
+
+
+    when(careGoalRepository.findByCarePlanId(1L))
+        .thenReturn(Collections.emptyList());
+
+
+    when(careInterventionRepository.findByCarePlanId(1L))
+        .thenReturn(Collections.emptyList());
+
+
+    when(careTaskRepository.findByCareInterventionCarePlanId(1L))
+        .thenReturn(Collections.emptyList());
+
+
+    CarePlanDetailResponse response =
+        carePlanService.getCarePlanDetail(1L);
+
+
+    assertEquals(
+        1L,
+        response.getId()
+    );
+
+
+    assertEquals(
+        "Robert Hayes",
+        response.getResidentName()
+    );
+
+
+    assertEquals(
+        "PENDING_REVIEW",
+        response.getStatus()
+    );
+
+  }
+
+
+
+  @Test
+  public void testGetCarePlanDetail_NotFound() {
+
+
+    when(carePlanRepository.findById(99L))
+        .thenReturn(Optional.empty());
+
+
+    assertThrows(
+        AppException.class,
+        () ->
+            carePlanService.getCarePlanDetail(99L)
+    );
+
+  }
+
+
+
+  @Test
+  public void testApproveWithSign_Success() {
+
+
+    CarePlan carePlan = CarePlan.builder()
+        .id(1L)
+        .status("PENDING_REVIEW")
+        .build();
+
+
+    when(carePlanRepository.findById(1L))
+        .thenReturn(Optional.of(carePlan));
+
+
+    when(careGoalRepository.findByCarePlanId(1L))
+        .thenReturn(Collections.emptyList());
+
+
+    when(careInterventionRepository.findByCarePlanId(1L))
+        .thenReturn(Collections.emptyList());
+
+
+    when(careTaskRepository.findByCareInterventionCarePlanId(1L))
+        .thenReturn(Collections.emptyList());
+
+
+    ESignApproveRequest request =
+        new ESignApproveRequest(
+            "123456",
+            true
+        );
+
+
+    carePlanService.approveWithSign(
+        1L,
+        request
+    );
+
+
+    assertEquals(
+        "ACTIVE",
+        carePlan.getStatus()
+    );
+
+
+    verify(
+        carePlanRepository,
+        times(1)
+    )
+        .save(carePlan);
+
+
+    verify(
+        auditLogRepository,
+        times(1)
+    )
+        .save(any(AuditLog.class));
+
+  }
+
+
+
+  @Test
+  public void testApproveWithSign_NotAccepted() {
+
+
+    ESignApproveRequest request =
+        new ESignApproveRequest(
+            "123456",
+            false
+        );
+
+
+    assertThrows(
+        AppException.class,
+        () ->
+            carePlanService.approveWithSign(
+                1L,
+                request
+            )
+    );
+
+  }
 }

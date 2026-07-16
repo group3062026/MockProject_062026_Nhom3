@@ -55,4 +55,5 @@ public class AuditLog {
 
     @Column(name = "ip_address", length = 45)
     private String ipAddress;
+
 }

@@ -26,5 +26,6 @@ public interface CareLevelRateRepository extends JpaRepository<CareLevelRate, Lo
     Optional<CareLevelRate> findByFacilityIdAndCareLevelIdAndEffectiveToIsNull(Long facilityId, Long careLevelId);
 
     List<CareLevelRate> findByFacilityIdAndEffectiveToIsNull(Long facilityId);
+  Optional<CareLevelRate> findFirstByCareLevelIdOrderByEffectiveFromDesc(Long careLevelId);
 }
 
