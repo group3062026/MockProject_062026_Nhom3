@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity 
 @Table(name = "beds")
 public class Bed {
 
