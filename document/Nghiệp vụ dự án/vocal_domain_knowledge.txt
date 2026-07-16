@@ -1,0 +1,71 @@
+**Hệ thống Quản lý Viện dưỡng lão tại Mỹ (Long-Term Care - LTC)**
+
+**1. EMR (Electronic Medical Record)**
+• **Dịch nghĩa:** Bệnh án điện tử nội bộ.Là phiên bản số hóa của bệnh án giấy **chỉ dùng trong nội bộ một phòng khám hoặc một cơ sở y tế** (ví dụ: chỉ lưu hành nội bộ trong viện dưỡng lão của bạn).  
+
+**2. EHR (Electronic Health Record)**
+• **Dịch nghĩa:** Hồ sơ sức khỏe điện tử liên thông.  Rộng hơn EMR. Nó chứa toàn bộ lịch sử y tế của bệnh nhân và **có khả năng chia sẻ, liên thông dữ liệu an toàn** giữa nhiều tổ chức y tế khác nhau (bệnh viện, nhà thuốc, bảo hiểm, viện dưỡng lão).  
+
+**3. ERP (Enterprise Resource Planning)**
+• **Dịch nghĩa:** Hệ thống hoạch định tài nguyên doanh nghiệp. Phần mềm quản trị tổng thể mọi hoạt động vận hành phi lâm sàng của viện dưỡng lão như: Quản lý nhân sự (HR), xếp lịch trực (Scheduling), tính lương (Payroll), quản lý kho (Inventory) và kế toán (Billing).  
+
+4. RBAC (Role-based Access Control)
+
+- **Dịch nghĩa:** Kiểm soát truy cập dựa trên vai trò
+
+khám lâm sàng: đây là bước kiểm tra đầu tiên khi đến bệnh viện , bác sĩ sẽ nhìn -sờ -gõ-nghe và hỏi bệnh từ bệnh nhân  
+cận lâm sàng: khi các biện pháp lâm sàng vẫn chưa đưa ra được kết luận cuối , thì bác sĩ sẽ yêu cầu người bệnh đi xét nghiệm, chẩn đoán hình ảnh này kia 
+
+Nhóm Lâm sàng & Tiếp nhận Bệnh nhân (Clinical & Resident Care)
+
+**Các loại hình cơ sở (Facility Types):** Sự khác biệt bản chất giữa *Assisted Living* (Hỗ trợ sinh hoạt) và *Skilled Nursing Facility (SNF)* (Chăm sóc y tế chuyên sâu).  
+
+• **Assisted Living (Community/Facility)** `/əˈsɪstɪd ˈlɪvɪŋ/`
+    ◦ *Ý nghĩa gốc rễ:* Nơi ở dành cho người cao tuổi còn khá khỏe mạnh nhưng cần hỗ trợ một vài hoạt động thường ngày (như nấu ăn, dọn dẹp).  
+
+• **Skilled Nursing Facility (SNF)** `/skɪld ˈnɜːsɪŋ fəˈsɪlɪti/`
+    ◦ *Ý nghĩa gốc rễ:* Thường gọi tắt là **Nursing Home**. Đây là cơ sở y tế chuyên sâu, có y tá trực 24/7 để chăm sóc các cụ bị bệnh nặng hoặc phục hồi chức năng sau phẫu thuật.  
+**2. QUY TRÌNH TIẾP NHẬN & ĐÁNH GIÁ (INTAKE & ASSESSMENT)**
+• **Admit / Admission** `/ədˈmɪt/` - `/ədˈmɪʃn/`
+    ◦ *Ý nghĩa:* Nhập viện / Thủ tục nhập viện.  
+    ◦ *Từ trái nghĩa:* **Discharge** `/dɪsˈtʃɑːdʒ/` (Xuất viện).  
+• **Intake Assessment** `/ˈɪnteɪk əˈsesmənt/`
+    ◦ *Ý nghĩa gốc rễ:* Quá trình đánh giá toàn diện sức khỏe, thể chất, tinh thần của một cụ ngay khi vào viện để quyết định xem viện có đủ năng lực chăm sóc không và thiết lập mức phí.  
+• **MDS (Minimum Data Set)** `/ˈmɪnɪməm ˈdeɪtə set/`
+    ◦ *Ý nghĩa:* Bộ dữ liệu tối thiểu. Đây là một **biểu mẫu đánh giá chuẩn hóa bắt buộc của Liên bang Mỹ**. Phần mềm của bạn bắt buộc phải có form này để gửi dữ liệu lên hệ thống của chính phủ.  
+• **Significant Change in Status** `/sɪɡˈnɪfɪkənt tʃeɪndʒ ɪn ˈsteɪtəs/`
+    ◦ *Ý nghĩa:* Sự thay đổi lớn về tình trạng sức khỏe (ví dụ: đột ngột yếu đi, không tự đi lại được nữa). Khi có flag này trigger trong hệ thống, điều dưỡng bắt buộc phải làm lại bài đánh giá (*Reassessment*).  
+**3. THƯỚC ĐO LÂM SÀNG & QUẢN LÝ RỦI RO (METRICS & SCALES)**
+• **ADLs (Activities of Daily Living)** `/ækˈtɪvətiz əv ˈdeɪli ˈlɪvɪŋ/`
+    ◦ *Ý nghĩa gốc rễ:* Các hoạt động sinh hoạt cơ bản hàng ngày bao gồm: *Bathing* (tắm), *Dressing* (mặc đồ), *Eating* (ăn), *Transferring* (di chuyển từ giường sang xe lăn), và *Toileting* (vệ sinh).  
+• **Fall Risk** `/fɔːl rɪsk/`
+    ◦ *Ý nghĩa:* Nguy cơ té ngã. Hệ thống thường dùng thang đo *Morse Fall Scale* để đánh giá.  
+**4. KẾ HOẠCH CHĂM SÓC & QUẢN LÝ THUỐC (CARE PLAN & eMAR)**
+• **Person-Centered Care Plan** `/ˈpɜːsn ˈsentəd keə plæn/`
+    ◦ *Ý nghĩa:* Kế hoạch chăm sóc lấy cá nhân làm trung tâm. Đây là tài liệu động (Dynamic Document) trong phần mềm, chứa mọi chỉ định từ bác sĩ, chế độ ăn từ chuyên gia dinh dưỡng, và bài tập từ chuyên gia vật lý trị liệu dành riêng cho cụ đó.  
+• **eMAR (Electronic Medication Administration Record)** `/ˌiː ˈem ˌeɪ ˈɑː/`
+    ◦ *Ý nghĩa:* Sổ ký nhận phát thuốc điện tử.  
+
+**NHA (Nursing Home Administrator)** `/ˈnɜːsɪŋ hoʊm ədˈmɪnɪstreɪtər/`
+• *Ý nghĩa gốc rễ:* Giám đốc điều hành viện dưỡng lão. Đây là người chịu trách nhiệm cao nhất về mọi mặt từ tài chính, nhân sự đến pháp lý của cơ sở.  
+**DON (Director of Nursing)** `/daɪˈrektər əv ˈnɜːsɪŋ/`
+• *Ý nghĩa gốc rễ:* Giám đốc điều dưỡng. Người quản lý toàn bộ đội ngũ y tá, điều dưỡng và chịu trách nhiệm về chất lượng chăm sóc y tế.  
+**RN (Registered Nurse)** `/ˈredʒɪstərd nɜːs/`
+• *Ý nghĩa gốc rễ:* Y tá có bằng cử nhân/đăng ký hành nghề. Họ có quyền thực hiện các kỹ thuật y khoa phức tạp, tiêm thuốc, truyền dịch và theo dõi bệnh án
+.**CNA (Certified Nursing Assistant)** `/ˈsɜːtɪfaɪd ˈnɜːsɪŋ əˈsɪstənt/`
+• *Ý nghĩa gốc rễ:* Trợ lý điều dưỡng. Đây là lực lượng "đầu chiến tuyến", trực tiếp chăm sóc các cụ những việc hàng ngày như tắm rửa, cho ăn, thay đồ (các hoạt động ADLs).  
+
+---
+
+---
+
+**Resident Census** `/ˈrezɪdənt ˈsensəs/`
+• *Ý nghĩa gốc rễ:* Sĩ số cư dân (tổng số các cụ đang có mặt tại viện tại một thời điểm cụ thể).
+ **Acuity Level** `/əˈkjuːəti ˈlevl/`
+• *Ý nghĩa gốc rễ:* Mức độ nghiêm trọng của bệnh trạng hoặc mức độ cần chăm sóc của các cụ.
+ **Mandated Staffing Ratios** `/ˈmændeɪtɪd ˈstæfɪŋ ˈreɪʃioʊz/`
+• *Ý nghĩa gốc rễ:* Tỷ lệ nhân sự bắt buộc theo luật. Ví dụ: Luật quy định 1 CNA chỉ được chăm sóc tối đa 8 cư dân trong ca ngày. Nếu hệ thống xếp 1 CNA chăm sóc 10 cụ (Understaffing), cơ sở sẽ bị phạt nặng hoặc tước giấy phép.
+**Credentialing & Licensing** `/krəˈdenʃlɪŋ/` - `/ˈlaɪsnsɪŋ/`
+• *Ý nghĩa gốc rễ:* Việc kiểm tra và quản lý chứng chỉ hành nghề của nhân viên y tế.  
+  **Shift Bourse (Open Shift Management)** `/ʃɪft bʊərs/`
+• *Ý nghĩa thực tế:* Chợ ca trực. Khi một y tá bị ốm đột xuất, ca trực đó sẽ trở thành **Open Shift** (Ca trống).
