@@ -1,0 +1,91 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,addresses
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự động tăng, định danh duy nhất cho từng địa chỉ, 23].",
+street_line1,NVARCHAR(200),NOT NULL,"Địa chỉ dòng 1: Lưu số nhà, tên đường, số căn hộ (Ví dụ: 123 Magnolia Blvd, Apt 4B).",
+street_line2,NVARCHAR(200),,"Địa chỉ dòng 2: Thông tin bổ sung như tên tòa nhà, số tầng nếu có (Thường để trống).",
+city,NVARCHAR(100),NOT NULL,"Thành phố: Tên thành phố tại Mỹ (Ví dụ: Los Angeles, Houston).",
+state,CHAR(2),"NOT NULL
+
+CHECK (state = UPPER(state))","Bang (State): Ràng buộc nghiêm ngặt chỉ nhận đúng 2 ký tự viết hoa theo chuẩn mã bưu chính USPS (Ví dụ: CA - California, TX - Texas, NY - New York).",
+zip_code,VARCHAR(10),"NOT NULL
+
+CHECK (định dạng số)","Mã bưu chính (ZIP Code): Ràng buộc bằng biểu thức chính quy (Regex) để chỉ chấp nhận 2 định dạng chuẩn Mỹ:
+
+• Chuẩn 5 số: [0-9][0-9][0-9][0-9][0-9] (Ví dụ: 90001). 
+
+• Chuẩn ZIP+4 (9 số): XXXXX-XXXX (Ví dụ: 90001-1234).",
+address_type,VARCHAR(20),"NOT NULL
+
+DEFAULT 'HOME'
+
+CHECK (phân loại)","Phân loại địa chỉ: Chỉ nhận một trong các giá trị: HOME (Nhà riêng), MAILING (Địa chỉ nhận thư), FACILITY (Chi nhánh viện), BILLING (Địa chỉ gửi hóa đơn).",
+is_deleted,BIT,"NOT NULL
+
+DEFAULT 0",Trường dùng cho Xóa mềm (Soft Delete).,
+created_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời gian tạo địa chỉ kèm theo múi giờ offset.,
+updated_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời gian cập nhật địa chỉ gần nhất.,
+,,,,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,facilities
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()","Khóa chính dạng GUID: Bảo mật an toàn dữ liệu, tránh lộ số lượng chi nhánh qua ID.",
+facility_code,NVARCHAR(50),"NOT NULL
+
+UNIQUE",Mã chi nhánh: Mã quản lý nội bộ duy nhất (Ví dụ: NH-CA-01).,
+name,NVARCHAR(200),NOT NULL,Tên của cơ sở viện dưỡng lão (Ví dụ: Sunnyvale Senior Living).,
+license_number,NVARCHAR(100),NOT NULL,Số giấy phép hoạt động: Mã số giấy phép do cơ quan quản lý bang cấp (State facility license #).,
+target_state,CHAR(2),NOT NULL,Bang chịu trách nhiệm pháp lý quản lý chi nhánh này.,
+address_id,BIGINT,"NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới bảng addresses(id) để lấy địa chỉ chính xác của chi nhánh.,
+phone_number,NVARCHAR(20),,Số điện thoại liên hệ tổng đài của chi nhánh.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,user_facilities
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID của phòng.,
+room_number,NVARCHAR(20),NOT NULL,"Số phòng (Ví dụ: Room 101, Room 202-A).",
+room_type,NVARCHAR(50),NOT NULL,"Loại phòng (Ví dụ: Single - Phòng đơn, Shared - Phòng đôi, ICU - Phòng chăm sóc đặc biệt).",
+facility_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang bảng facilities(id). Xác định phòng này thuộc chi nhánh nào.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,rooms
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID của giường.,
+bed_number,NVARCHAR(20),NOT NULL,"Tên/Số thứ tự của giường (Ví dụ: Bed A, Bed B trong cùng một phòng).",
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'AVAILABLE'
+
+CHECK (trạng thái)","Trạng thái hiện tại của giường, chỉ nhận các giá trị: AVAILABLE (Giường trống), OCCUPIED (Đang có cụ già nằm), MAINTENANCE (Giường đang bảo trì/hỏng).",
+room_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang bảng rooms(id) để xác định giường nằm ở phòng nào.,
+,,,,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,staffing_configs
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự tăng.,
+min_hrs_per_resident_day,"DECIMAL(5,2)",NOT NULL,Số giờ chăm sóc tối thiểu: Số giờ y tế bắt buộc mà 1 cư dân phải nhận được từ nhân viên trong 1 ngày (Ví dụ: 4.10 giờ/cư dân/ngày theo luật liên bang).,
+warn_below_percentage,INT,NOT NULL,Tỷ lệ cảnh báo thiếu người: Hệ thống sẽ bắn cảnh báo đỏ nếu số lượng nhân viên thực tế trực tụt xuống dưới mức quy định bao nhiêu % (Ví dụ: tụt dưới 95% định mức).,
+facility_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết chặt chẽ đến bảng facilities(id) vì mỗi bang/mỗi cơ sở sẽ có một định mức cấu hình nhân sự khác nhau.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,beds
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID của giường.,
+bed_number,NVARCHAR(20),NOT NULL,"Tên/Số thứ tự của giường (Ví dụ: Bed A, Bed B trong cùng một phòng).",
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'AVAILABLE'
+
+CHECK (trạng thái)","Trạng thái hiện tại của giường, chỉ nhận các giá trị: AVAILABLE (Giường trống), OCCUPIED (Đang có cụ già nằm), MAINTENANCE (Giường đang bảo trì/hỏng).",
+room_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang bảng rooms(id) để xác định giường nằm ở phòng nào.,

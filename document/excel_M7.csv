@@ -1,0 +1,306 @@
+#,Domain,Function,Description,URL/API,Method,Authorization,Header,RequestParam,RequestBody,Response,Dev,Note,Reference,Unnamed: 14
+1.0,http://localhost:8080,getListIncidentsSeverity,Retreive all incidents emergency,/api/v1/2026/incidentsSeverity,GET,"Nurse / CNA / DON / Admin
+",Content-Type: application/json,,,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""incidentsSeverity"": [
+      {
+        ""id"": 1,
+        ""levelName"": ""Low"",
+        ""automaticLockChart"": false,
+        ""resolutionTime"": 24
+      },
+      {
+        ""id"": 2,
+        ""levelName"": ""Medium"",
+        ""automaticLockChart"": false,
+         ""resolutionTime"": 12
+      }
+    ]
+  }
+}
+",Thư,,,incident severity
+2.0,http://localhost:8080,updateOneIncidentSeverityDescription,Update desciption of a severity level,/api/v1/2026/incidentsSeverity/{id},PATCH,Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+
+","
+","{
+""description"":""lorem""
+}","{
+   ""statusCode"":200,
+   ""message"":""Success""
+}",Thư,"resolutionTime is number
+isAutoLockChart is boolean",,
+3.0,http://localhost:8080,createOneIncident,"Create new incident, set is_chart_lock = true in resident, initally status = OPEN",/api/v1/2026/incidents,POST,Nurse / CNA / DON / Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+",,"{
+""residentID"":1,
+""incidentTypeID"":2,
+""severityID"":2,
+""currentTimeHappen"":""YYYY-MM-DD HH:MM:SS"",
+""description"":null,
+""witnesses"":null,
+""immediateActionTaken"":""Assisted resident to bed, vitals taken, physician notified per facility protocol.""
+}
+","{
+   ""statusCode"":200,
+   ""message"":""Success""
+}",Thư,,,
+4.0,http://localhost:8080,getListIncidents,Retreive all avaiable incidents,/api/v1/2026/incidents,GET,Nurse / CNA / DON / Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+","page
+limit",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 36,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false
+  },
+  ""data"": {
+    ""incidents"": [
+      {
+        ""id"": 1,
+        ""resident"": {
+          ""id"": 12,
+          ""displayName"": ""Stephen Curry"",
+          ""gender"": ""Male"",
+          ""bed"": {
+            ""id"": 34,
+            ""roomNumber"": 101
+          },
+          ""incidentType"": ""MEDICATION_ERROR"",
+          ""severity"": {
+            ""id"": 1,
+            ""levelName"": ""Critinal""
+          },
+          ""reportedAt"": """",
+          ""slaCountDown"": 13,
+          ""status"": ""UNDER_INVESTIGATION"",
+          ""isLocked"": true
+        }
+      }
+    ]
+  }
+}",Thư,"page is dafault by 1
+limit is default by 20
+
+In spring boot we use Paginate Class to response metadata so we've had a standard for it
+
+",,
+5.0,http://localhost:8080,getDetailOneIncident,Retreive full detail of one incident report,/api/v1/2026/incidents/{id},GET,Nurse / CNA / DON / Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""incident"": {
+      ""id"": 1,
+      ""resident"": {
+        ""id"": 12,
+        ""displayName"": ""Stephen Curry"",
+        ""gender"": ""Male"",
+        ""bed"": {
+          ""id"": 34,
+          ""bedNumber"": ""C"",
+          ""room"": {
+            ""id"": 2,
+            ""roomNumber"": 102,
+            ""roomType"": ""SEMI_PRIVATE""
+          },
+          ""isLocked"": true
+        }
+      },
+      ""incidentType"": ""MEDICATION_ERROR"",
+      ""status"": ""UNDER_INVESTIGATION"",
+      ""automaticLockChart"": false,
+      ""description"": ""Medication was administered later than scheduled."",
+      ""slaDeadlineHours"": 24,
+      ""severity"": {
+        ""id"": 1,
+        ""levelName"": ""Low"",
+        ""slaConfigured"": 24
+      },
+      ""reporter"": {
+        ""id"": 1,
+        ""employeeCode"": ""NHMS-0004"",
+        ""displayName"": ""Angela Reyes"",
+        ""email"": ""david.kim@nhms-demo.local"",
+        ""phoneNumber"": ""1-619-555-105"",
+        ""status"": ""ACTIVE"",
+        ""lastLoginAt"": null
+      },
+      ""timelines"": [
+        {
+          ""id"": 1,
+          ""action"": ""incident reported"",
+          ""reason"": null,
+          ""actor"": {
+            ""id"": 1,
+            ""displayName"": ""Kelvin""
+          },
+          ""createdAt"": ""2026-06-29T09:00:00-07:00""
+        }
+      ],
+      ""createdAt"": ""2026-06-29T09:00:00-07:00"",
+      ""updatedAt"": ""2026-06-29T09:00:00-07:00""
+    }
+  }
+}",Thư,,,
+6.0,http://localhost:8080,exportOneIncidentExternalReport,"export an report to external agency
+resident died, need to export to police agency.
+Change status into SUBMITTED
+",/api/v1/2026/incidents/{id}/export,PUT,Nurse / CNA / DON / Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+",,,"{
+   ""statusCode"":200,
+   ""message"":""Success""
+}",Vũ,,,
+7.0,http://localhost:8080,unlockOneIncidentChartLock,"DON unlock the chart, DON change status into RESOLVED",/api/v1/2026/incidents/{id},PUT,DON / Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+",,"{
+""reason"":""ploblem resolved"",
+""password"":""abc xyz""
+}","{
+   ""statusCode"":200,
+   ""message"":""Success""
+}",Vũ,,,
+8.0,http://localhost:8080,createOneTimeline,create new timeline for a incident,/api/v1/2026/incidents/{id}/timelines,POST,Nurse / CNA / DON ,"Content-Type: application/json
+Authorization: Bearer <token>
+",,,"{
+   ""statusCode"":200,
+   ""message"":""Success""
+}",Vũ,,,
+9.0,http://localhost:8080,getListAuditLog,retrieve all data in audit_logs table,/api/v1/2026/auditLogs,GET,Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+
+","page
+limit",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 36,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false
+  },
+  ""data"": {
+    ""logs"": [
+      {
+        ""id"": 1,
+        ""tableName"": ""incidents"",
+        ""action"": ""INSERT"",
+        ""oldData"": ""{\""status\"": \""OPEN\""}"",
+        ""newData"": ""{\""status\"":\""UNDER_INVESTIGATION\""}"",
+        ""performedByID"": {
+          ""id"": 1,
+          ""displayName"": ""abc xyz""
+        },
+        ""performedAt"": ""2026-07-04T08:02:00-04:00"",
+        ""ipAddressSentRequest"": ""192.168.1.18""
+      },
+      {
+        ""id"": 1,
+        ""tableName"": ""incidents"",
+        ""action"": ""INSERT"",
+        ""oldData"": ""{\""status\"": \""OPEN\""}"",
+        ""newData"": ""{\""status\"":\""UNDER_INVESTIGATION\""}"",
+        ""performedByID"": {
+          ""id"": 1,
+          ""displayName"": ""abc xyz""
+        },
+        ""performedAt"": ""2026-07-04T08:02:00-04:00"",
+        ""ipAddressSentRequest"": ""192.168.1.18""
+      }
+    ]
+  }
+}",Vũ,,,
+10.0,http://localhost:8080,getListPhiAccessLogs,retrieve all data in phi_access_logs table,/api/v1/2026/phiAccessLogs,GET,Admin,"Content-Type: application/json
+Authorization: Bearer <token>
+","page
+limit",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 1,
+    ""currentLimit"": 10,
+    ""hasNext"": false,
+    ""hasPrevious"": false
+  },
+  ""data"": {
+    ""logs"": [
+      {
+        ""id"": 1,
+        ""tableName"": ""incidents"",
+        ""recordId"": 1,
+        ""accessedById"": 5,
+        ""accessType"": ""VIEW"",
+        ""accessReason"": ""Medical review for treatment planning"",
+        ""ipAddress"": ""10.0.0.10"",
+        ""accessedAt"": ""2026-07-04T07:10:00-04:00""
+      },
+      {
+        ""id"": 2,
+        ""tableName"": ""incidents"",
+        ""recordId"": 2,
+        ""accessedById"": 3,
+        ""accessType"": ""PRINT"",
+        ""accessReason"": ""Incident investigation support"",
+        ""ipAddress"": ""10.0.0.11"",
+        ""accessedAt"": ""2026-07-04T07:12:00-04:00""
+      },
+      {
+        ""id"": 3,
+        ""tableName"": ""incidents"",
+        ""recordId"": 3,
+        ""accessedById"": 7,
+        ""accessType"": ""EXPORT"",
+        ""accessReason"": ""HIPAA compliance audit"",
+        ""ipAddress"": ""10.0.0.12"",
+        ""accessedAt"": ""2026-07-04T07:14:00-04:00""
+      }
+    ]
+  }
+}",Vũ,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,LOG: PAYLOAD ,,,,,,,,,,,
+,,,"class AuditEvent {
+
+    String entityName;
+
+    Long recordId;
+
+    AuditAction action;
+
+    Long performedBy;
+
+    Map<String,Object> oldData;
+
+    Map<String,Object> newData;
+
+    Instant performedAt;
+
+    String ipAddress;
+}","class PhiAccessEvent {
+
+    String entityName;
+
+    Long recordId;
+
+    Long accessedBy;
+
+    AccessType accessType;
+
+    String purposeOfUse;
+
+    Instant accessedAt;
+
+    String ipAddress;
+}",,,,,,,,,,

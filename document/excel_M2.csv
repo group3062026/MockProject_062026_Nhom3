@@ -1,0 +1,696 @@
+#,Domain,Function,Description,URL/API,Method,Authorization,Header,RequestParam,RequestBody,Respone,Dev,Note,Reference
+1,http://localhost:8080/,createCarePlan,"Create a new care plan for resident
+and default status is DRAFT",/api/v1/care-plans,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""residentId"": 21,
+  ""status"": ""DRAFT"",
+  ""significantChangeFlag"": false
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Created new care plan for resident 21"",
+  ""data"": {
+    ""id"": 21,
+    ""residentId"": 21,
+    ""status"": ""DRAFT"",
+    ""significantChangeFlag"": false,
+    ""isDeleted"": false,
+    ""createdAt"": ""2026-07-07T10:00:00+07:00"",
+    ""updatedAt"": ""2026-07-07T10:00:00+07:00""
+  }
+}",quỳnh,,SC_027_M2-US-02_care-plan-create
+2,http://localhost:8080/,updateCarePlan,"Replace the editable fields of a care plan (goals, tasks, review date)",/api/v1/care-plans/{carePlanId},PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""status"": ""ACTIVE"",
+  ""significantChangeFlag"": true
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Care plan updated successfully"",
+  ""data"": {
+    ""id"": 1,
+    ""residentId"": 10,
+    ""status"": ""ACTIVE"",
+    ""significantChangeFlag"": true,
+    ""isDeleted"": false,
+    ""updatedAt"": ""2026-07-07T10:05:00+07:00""
+  }
+}",quỳnh,,M2-US-01
+3,http://localhost:8080/,deleteCarePlan,"Soft-delete a care plan by setting is_deleted = 1; no physical deletion, 
+to preserve care history and audit trail.",/api/v1/care-plans/{carePlanId},DELETE,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Care plan 1 deleted successfully"",
+  ""data"": {
+    ""id"": 1,
+    ""isDeleted"": true
+  }
+}",quỳnh,,
+4,http://localhost:8080/,activateCarePlan,Activate a care plan (transition status to ACTIVE).,/api/v1/care-plans/{carePlanId}/activate,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Care plan 1 activated"",
+  ""data"": {
+    ""id"": 1,
+    ""status"": ""ACTIVE"",
+    ""updatedAt"": ""2026-07-07T10:10:00+07:00""
+  }
+}",Vũ,,M2-US-02
+5,http://localhost:8080/,discontinueCarePlan,Discontinue an active care plan.,/api/v1/care-plans/{carePlanId}/discontinue,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Care plan 1 discontinued"",
+  ""data"": {
+    ""id"": 1,
+    ""status"": ""DISCONTINUED"",
+    ""updatedAt"": ""2026-07-07T10:15:00+07:00""
+  }
+}",Vũ,,
+6,http://localhost:8080/,markSignificantChange,Flag a care plan as having a significant condition change.,/api/v1/care-plans/{carePlanId}/significant-change,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""significantChangeFlag"": true
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Significant change flag updated"",
+  ""data"": {
+    ""id"": 1,
+    ""significantChangeFlag"": true,
+    ""updatedAt"": ""2026-07-07T10:20:00+07:00""
+  }
+}",Vũ,,M2-US-04
+7,http://localhost:8080/,cloneCarePlan,Clone an existing care plan (with its goals and interventions) as a new DRAFT plan.,/api/v1/care-plans/{carePlanId}/clone,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""targetResidentId"": 22,
+  ""includeGoals"": true,
+  ""includeInterventions"": true
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Care plan 1 cloned to a new draft plan for resident 22"",
+  ""data"": {
+    ""id"": 22,
+    ""residentId"": 22,
+    ""status"": ""DRAFT"",
+    ""significantChangeFlag"": false,
+    ""clonedFromPlanId"": 1,
+    ""goalCount"": 2,
+    ""interventionCount"": 2,
+    ""createdAt"": ""2026-07-07T10:30:00+07:00""
+  }
+}",quỳnh,,
+8,http://localhost:8080/,listCarePlans,List care plans with pagination and filters.,/api/v1/care-plans,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","page (int, default 0)
+size (int, default 20)
+residentId (long, optional)
+status (DRAFT|ACTIVE|RESOLVED|DISCONTINUED, optional)
+significantChangeFlag (boolean, optional)
+sortBy (string, default 'updatedAt')
+sortDir (ASC|DESC, default DESC)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Care plans retrieved successfully"",
+  ""data"": 
+      {
+        ""id"": 1,
+        ""residentId"": 10,
+        ""residentName"": ""Nguyen Van A"",
+        ""status"": ""ACTIVE"",
+        ""significantChangeFlag"": false,
+        ""goalCount"": 2,
+        ""interventionCount"": 2,
+        ""createdAt"": ""2026-06-01T08:00:00+07:00"",
+        ""updatedAt"": ""2026-06-01T08:00:00+07:00""
+      }
+  },
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 36,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false
+  }
+}",Vũ,,"SC_026_M2-US-01_care-plan-list
+"
+9,http://localhost:8080/,getCarePlanDetail,Get full detail of a care plan including nested goals and interventions.,/api/v1/care-plans/{carePlanId},GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Care plan detail retrieved"",
+  ""data"": {
+    ""id"": 1,
+    ""residentId"": 10,
+    ""residentName"": ""Nguyen Van A"",
+    ""status"": ""ACTIVE"",
+    ""significantChangeFlag"": false,
+    ""isDeleted"": false,
+    ""createdAt"": ""2026-06-01T08:00:00+07:00"",
+    ""updatedAt"": ""2026-06-01T08:00:00+07:00"",
+    ""goals"": [
+      { ""id"": 1, ""status"": ""IN_PROGRESS"" },
+      { ""id"": 2, ""status"": ""IN_PROGRESS"" }
+    ],
+    ""interventions"": [
+      { ""id"": 1, ""assignedRole"": ""RN"", ""taskCount"": 3 },
+      { ""id"": 2, ""assignedRole"": ""CNA"", ""taskCount"": 3 }
+    ]
+  }
+}",Vũ,,SC_029_M2-US-03_care-plan-detail
+10,http://localhost:8080/,searchCarePlans,"Search care plans by resident name, status, or significant-change flag.",/api/v1/care-plans/search,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","keyword (string, optional - matches resident name/ID)
+status (string, optional)
+significantChangeFlag (boolean, optional)
+page (int, default 0)
+size (int, default 20)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Care plans retrieved successfully"",
+  ""data"": 
+      {
+        ""id"": 1,
+        ""residentId"": 10,
+        ""residentName"": ""Nguyen Van A"",
+        ""status"": ""ACTIVE"",
+        ""significantChangeFlag"": false,
+        ""createdAt"": ""2026-06-01T08:00:00+07:00"",
+        ""updatedAt"": ""2026-06-01T08:00:00+07:00""
+      }
+  },
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 36,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false
+  }
+}",Vũ,,
+11,http://localhost:8080/,createGoal,Create a new goal under a care plan.,/api/v1/care-plans/{carePlanId}/goals,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""status"": ""IN_PROGRESS""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Goal created for care plan 1"",
+  ""data"": { ""id"": 41, ""carePlanId"": 1, ""status"": ""IN_PROGRESS"" }
+}",quỳnh,,
+12,http://localhost:8080/,updateGoal,Update a goal.,/api/v1/care-goals/{goalId},PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""status"": ""ACHIEVED"",
+  ""carePlanId"": 1
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Goal 1 updated successfully"",
+  ""data"": { ""id"": 1, ""carePlanId"": 1, ""status"": ""ACHIEVED"" }
+}",quỳnh,,
+13,http://localhost:8080/,deleteGoal,Delete a goal.,/api/v1/care-goals/{goalId},DELETE,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Goal 1 deleted successfully"",
+  ""data"": { ""id"": 1 }
+}",quỳnh,,
+14,http://localhost:8080/,updateGoalStatus,Update only the status of a goal.,/api/v1/care-goals/{goalId}/status,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""status"": ""NOT_MET""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Goal 1 status updated to NOT_MET"",
+  ""data"": { ""id"": 1, ""carePlanId"": 1, ""status"": ""NOT_MET"" }
+}",quỳnh,,
+15,http://localhost:8080/,listGoals,List all goals under a care plan.,/api/v1/care-plans/{carePlanId}/goals,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Goals retrieved successfully"",
+  ""data"": [
+    { ""id"": 1, ""carePlanId"": 1, ""status"": ""IN_PROGRESS"" },
+    { ""id"": 2, ""carePlanId"": 1, ""status"": ""IN_PROGRESS"" }
+  ]
+}",quỳnh,,
+16,http://localhost:8080/,getGoal,Get a single goal by id.,/api/v1/care-goals/{goalId},GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Goal retrieved successfully"",
+  ""data"": { ""id"": 1, ""carePlanId"": 1, ""status"": ""IN_PROGRESS"" }
+}",quỳnh,,
+17,http://localhost:8080/,createIntervention,Create a new intervention under a care plan.,/api/v1/care-plans/{carePlanId}/interventions,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""assignedRole"": ""THERAPIST""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Intervention created for care plan 1"",
+  ""data"": { ""id"": 41, ""carePlanId"": 1, ""assignedRole"": ""THERAPIST"" }
+}",,,
+18,http://localhost:8080/,updateIntervention,Update an intervention.,/api/v1/interventions/{interventionId},PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""assignedRole"": ""LPN"",
+  ""carePlanId"": 1
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Intervention 1 updated successfully"",
+  ""data"": { ""id"": 1, ""carePlanId"": 1, ""assignedRole"": ""LPN"" }
+}",,,
+19,http://localhost:8080/,deleteIntervention,Delete an intervention.,/api/v1/interventions/{interventionId},DELETE,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Intervention 1 deleted successfully"",
+  ""data"": { ""id"": 1 }
+}",,,
+20,http://localhost:8080/,listInterventions,List all interventions under a care plan.,/api/v1/care-plans/{carePlanId}/interventions,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Interventions retrieved successfully"",
+  ""data"": [
+    { ""id"": 1, ""carePlanId"": 1, ""assignedRole"": ""RN"", ""taskCount"": 3 },
+    { ""id"": 2, ""carePlanId"": 1, ""assignedRole"": ""CNA"", ""taskCount"": 3 }
+  ]
+}",,,
+21,http://localhost:8080/,getIntervention,Get a single intervention by id.,/api/v1/interventions/{interventionId},GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Intervention retrieved successfully"",
+  ""data"": { ""id"": 1, ""carePlanId"": 1, ""assignedRole"": ""RN"" }
+}",,,
+22,http://localhost:8080/,createTask,Create a new task under an intervention.,/api/v1/interventions/{interventionId}/tasks,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""taskType"": ""BATHING"",
+  ""assignedCnaId"": 15,
+  ""scheduledTime"": ""2026-07-08T09:00:00+07:00""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Task created successfully"",
+  ""data"": {
+    ""id"": 121,
+    ""careInterventionId"": 1,
+    ""taskType"": ""BATHING"",
+    ""status"": ""PENDING"",
+    ""isAbnormalFlagged"": false,
+    ""assignedCnaId"": 15,
+    ""scheduledTime"": ""2026-07-08T09:00:00+07:00"",
+    ""completedAt"": null
+  }
+}",Tính,thêm 1 trường là goal ở entity CareTask,
+23,http://localhost:8080/,updateTask,Update a task assign.,/api/v1/tasks/{taskId},PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""taskType"": ""BATHING"",
+  ""assignedCnaId"": 16,
+  ""scheduledTime"": ""2026-07-08T10:00:00+07:00""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 updated successfully"",
+  ""data"": {
+    ""id"": 121,
+    ""careInterventionId"": 1,
+    ""taskType"": ""BATHING"",
+    ""status"": ""PENDING"",
+    ""isAbnormalFlagged"": false,
+    ""assignedCnaId"": 16,
+    ""scheduledTime"": ""2026-07-08T10:00:00+07:00"",
+    ""completedAt"": null
+  }
+}",Tính,,
+24,http://localhost:8080/,deleteTask,Delete a task.,/api/v1/tasks/{taskId},DELETE,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 deleted successfully"",
+  ""data"": { ""id"": 121 }
+}",Tính,,
+25,http://localhost:8080/,listTasks,List all tasks under an intervention.,/api/v1/interventions/{interventionId}/tasks,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","interventionId (path, long, required)
+page (int, default 0)
+size (int, default 20)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Tasks retrieved successfully"",
+  ""data"":
+      {
+        ""id"": 1,
+        ""careInterventionId"": 1,
+        ""taskType"": ""MEDICATION"",
+        ""status"": ""COMPLETED"",
+        ""isAbnormalFlagged"": false,
+        ""assignedCnaId"": 14,
+        ""scheduledTime"": ""2026-06-04T08:00:00+07:00"",
+        ""completedAt"": ""2026-06-04T08:30:00+07:00""
+      }
+    },
+    ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 36,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false
+   }
+}",Tính,,SC_032_M2-US-05_daily-task-list
+26,http://localhost:8080/,searchTasks,Search/filter tasks across all interventions ,/api/v1/tasks/search,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","status (PENDING|COMPLETED|MISSED, optional)
+taskType (string, optional)
+assignedCnaId (long, optional)
+isAbnormalFlagged (boolean, optional)
+fromDate (date, optional)
+toDate (date, optional)
+page (int, default 0)
+size (int, default 20)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Tasks retrieved successfully"",
+  ""data"":
+      {
+        ""id"": 1,
+        ""careInterventionId"": 1,
+        ""taskType"": ""MEDICATION"",
+        ""status"": ""COMPLETED"",
+        ""isAbnormalFlagged"": false,
+        ""assignedCnaId"": 14,
+        ""scheduledTime"": ""2026-06-04T08:00:00+07:00"",
+        ""completedAt"": ""2026-06-04T08:30:00+07:00""
+      }
+    },
+    ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 36,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false
+   }
+}",Tính,,M2-US-05
+27,http://localhost:8080/,getTaskDetail,Get detail of a single task.,/api/v1/tasks/{taskId},GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Task retrieved successfully"",
+  ""data"": {
+    ""id"": 1,
+    ""careInterventionId"": 1,
+    ""assignedRole"": ""RN"",
+    ""taskType"": ""MEDICATION"",
+    ""status"": ""COMPLETED"",
+    ""isAbnormalFlagged"": false,
+    ""assignedCnaId"": 14,
+    ""assignedCnaName"": ""Pham Van Duc"",
+    ""scheduledTime"": ""2026-06-04T08:00:00+07:00"",
+    ""completedAt"": ""2026-06-04T08:30:00+07:00""
+  }
+}",Tính,,
+28,http://localhost:8080/,assignCna,Assign or reassign a CNA to a task.,/api/v1/tasks/{taskId}/assign-cna,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""assignedCnaId"": 17
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 assigned to CNA 17"",
+  ""data"": { ""id"": 121, ""assignedCnaId"": 17 }
+}",Tính,,
+29,http://localhost:8080/,completeTask,Mark a task as completed.,/api/v1/tasks/{taskId}/completed,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""completedAt"": ""2026-07-07T09:15:00+07:00""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 marked as completed"",
+  ""data"": {
+    ""id"": 121,
+    ""status"": ""COMPLETED"",
+    ""completedAt"": ""2026-07-07T09:15:00+07:00""
+  }
+}",Tính,,M2-US-06
+30,http://localhost:8080/,markMissed,Mark a task as missed.,/api/v1/tasks/{taskId}/missed,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 marked as missed"",
+  ""data"": {
+    ""id"": 121,
+    ""status"": ""MISSED"",
+    ""completedAt"": null,
+    ""isAbnormalFlagged"": true
+  }
+}",Tính,,M2-US-06
+31,http://localhost:8080/,flagAbnormal,Flag or unflag a task as clinically abnormal.,/api/v1/tasks/{taskId}/flag-abnormal,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""isAbnormalFlagged"": true
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 abnormal flag updated"",
+  ""data"": { ""id"": 121, ""isAbnormalFlagged"": true }
+}",Tính,,M2-US-06
+32,http://localhost:8080/,rescheduleTask,Reschedule a pending task to a new date/time.,/api/v1/tasks/{taskId}/reschedule,PATCH,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""scheduledTime"": ""2026-07-09T09:00:00+07:00""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Task 121 rescheduled"",
+  ""data"": {
+    ""id"": 121,
+    ""status"": ""PENDING"",
+    ""scheduledTime"": ""2026-07-09T09:00:00+07:00""
+  }
+}",Tính,,
+33,http://localhost:8080/,pendingResidents,Get list of residents who are pending pre-admission screening.,/api/v1/pre-admissions/pending-residents,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""id"": 1,
+      ""residentName"": ""John Doe""
+    }
+  ]
+}",HIền,,M1-US-04
+34,http://localhost:8080/,createScreening,Create a new pre-admission screening record for a resident.,/api/v1/pre-admissions,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""residentId"": 1
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Pre-admission screening created successfully"",
+  ""data"": {
+    ""id"": 10,
+    ""status"": ""DRAFT"",
+    ""residentId"": 1,
+    ""residentName"": ""John Doe"",
+    ""createdAt"": ""2026-07-12T10:15:30+07:00""
+  }
+}",HIền,,M1-US-04
+35,http://localhost:8080/,listScreeeing,Get paginated list of pre-admission screenings., /api/v1/pre-admissions,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","page: int, optional (default 0)
+size: int, optional (default 10)
+sort: string, optional (Pageable default sorting param)",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""id"": 10,
+      ""status"": ""DRAFT"",
+      ""residentId"": 1,
+      ""residentName"": ""John Doe"",
+      ""createdAt"": ""2026-07-12T10:15:30+07:00""
+    }
+  ],
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 5,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false,
+    ""totalElements"": 42
+  }
+}",HIền,,
+36,http://localhost:8080/, selectCompleted,Get list of completed pre-admission screenings for select/dropdown usage.,/api/v1/pre-admissions/select-completed,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""id"": 10,
+      ""residentName"": ""John Doe""
+    }
+  ]
+}",HIền,,M1-US-04
+37,http://localhost:8080/,decideScreening,Approve (COMPLETED) or reject (REJECTED) a pre-admission screening., /api/v1/pre-admissions/{id}/decision,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","id: Long, required (path variable)","{
+  ""status"": ""COMPLETED""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Pre-admission screening updated successfully"",
+  ""data"": {
+    ""id"": 10,
+    ""status"": ""COMPLETED"",
+    ""residentId"": 1,
+    ""residentName"": ""John Doe"",
+    ""createdAt"": ""2026-07-12T10:15:30+07:00""
+  }
+}",HIền,,M1-US-05
+38,http://localhost:8080/,listMetric,Get assessment-related metrics (e.g. dashboard statistics)., /api/v1/assessments/metrics,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""metricName"": ""example"",
+      ""value"": 0
+    }
+  ]
+}",HIền,,M1-US-05
+39,http://localhost:8080/,createAssessment,: Create a new assessment for a resident based on a pre-admission screening.,/api/v1/assessments,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""preAdmissionScreeningId"": 10,
+  ""details"": [
+    {
+      ""metricId"": 1,
+      ""score"": 3
+    }
+  ]
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Assessment created successfully"",
+  ""data"": {
+    ""id"": 20,
+    ""status"": ""DRAFT"",
+    ""adlTotalScore"": 15,
+    ""residentId"": 1,
+    ""suggestedCareLevelId"": 2,
+    ""residentName"": ""John Doe"",
+    ""isOverridden"": false,
+    ""details"": [
+      {
+        ""metricId"": 1,
+        ""score"": 3
+      }
+    ]
+  }
+}",HIền,,
+40,http://localhost:8080/,updateAssessment,Update the details of an existing assessment.,/api/v1/assessments/{id},PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""details"": [
+    {
+      ""metricId"": 1,
+      ""score"": 4
+    }
+  ]
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Assessment updated successfully"",
+  ""data"": {
+    ""id"": 20,
+    ""status"": ""DRAFT"",
+    ""adlTotalScore"": 16,
+    ""residentId"": 1,
+    ""suggestedCareLevelId"": 2,
+    ""residentName"": ""John Doe"",
+    ""isOverridden"": false,
+    ""details"": [
+      {
+        ""metricId"": 1,
+        ""score"": 4
+      }
+    ]
+  }
+}",HIền,,
+41,http://localhost:8080/,listAssessment,Get paginated list of assessments., /api/v1/assessments,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","page: int, optional (default 0)
+size: int, optional (default 10)
+sort: string, optional",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""id"": 20,
+      ""status"": ""DRAFT"",
+      ""adlTotalScore"": 16,
+      ""residentId"": 1,
+      ""suggestedCareLevelId"": 2,
+      ""residentName"": ""John Doe"",
+      ""isOverridden"": false,
+      ""details"": []
+    }
+  ],
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 3,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false,
+    ""totalElements"": 25
+  }
+}",HIền,,
+42,http://localhost:8080/, selectCompleted,Get list of completed assessments for select/dropdown usage.,: /api/v1/assessments/select-completed,GET,,"Authorization: Bearer {token}
+Content-Type: application/json",,,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""id"": 20,
+      ""residentName"": ""John Doe"",
+      ""adlTotalScore"": 16
+    }
+  ]
+}",HIền,,
+43,http://localhost:8080/,decideAssessment,Finalize an assessment decision by confirming the care level and setting,/api/v1/assessments/{id}/decision,PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""status"": ""COMPLETED"",
+  ""confirmedCareLevelId"": 2
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Assessment updated successfully"",
+  ""data"": {
+    ""id"": 20,
+    ""status"": ""COMPLETED"",
+    ""adlTotalScore"": 16,
+    ""residentId"": 1,
+    ""suggestedCareLevelId"": 2,
+    ""residentName"": ""John Doe"",
+    ""isOverridden"": false,
+    ""details"": []
+  }
+}",HIền,,M1-US-06
+44,http://localhost:8080/,listAdmission,Get paginated list of resident admissions.,/api/v1/admissions,GET,,"Authorization: Bearer {token}
+Content-Type: application/json","page: int, optional (default 0)
+size: int, optional (default 10)
+sort: string, optional",,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": [
+    {
+      ""id"": 30,
+      ""admissionDate"": ""2026-07-01"",
+      ""residentId"": 1,
+      ""residentName"": ""John Doe"",
+      ""facilityId"": 5,
+      ""assessmentId"": 20,
+      ""dischargeDate"": null,
+      ""dischargeReason"": null,
+      ""status"": ""ACTIVE""
+    }
+  ],
+  ""metadata"": {
+    ""currentPage"": 1,
+    ""totalPage"": 2,
+    ""currentLimit"": 10,
+    ""hasNext"": true,
+    ""hasPrevious"": false,
+    ""totalElements"": 15
+  }
+}",HIền,,
+45,http://localhost:8080/,createAdmission,Create a new admission record for a resident based on a confirmed, /api/v1/admissions,POST,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""assessmentId"": 20,
+  ""facilityId"": 5,
+  ""admissionDate"": ""2026-07-01""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Admission created successfully"",
+  ""data"": {
+    ""id"": 30,
+    ""admissionDate"": ""2026-07-01"",
+    ""residentId"": 1,
+    ""residentName"": ""John Doe"",
+    ""facilityId"": 5,
+    ""assessmentId"": 20,
+    ""dischargeDate"": null,
+    ""dischargeReason"": null,
+    ""status"": ""ACTIVE""
+  }
+}",HIền,,
+46,http://localhost:8080/,discharge,Discharge a resident from an existing admission.,/api/v1/admissions/{id}/discharge,PUT,,"Authorization: Bearer {token}
+Content-Type: application/json",,"{
+  ""dischargeDate"": ""2026-07-15"",
+  ""dischargeReason"": ""Transferred to hospital""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Resident discharged successfully"",
+  ""data"": {
+    ""id"": 30,
+    ""admissionDate"": ""2026-07-01"",
+    ""residentId"": 1,
+    ""residentName"": ""John Doe"",
+    ""facilityId"": 5,
+    ""assessmentId"": 20,
+    ""dischargeDate"": ""2026-07-15"",
+    ""dischargeReason"": ""Transferred to hospital"",
+    ""status"": ""DISCHARGED""
+  }
+}",HIền,,

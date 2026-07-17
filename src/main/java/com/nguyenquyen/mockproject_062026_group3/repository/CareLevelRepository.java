@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface CareLevelRepository extends JpaRepository<CareLevel, Long> {
     List<CareLevel> findAllByIsDeletedFalse();
-}
 
+    List<CareLevel> findAllByIsDeleted(Boolean isDeleted);
+}

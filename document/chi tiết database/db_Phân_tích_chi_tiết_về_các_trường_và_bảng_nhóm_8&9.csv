@@ -1,0 +1,108 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,medication_orders
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID của đơn thuốc.,
+drug_name,NVARCHAR(200),NOT NULL,"Tên biệt dược hoặc tên gốc của thuốc (Ví dụ: Metformin, Lisinopril).",
+dosage,NVARCHAR(100),NOT NULL,"Liều lượng chỉ định cho mỗi lần dùng (Ví dụ: 500mg, 1 tablet).",
+route,VARCHAR(30),NOT NULL,"Đường dùng thuốc: Cách thức đưa thuốc vào cơ thể, chỉ nhận các giá trị chuẩn y tế như: ORAL (Đường uống), IV (Tiêm tĩnh mạch), TOPICAL (Bôi ngoài da), INJECTION (Tiêm bắp/dưới da)....",
+frequency,NVARCHAR(100),NOT NULL,"Tần suất dùng thuốc theo chỉ định (Ví dụ: ""Every 8 hours"", ""Once daily at bedtime"").",
+is_controlled_substance,BIT,"NOT NULL
+
+DEFAULT 0","Cờ đánh dấu thuốc biệt trữ / gây nghiện: Ghi nhận thuốc có thuộc danh mục kiểm soát nghiêm ngặt của Cơ quan Phòng chống Ma túy Mỹ (DEA Schedule II-V) hay không. Nếu bằng 1, hệ thống sẽ kích hoạt quy trình bắt buộc đối chiếu kép khi phát thuốc.",
+status,VARCHAR(20),"NOT NULL
+
+CHECK (status IN ('ACTIVE','DISCONTINUED','ON_HOLD'))","Trạng thái của đơn thuốc: ACTIVE (Đang có hiệu lực), DISCONTINUED (Ngừng dùng theo lệnh bác sĩ), ON_HOLD (Tạm dừng phát thuốc để theo dõi phản ứng phụ).",
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới cư dân được kê đơn.,
+prescribed_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Định danh chính xác Bác sĩ nào là người trực tiếp ra y lệnh này.,
+is_deleted,BIT,"NOT NULL
+
+DEFAULT 0",Trường dùng cho Xóa mềm (Soft Delete) để giữ nguyên dữ liệu lịch sử kê đơn.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,medication_schedules
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự động tăng.,
+order_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết chặt chẽ với đơn thuốc gốc medication_orders(id).,
+scheduled_time,TIME,NOT NULL,"Mốc giờ phát thuốc cố định: Chỉ lưu giờ-phút-giây (Ví dụ: 08:00:00, 16:00:00, 20:00:00) để đưa vào danh sách nhắc việc (Pass list) hằng ngày của y tá.",
+is_active,BIT,"NOT NULL
+
+DEFAULT 1",Đánh dấu mốc giờ này có còn hiệu lực chạy tự động hằng ngày hay không.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,medication_logs
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự tăng, tối ưu tốc độ chèn dữ liệu.",
+status,VARCHAR(20),"NOT NULL
+
+CHECK (status IN ('ADMINISTERED','REFUSED','HELD','NOT_AVAILABLE'))","Kết quả lần phát thuốc:
+
+• ADMINISTERED: Cụ đã uống thuốc thành công.
+
+• REFUSED: Cụ từ chối không chịu uống.
+
+• HELD: Tạm hoãn (Ví dụ do cụ đang ngủ hoặc đang đi khám ngoài).
+
+• NOT_AVAILABLE: Thuốc trong kho của viện tạm thời hết.",
+is_clinically_justified,BIT,"NOT NULL
+
+DEFAULT 0",Xác nhận hành vi phát thuốc trễ giờ hoặc bỏ qua liều thuốc có được sự phê duyệt hoặc có lý do lâm sàng hợp lý từ bác sĩ hay không.,
+override_reason,NVARCHAR(500),,Lý do cụ thể tại sao cụ từ chối hoặc lý do tại sao y tá hoãn không cho uống thuốc.,
+order_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Liên kết trực tiếp tới y lệnh thuốc.,
+administered_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Định danh chính xác Y tá (RN/LPN) nào thực tế đã phát thuốc.,
+witnessed_by,UNIQUEIDENTIFIER,"NULL
+
+FOREIGN KEY",Người chứng kiến (Y tá đối chiếu kép): Rất quan trọng đối với các loại thuốc kiểm soát đặc biệt (is_controlled_substance = 1). Quy định của các bang tại Mỹ bắt buộc phải có một y tá thứ hai ký xác nhận chứng kiến luồng phát thuốc này để tránh thất thoát hoặc lạm dụng thuốc gây nghiện.,
+logged_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm chính xác y tá thực hiện thao tác và lưu lại thông tin (bao gồm múi giờ).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,shifts
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự động tăng.,
+facility_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang facilities(id) vì mỗi chi nhánh ở các bang khác nhau có thể tự cấu hình khung giờ làm việc khác nhau.,
+shift_name,VARCHAR(20),"NOT NULL
+
+CHECK (shift_name IN ('DAY','EVENING','NIGHT'))","Tên ca trực: Chỉ chấp nhận 3 ca chính gồm DAY (Ca ngày), EVENING (Ca chiều), NIGHT (Ca đêm).",
+start_time,TIME,NOT NULL,Giờ bắt đầu vào ca (Ví dụ: 06:00:00).,
+end_time,TIME,NOT NULL,Giờ kết thúc ca trực (Ví dụ: 14:00:00).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,shift_assignments
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự động tăng.,
+shift_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới ca trực cụ thể ở bảng shifts.,
+user_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới nhân viên được phân lịch trực ở bảng users.,
+work_date,DATE,NOT NULL,Ngày làm việc cụ thể được xếp lịch (Ví dụ: 2026-07-02).,
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'SCHEDULED'
+
+CHECK (trạng thái)","Trạng thái ca làm việc:
+
+• SCHEDULED: Đã lên lịch sẵn.
+
+• CONFIRMED: Nhân viên đã bấm xác nhận sẽ đi làm.
+
+• CALLED_OUT: Nhân viên xin nghỉ đột xuất/báo vắng ca.
+
+• COMPLETED: Ca làm việc đã hoàn thành tốt đẹp.",
+clock_in_at,DATETIMEOFFSET(0),,Giờ thực tế nhân viên bấm chấm công vào ca trực (Lưu kèm múi giờ).,
+clock_out_at,DATETIMEOFFSET(0),,Giờ thực tế nhân viên bấm chấm công ra ca trực.,

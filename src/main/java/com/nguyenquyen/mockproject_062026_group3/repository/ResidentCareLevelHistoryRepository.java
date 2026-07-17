@@ -14,7 +14,11 @@ public interface ResidentCareLevelHistoryRepository extends JpaRepository<Reside
 
     List<ResidentCareLevelHistory> findByResidentIdOrderByStartDateDesc(Long residentId);
 
+    List<ResidentCareLevelHistory> findAllByResidentIdOrderByStartDateDesc(Long residentId);
+
     Optional<ResidentCareLevelHistory> findByResidentIdAndEndDateIsNull(Long residentId);
+
+    boolean existsByCareLevelIdAndEndDateIsNullAndResidentStatus(Long careLevelId, String status);
 
     @Query("SELECT h.careLevel.levelCode, COUNT(h) FROM ResidentCareLevelHistory h " +
            "JOIN h.resident r JOIN r.bed b JOIN b.room rm " +
@@ -22,4 +26,3 @@ public interface ResidentCareLevelHistoryRepository extends JpaRepository<Reside
            "GROUP BY h.careLevel.levelCode")
     List<Object[]> countActiveResidentsByCareLevelForFacility(@Param("facilityId") Long facilityId);
 }
-

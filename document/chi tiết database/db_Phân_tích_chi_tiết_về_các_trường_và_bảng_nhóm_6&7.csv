@@ -1,0 +1,144 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,pre_admission_screenings
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID để bảo mật thông tin sàng lọc y tế.,
+status,VARCHAR(20),"NOT NULL
+
+CHECK (status IN ('DRAFT','COMPLETED','REJECTED'))","Trạng thái của hồ sơ sàng lọc: DRAFT (Đang nháp), COMPLETED (Đã hoàn thành đánh giá), REJECTED (Từ chối tiếp nhận cụ vì vượt quá khả năng y tế của viện).",
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang residents(id) để biết hồ sơ này thuộc về cụ già nào.,
+screened_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY","Khóa ngoại nối sang users(id), xác định nhân viên y tế nào đứng ra thực hiện bài sàng lọc này.",
+created_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời gian tạo hồ sơ sàng lọc (kèm múi giờ offset).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,admissions
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+admission_date,DATE,NOT NULL,Ngày nhập viện chính thức: Dùng làm căn cứ pháp lý để bắt đầu tính tiền phòng và dịch vụ.,
+discharge_date,DATE,,"Ngày xuất viện: Khi cụ rời viện hoặc qua đời, trường này mới được điền.",
+discharge_reason,NVARCHAR(255),,"Lý do xuất viện (Ví dụ: Về nhà với gia đình, Chuyển sang bệnh viện tuyến trên, Tử vong...).",
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Liên kết tới cư dân.,
+facility_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Xác định cụ đang nhập viện vào cơ sở/chi nhánh cụ thể nào của viện.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,clinical_records
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+record_type,VARCHAR(50),"NOT NULL
+
+CHECK (record_type IN ('PROGRESS_NOTE','DIAGNOSIS','LAB_RESULT'))","Phân loại ghi chú: PROGRESS_NOTE (Ghi chú tiến triển hằng ngày của y tá), DIAGNOSIS (Chẩn đoán của bác sĩ), LAB_RESULT (Kết quả xét nghiệm).",
+description,NVARCHAR(MAX),NOT NULL,"Nội dung chi tiết của bệnh án, ghi chú lâm sàng (Dùng NVARCHAR(MAX) để chứa văn bản dài thoải mái).",
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới cư dân.,
+recorded_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Xác định chính xác Bác sĩ/Y tá nào đã ghi lại bệnh án này.,
+is_deleted,BIT,"NOT NULL
+
+DEFAULT 0",Trường dùng cho Xóa mềm (Soft Delete) để đảm bảo lịch sử y tế của cụ không bao giờ bị mất hẳn.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,assessments
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+adl_total_score,INT,NOT NULL,"Tổng điểm sinh hoạt (ADL - Activities of Daily Living): Điểm số đo lường mức độ tự chủ của cụ (tự ăn, tự tắm, tự đi vệ sinh...).",
+is_overridden,BIT,"NOT NULL
+
+DEFAULT 0",Cờ đánh dấu xem kết quả gói chăm sóc do máy tự động tính toán có bị con người (Y tá trưởng/Đạo đốc điều dưỡng) ghi đè/thay đổi thủ công hay không.,
+suggested_care_level_id,INT,"NOT NULL
+
+FOREIGN KEY",Mức độ chăm sóc do hệ thống tự động gợi ý dựa trên điểm số y tế.,
+confirmed_care_level_id,INT,"NOT NULL
+
+FOREIGN KEY",Mức độ chăm sóc chính thức được chốt sau khi y tá trưởng phê duyệt.,
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang residents(id).,
+assessed_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Nhân viên y tế thực hiện bài đánh giá.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,assessment_metrics
+category,,,"Phân loại bộ đề (Ví dụ: ADL - Sinh hoạt hằng ngày, BRADEN - Thang đo nguy cơ loét tì đè do nằm lâu, MORSE - Thang đo nguy cơ ngã).",
+metric_name,,,"Tên tiêu chí chi tiết (Ví dụ: ""Khả năng tự mặc quần áo"", ""Mức độ nhận thức"").",
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,assessment_details
+assessment_id,,,,
+metric_id,,,,
+score,,,,
+notes,,,,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,vital_signs
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự tăng, tối ưu hiệu năng ghi dữ liệu tần suất cao.",
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới cư dân.,
+recorded_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới nhân viên ghi nhận.,
+blood_pressure_systolic,SMALLINT,,Huyết áp tâm thu (Số trên).,
+blood_pressure_diastolic,SMALLINT,,Huyết áp tâm trương (Số dưới).,
+heart_rate_bpm,SMALLINT,,Nhịp tim (Số nhịp/phút).,
+temperature_fahrenheit,"DECIMAL(4,1)",,"Nhiệt độ cơ thể đo theo độ F (Fahrenheit): Định dạng chuẩn của Mỹ (Ví dụ: 98.6 °F), nên dùng DECIMAL thay vì INT.",
+spo2_percentage,TINYINT,"NULL
+
+CHECK (0 TO 100)",Chỉ số nồng độ Oxy trong máu (%).,
+pain_scale,TINYINT,"NULL
+
+CHECK (0 TO 10)",Thang điểm đau từ 0 đến 10: Người già tự đánh giá mức độ đau đớn hiện tại để y tá cân nhắc cho uống thuốc giảm đau.,
+recorded_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm chính xác thực hiện đo chỉ số.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,care_plans
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+status,VARCHAR(20),"NOT NULL
+
+CHECK (status IN ('DRAFT','ACTIVE','RESOLVED','DISCONTINUED'))","Trạng thái phác đồ: DRAFT (Nháp), ACTIVE (Đang áp dụng), RESOLVED (Đã hoàn thành mục tiêu), DISCONTINUED (Ngừng áp dụng do đổi phác đồ khác).",
+significant_change_flag,BIT,"NOT NULL
+
+DEFAULT 0","Cờ báo biến động sức khỏe nghiêm trọng: Bật lên 1 nếu cụ già có thay đổi lớn về sức khỏe, yêu cầu phải thiết lập ngay một phác đồ hoàn toàn mới.",
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới cư dân nhận phác đồ này.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,care_goals
+status,,,"Trạng thái mục tiêu (IN_PROGRESS - Đang thực hiện, ACHIEVED - Đã đạt được, NOT_MET - Không đạt được).  ",
+care_plan_id,,,Thuộc phác đồ tổng thể nào.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,care_interventions
+assigned_role,,,"Giao việc cho nhóm vai trò nào (Ví dụ: NURSE - Y tá phụ trách tiêm/phát thuốc, CNA - Hộ lý phụ trách tắm rửa, THERAPIST - Chuyên viên hỗ trợ tập vật lý trị liệu).",
+care_plan_id,,,Thuộc phác đồ tổng thể nào.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,care_tasks
+id,UNIQUEIDENTIFIER,PRIMARY KEY,Khóa chính dạng GUID.,
+task_type,VARCHAR(50),NOT NULL,"Loại công việc cụ thể (Ví dụ: FEEDING - Cho ăn, BATHING - Hỗ trợ tắm, TURNING - Lật người cho cụ tránh lở loét).",
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'PENDING'
+
+CHECK (status IN ('PENDING','COMPLETED','MISSED'))","Trạng thái công việc:
+
+• PENDING: Đang chờ làm.
+
+• COMPLETED: Hộ lý đã làm xong và bấm xác nhận trên app. 
+
+• MISSED: Bị bỏ quên, quá giờ mà hộ lý chưa làm (Hệ thống sẽ bắn cảnh báo đỏ).",
+is_abnormal_flagged,BIT,"NOT NULL
+
+DEFAULT 0","Cờ báo dấu hiệu bất thường: Hộ lý tích chọn nếu phát hiện cụ già có biểu hiện lạ khi làm việc (Ví dụ: Lúc tắm phát hiện cụ bị bầm tím chân, lúc cho ăn cụ bị nôn ra...).",
+care_intervention_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Nối sang bảng care_interventions để biết nhiệm vụ này thuộc nhóm can thiệp nào.,
+assigned_cna_id,UNIQUEIDENTIFIER,"NULL
+
+FOREIGN KEY","Khóa ngoại nối sang bảng users(id), định danh chính xác Hộ lý (CNA) nào chịu trách nhiệm thực hiện task này.",
+scheduled_time,DATETIMEOFFSET(0),NOT NULL,Thời gian công việc được lên lịch phải làm (Ví dụ: Phải lật người cho cụ vào lúc 14:00 giờ UTC).,
+completed_at,DATETIMEOFFSET(0),,Thời gian thực tế mà hộ lý hoàn thành công việc.,

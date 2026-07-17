@@ -1,0 +1,121 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,incident_severities
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự động tăng, định danh cấp độ.",
+level_name,NVARCHAR(50),NOT NULL,"Tên cấp độ rủi ro (Ví dụ: Low - Nhẹ, Medium - Trung bình, Critical - Nguy kịch).",
+chart_lock_trigger,BIT,"NOT NULL
+
+DEFAULT 0","Cờ kích hoạt khóa hồ sơ tự động: Nếu bằng 1 (True), bất kỳ sự cố nào thuộc cấp độ này khi xảy ra sẽ tự động kích hoạt lệnh khóa toàn bộ bệnh án của cư dân đó ngay lập tức để tránh chỉnh sửa chứng cứ y khoa.",
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,sla_configs
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự động tăng.,
+sla_window_hrs,INT,NOT NULL,Thời hạn SLA (Số giờ): Thời gian tối đa cho phép để đóng một sự cố (Ví dụ: Sự cố Critical phải xử lý và báo cáo lên chính quyền bang trong vòng 2 giờ).,
+severity_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại nối sang bảng incident_severities(id).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,incidents
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID để bảo mật hồ sơ pháp lý.,
+incident_type,VARCHAR(50),"NOT NULL
+
+CHECK (phân loại)","Phân loại sự cố: Ràng buộc chặt chẽ chỉ nhận các loại sự cố đặc thù ngành dưỡng lão Mỹ:
+
+• FALL: Cụ già bị ngã (Rủi ro phổ biến nhất).  
+
+• MEDICATION_ERROR: Y tá phát nhầm thuốc hoặc nhầm liều.  
+
+• ALTERCATION: Xích mích, va chạm giữa các cụ hoặc với nhân viên.  
+
+• SKIN_TEAR: Rách da/Trầy xước nghiêm trọng.",
+status,VARCHAR(20),"NOT NULL
+
+DEFAULT 'OPEN'
+
+CHECK (trạng thái)","Trạng thái xử lý: OPEN (Mới ghi nhận), UNDER_INVESTIGATION (Đang trong quá trình điều tra nội bộ), CLOSED (Đã xử lý xong và đóng hồ sơ).",
+description,NVARCHAR(MAX),,Bản tường trình chi tiết diễn biến sự cố.,
+sla_deadline,DATETIMEOFFSET(0),NOT NULL,Hạn chót SLA: Thời điểm chính xác bắt buộc phải xử lý xong sự cố (Hệ thống tự động tính bằng cách lấy thời điểm báo cáo cộng với số giờ SLA ở bảng sla_configs).,
+resident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới cư dân gặp sự cố.,
+severity_id,BIGINT,"NOT NULL
+
+FOREIGN KEY",Khóa ngoại liên kết tới mức độ nghiêm trọng.,
+reported_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Định danh chính xác nhân viên nào đứng ra lập báo cáo sự cố này.,
+reported_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm lập báo cáo (kèm múi giờ).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,chart_lock_events
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID.,
+locked_by_system,BIT,"NOT NULL
+
+DEFAULT 1",Đánh dấu hành động khóa này là do hệ thống tự động kích hoạt (1) hay do con người chủ động bấm khóa thủ công (0).,
+unlock_reason,NVARCHAR(MAX),,Giải trình lý do tại sao mở khóa hồ sơ (Bắt buộc phải điền khi làm thủ tục mở khóa).,
+incident_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Sự cố nào đã dẫn tới hành động khóa hồ sơ này.,
+unlocked_by,UNIQUEIDENTIFIER,"NULL
+
+FOREIGN KEY","Khóa ngoại nối sang users(id), xác định danh tính vị Giám đốc/Quản lý cấp cao nào có thẩm quyền ký lệnh mở khóa.",
+event_time,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm chính xác xảy ra sự kiện khóa hoặc mở.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,audit_logs
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY","Khóa chính tự tăng, phục vụ việc chèn dữ liệu tốc độ cao.",
+table_name,NVARCHAR(100),NOT NULL,"Tên của bảng dữ liệu bị tác động (Ví dụ: residents, medication_orders).",
+record_id,NVARCHAR(100),NOT NULL,ID của bản ghi bị tác động (Lưu kiểu chuỗi để tương thích với cả ID dạng số tăng dần lẫn ID dạng chuỗi GUID).,
+action,VARCHAR(20),"NOT NULL
+
+CHECK (action IN ('INSERT','UPDATE','DELETE'))","Hành vi tác động: Thêm mới (INSERT), Chỉnh sửa (UPDATE), hoặc Xóa (DELETE).",
+old_data,NVARCHAR(MAX),,Dữ liệu cũ trước khi sửa: Chụp lại toàn bộ trạng thái dòng dữ liệu cũ dưới dạng chuỗi JSON. Trường này để NULL nếu là lệnh INSERT.,
+new_data,NVARCHAR(MAX),,Dữ liệu mới sau khi sửa: Lưu trạng thái dữ liệu mới dưới dạng chuỗi JSON. Trường này để NULL nếu là lệnh DELETE.,
+performed_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY","Khóa ngoại nối sang users(id), xác định ai là người thực hiện.",
+performed_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm chính xác thực hiện hành động.,
+ip_address,VARCHAR(45),,Địa chỉ IP của máy trạm thực hiện thao tác (Độ dài 45 ký tự để hỗ trợ tốt cả chuẩn IPv4 lẫn IPv6).,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,phi_access_logs
+id,BIGINT,"IDENTITY(1,1)
+
+PRIMARY KEY",Khóa chính tự tăng.,
+table_name,NVARCHAR(100),NOT NULL,Tên bảng chứa thông tin y tế bị xem (Ví dụ: clinical_records).,
+record_id,NVARCHAR(100),NOT NULL,ID cụ thể của bản ghi bệnh án bị xem.,
+accessed_by,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY",Ai là người đã mở màn hình xem thông tin này.,
+access_type,VARCHAR(20),"NOT NULL
+
+CHECK (phân loại)","Hình thức tiếp cận dữ liệu: Chỉ nhận các giá trị: VIEW (Xem trên màn hình), PRINT (Bấm in ra giấy), EXPORT (Xuất file Excel/CSV), hoặc DOWNLOAD (Tải file tài liệu đính kèm).",
+access_reason,NVARCHAR(255),,"Lý do xem dữ liệu: Khi y tá mở một bệnh án nhạy cảm, hệ thống có thể hiển thị một pop-up bắt buộc chọn/nhập lý do (Ví dụ: ""Routine care inspection"" - Khám bệnh định kỳ).",
+ip_address,VARCHAR(45),,IP máy truy cập.,
+accessed_at,DATETIMEOFFSET(0),"NOT NULL
+
+DEFAULT SYSDATETIMEOFFSET()",Thời điểm chính xác mở dữ liệu xem.,
+,,,,
+Tên trường (Column Name),Kiểu dữ liệu (Data Type),Ràng buộc (Constraints),Ý nghĩa nghiệp vụ & Lưu ý kỹ thuật,notifications
+id,UNIQUEIDENTIFIER,"PRIMARY KEY
+
+DEFAULT NEWID()",Khóa chính dạng GUID.,
+title,NVARCHAR(255),NOT NULL,"Tiêu đề thông báo hiển thị trên app (Ví dụ: ""SLA Cảnh báo: Sự cố ngã phòng 101 chưa được xử lý!"").",
+type,VARCHAR(50),NOT NULL,"Phân loại thông báo (MEDICATION_REMINDER - Nhắc phát thuốc, INCIDENT_ALERT - Cảnh báo sự cố...).",
+is_read,BIT,"NOT NULL
+
+DEFAULT 0","Trạng thái xem thông báo: 0 (Chưa đọc), 1 (Đã đọc).",
+user_id,UNIQUEIDENTIFIER,"NOT NULL
+
+FOREIGN KEY","Khóa ngoại nối sang users(id), xác định thông báo này gửi đích danh cho nhân viên nào.",

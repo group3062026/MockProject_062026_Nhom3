@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResidentSensitiveInfoRepository extends JpaRepository<ResidentSensitiveInfo, Long> {
+    java.util.Optional<ResidentSensitiveInfo> findByResidentId(Long residentId);
 }
 
