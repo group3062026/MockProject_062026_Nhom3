@@ -34,5 +34,5 @@ springdoc:
 # Logging
 logging:
   level:
-    com.mockproject.group3: DEBUG
+    com.nguyenquyen.mockproject_062026_group3: DEBUG
     org.springframework.security: DEBUG
