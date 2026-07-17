@@ -1,7 +1,11 @@
 package com.nguyenquyen.mockproject_062026_group3.repository;
 
 import com.nguyenquyen.mockproject_062026_group3.entity.CareTask;
+<<<<<<< HEAD
 import com.nguyenquyen.mockproject_062026_group3.entity.ShiftAssignment;
+=======
+import java.util.List;
+>>>>>>> main
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +18,7 @@ import java.util.Optional;
 
 @Repository
 public interface CareTaskRepository extends JpaRepository<CareTask, Long> {
+<<<<<<< HEAD
     @Query("select t from CareTask t where t.scheduledTime < :now and t.status= :status")
     List<CareTask> findOverTime(@Param("now") OffsetDateTime now, @Param("status") String status);
     @Query("SELECT t FROM CareTask t " +
@@ -31,4 +36,8 @@ public interface CareTaskRepository extends JpaRepository<CareTask, Long> {
 
 
 
+=======
+  List<CareTask> findByCareInterventionCarePlanId(Long carePlanId);
+>>>>>>> main
 }
+

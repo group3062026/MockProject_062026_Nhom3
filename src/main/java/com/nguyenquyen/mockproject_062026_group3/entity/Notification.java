@@ -48,3 +48,4 @@ public class Notification {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

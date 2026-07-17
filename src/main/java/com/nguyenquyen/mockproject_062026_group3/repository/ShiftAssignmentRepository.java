@@ -15,3 +15,4 @@ public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment
             "WHERE sa.user.id = :userId AND sa.workDate = :date AND sa.status = 'SCHEDULED'")
     Optional<ShiftAssignment> findConfirmedShiftForUser(@Param("userId") Long userId, @Param("date") LocalDate date);
 }
+

@@ -56,3 +56,4 @@ public class ClinicalRecord {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

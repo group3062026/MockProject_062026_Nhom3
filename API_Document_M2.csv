@@ -1,0 +1,104 @@
+###,Domain,Function,Description,URL/API,Method,Authorization,Header,RequestParam,RequestBody,Respone,Dev,Note,Reference
+1,http://localhost:8080,getCarePlans,Returns list of care plans assigned to current user,/api/v1/care-plans,GET,Nurse / DON / CNA,Content-Type: application/json,"page, size, resident_name, status, review_status",-,List care plans,Load main table,,
+2,http://localhost:8080,getCarePlanSummary,Returns care plan statistics,/api/v1/care-plans/summary,GET,Nurse / DON,Content-Type: application/json,-,-,"{total_plans, draft_count, pending_review_count, review_due_count}",Top cards,,
+3,http://localhost:8080,searchCarePlans,Search care plans by resident name,/api/v1/care-plans/search,GET,Nurse / DON / CNA,Content-Type: application/json,keyword,-,Matching care plans,Search box,,
+4,http://localhost:8080,filterCarePlansByStatus,Filter care plans by status,/api/v1/care-plans,GET,Nurse / DON / CNA,Content-Type: application/json,status,-,Filtered list,"Draft, Active, Pending Review",,
+5,http://localhost:8080,filterCarePlansByReview,Filter care plans by review status,/api/v1/care-plans,GET,Nurse / DON,Content-Type: application/json,review_status,-,Filtered list,Review Due / Overdue,,
+6,http://localhost:8080,getCarePlanDetail,Returns detail of selected care plan,/api/v1/care-plans/{id},GET,Nurse / DON / CNA,Content-Type: application/json,"id (path, required)",-,Care plan detail,View button,,
+7,http://localhost:8080,createCarePlan,Creates new care plan,/api/v1/care-plans,POST,Nurse / DON,Content-Type: application/json,-,"{resident_id, status}",Created care plan,New Care Plan button,,
+8,http://localhost:8080,getResidentCarePlans,Returns care plans by resident,/api/v1/residents/{residentId}/care-plans,GET,Nurse / DON / CNA,Content-Type: application/json,residentId (path),-,Resident care plans,Resident profile,,
+9,http://localhost:8080,getCarePlanByResidentId,"Returns current care plan of resident, including care goals, interventions and tasks",/api/v1/care-plans/resident/{residentId},GET,All authenticated roles,Content-Type: application/json,"residentId (path, required)",-,Care plan detail,Load data when opening New Care Plan screen,,
+10,http://localhost:8080,createCarePlan,Creates a new care plan with Draft status,/api/v1/care-plans,POST,"DON, Nurse, Admin",Content-Type: application/json,-,"{resident_id, status}",Created care plan,Save Draft button,,
+11,http://localhost:8080,getCarePlanById,Returns detail of a single care plan by id,/api/v1/care-plans/{id},GET,All authenticated roles,Content-Type: application/json,"id (path, required)",-,Care plan detail,View/edit care plan,,
+12,http://localhost:8080,updateCarePlanStatus,Updates care plan status Draft ? Pending Review ? Active,/api/v1/care-plans/{id}/status,PATCH,"DON, Admin",Content-Type: application/json,"id (path, required)",{status},Updated status,Submit for Review,,
+13,http://localhost:8080,getCareGoals,Returns care goals/areas of care plan,/api/v1/care-plans/{id}/goals,GET,All authenticated roles,Content-Type: application/json,"id (path, required)",-,List of goals,"Display Mobility, Skin Integrity, Nutrition",,
+14,http://localhost:8080,createCareGoal,Adds new care goal to care plan,/api/v1/care-plans/{id}/goals,POST,"DON, Nurse",Content-Type: application/json,"id (path, required)","{goal_type, goal_description, measure}",Created goal,Add Care Area button,,
+15,http://localhost:8080,deleteCareGoal,Removes care goal from care plan,/api/v1/care-goals/{id},DELETE,"DON, Admin",Content-Type: application/json,"id (path, required)",-,Success message,Remove button,,
+16,http://localhost:8080,getCareInterventions,Returns interventions assigned in care plan,/api/v1/care-plans/{id}/interventions,GET,All authenticated roles,Content-Type: application/json,"id (path, required)",-,Intervention list,Load care actions,,
+17,http://localhost:8080,createCareIntervention,Creates care intervention for care plan,/api/v1/care-plans/{id}/interventions,POST,"DON, Nurse",Content-Type: application/json,"id (path, required)",{assigned_role},Created intervention,Generate tasks,,
+18,http://localhost:8080,getCareTasks,Returns assigned tasks generated from care plan,/api/v1/care-plans/{id}/tasks,GET,All authenticated roles,Content-Type: application/json,"id (path, required)",-,Task list,Display Assigned Tasks table,,
+19,http://localhost:8080,createCareTask,Creates task assigned to CNA,/api/v1/care-tasks,POST,"DON, Nurse",Content-Type: application/json,-,"{task_type, assigned_cna_id, scheduled_time}",Created task,"Ambulation assist, Reposition, Fluid monitoring",,
+20,http://localhost:8080,updateCareTask,Updates task information/status,/api/v1/care-tasks/{id},PATCH,"CNA, Nurse, DON",Content-Type: application/json,"id (path, required)","{status, scheduled_time}",Updated task,Update task execution,,
+21,http://localhost:8080,getCareLevels,Returns available care levels (Tier 1-5),/api/v1/care-levels,GET,All authenticated roles,Content-Type: application/json,include_deleted (optional),-,Care level list,Display LOC Tier 3,,
+22,http://localhost:8080,getCareLevelRates,Returns rate by care level,/api/v1/care-level-rates,GET,"Facility Manager, Billing Staff, Admin",Content-Type: application/json,"facility_id, care_level_id, active_only",-,LOC rate,Used for Cost Estimate,,
+23,http://localhost:8080,getResidentLOCStatus,Checks whether resident LOC classification is confirmed before creating Care Plan,/api/v1/residents/{residentId}/loc-status,GET,Nurse / DON,Content-Type: application/json,"residentId (path, required)",-,"{resident_id, loc_status, confirmed, suggested_tier}",Lock/Unlock Create Care Plan button,Used in New Care Plan screen,
+24,http://localhost:8080,getResidentLOCClassification,"Returns current LOC classification information (Suggested Tier, Confirmed Tier)",/api/v1/residents/{residentId}/loc-classification,GET,Nurse / DON,Content-Type: application/json,"residentId (path, required)",-,"{tier, status, confirmed_at}",Display LOC information,"Show ""LOC: Suggested (Tier 1)""",
+25,http://localhost:8080,confirmLOCClassification,Confirms resident Level of Care classification,/api/v1/residents/{residentId}/loc-classification/confirm,PATCH,DON / Nurse,Content-Type: application/json,"residentId (path, required)",{care_level_id},Updated LOC classification,Enable Care Plan creation after confirmation,Trigger before Create Care Plan,
+26,http://localhost:8080,getCareLevels,Returns available Level of Care tiers,/api/v1/care-levels,GET,All authenticated roles,Content-Type: application/json,include_deleted (optional),-,List of care levels (Tier 1-5),Display LOC options,Used in LOC Classification,
+27,http://localhost:8080,getCarePlanDetail,"Returns detail information of selected care plan including resident, status, LOC and related data",/api/v1/care-plans/{id},GET,Nurse / CNA / DON,Content-Type: application/json,"id (path, required)",-,Care plan detail,Load Care Plan Detail screen,Main API,
+28,http://localhost:8080,getCareGoals,Returns care goals and care areas of care plan,/api/v1/care-plans/{id}/goals,GET,Nurse / CNA / DON,Content-Type: application/json,"id (path, required)",-,List of goals,"Display Mobility, Skin Integrity, Nutrition",Goals section,
+29,http://localhost:8080,getCareTasks,Returns assigned tasks generated from care plan,/api/v1/care-plans/{id}/tasks,GET,Nurse / CNA / DON,Content-Type: application/json,"id (path, required)",-,Task list,Display Care Tasks,Task section,
+30,http://localhost:8080,getCareCostEstimate,Returns cost estimation based on LOC and room rate,/api/v1/care-plans/{id}/cost,GET,Nurse / DON,Content-Type: application/json,"id (path, required)",-,"LOC rate, Room rate, Daily cost, Monthly cost",Display Cost Estimate,Read-only,
+31,http://localhost:8080,getReviewCycle,Returns care plan review schedule,/api/v1/care-plans/{id}/review-cycle,GET,Nurse / DON,Content-Type: application/json,"id (path, required)",-,"Last reviewed, Next review due, Cycle",Display Review Cycle,90 days review,
+32,http://localhost:8080,getCareActivityTimeline,Returns care plan activity history,/api/v1/care-plans/{id}/activities,GET,Nurse / CNA / DON,Content-Type: application/json,"id (path, required)",-,Activity timeline,Display activity log,"Created, Submitted, Approved, Task Done",
+33,http://localhost:8080,getComplianceChecklist,Returns compliance checklist required before approval,/api/v1/care-plans/{id}/compliance-checklist,GET,DON / Nurse,Content-Type: application/json,"id (path, required)",-,Checklist items and completion status,Display Compliance Checklist,"CMS, MDS, CA Title 22",
+34,http://localhost:8080,getIDTAcknowledgment,Returns IDT member acknowledgment status,/api/v1/care-plans/{id}/idt-acknowledgment,GET,DON / Nurse,Content-Type: application/json,"id (path, required)",-,"Physician, Dietary acknowledgment status",Display IDT Acknowledgment,Signed status,
+35,http://localhost:8080,getAuthorAccountability,Returns care plan author information,/api/v1/care-plans/{id}/author,GET,DON / Nurse,Content-Type: application/json,"id (path, required)",-,"Author name, license, created date",Display Author Accountability,Prepared by,
+36,http://localhost:8080,approveCarePlan,Approves care plan and activates it,/api/v1/care-plans/{id}/approve,POST,DON,Content-Type: application/json,"id (path, required)",{signature},Updated care plan status,Approve button,Pending Review ? Active,
+37,http://localhost:8080,rejectCarePlan,Rejects care plan and returns to draft,/api/v1/care-plans/{id}/reject,POST,DON,Content-Type: application/json,"id (path, required)",{reason},Updated care plan status,Reject button,Pending Review ? Draft,
+41,http://localhost:8080,verify_e-Signature,"Handle ""Approve requires e-signature re-auth"" request. Re-authenticate DON's Password/PIN before allowing approval.",/api/v1/auth/verify-e-signature,POST,Bearer Token (Role: DON),Content-Type: application/json,"N/A
+
+
+",,,,,
+45,http://localhost:8080,updateTaskStatus,"Allow nurses to check off a task as completed, add execution notes, or flag abnormal findings.",/api/v1/care-tasks/{taskId}/status,PUT,Bearer Token (Role:  CNA),Content-Type: application/json,"Path:
+
+
+{taskId} (UUID)
+
+
+
+
+
+
+
+",,,,,
+38,http://localhost:8080,getCarePlanDetails,"Get Care Plan DetailsRetrieve resident information, author details, and list of Goals & Interventions (Left column of the screen).",/api/v1/care-plans/{carePlanId},GET,"Bearer Token (Role: DON, ADMIN)",Content-Type: application/json,"Path:
+
+
+{carePlanId} (UUID)",,,,,
+43,http://localhost:8080,x,"Allows an Interdisciplinary Team (IDT) member to digitally acknowledge and sign off on a Care Plan, with optional comments.",/api/v1/care-plans/{carePlanId}/idt-signatures,POST,"Bearer Token (Role: PHYSICIAN, DIETITIAN)",Content-Type: application/json,"Path:
+
+
+{carePlanId} (UUID)
+
+
+",,,,,
+39,http://localhost:8080,checkCompliance,"API to calculate and return the results of 4 medical compliance criteria (CMS, MDS, Title 22).",/api/v1/care-plans/{carePlanId}/compliance-checks,GET,"Bearer Token (Role: DON, ADMIN)",Content-Type: application/json,"Path:
+
+
+{carePlanId} (UUID)",,,,,
+40,http://localhost:8080,getIDTSignatures,"Extract the list of specialists (Physician, Dietary) who have acknowledged (signed) this plan.",/api/v1/care-plans/{carePlanId}/idt-signatures,GET,"Bearer Token (Role: DON, ADMIN)",Content-Type: application/json,"Path:
+
+
+{carePlanId} (UUID)",,,,,
+42,http://localhost:8080,submitReviewDecision,Update the status of the Care Plan based on DON's decision (Approve or Reject).,/api/v1/care-plans/{carePlanId}/status,PATCH,Bearer Token (Role: DON),Content-Type: application/json,"N/A
+
+
+",,,,,
+47,http://localhost:8080,submitVitals&CompleteTask,"Save the measured vitals, automatically evaluate for abnormal readings, trigger alerts to RN if necessary, and mark the linked task as ""Done"".",/api/v1/care-tasks/{taskId}/vitals,POST,Bearer Token (Role:  CNA),Content-Type: application/json,"Path:
+
+
+{taskId} (UUID)
+
+",,,,,
+44,http://localhost:8080,getDailyTaskList,"Fetch the list of care tasks assigned to the current nurse, filtered by date, shift, or resident.",/api/v1/care-tasks,GET,Bearer Token (Role:  CNA),Content-Type: application/json,"Query:
+
+
+date (YYYY-MM-DD, default: today)
+
+
+shift (String: AM, PM, NOC)
+
+
+residentId (UUID, optional)
+
+
+status (String, optional)
+",,,,,
+46,http://localhost:8080,fetchVitalsThresholds,(Optional but recommended) Fetch the normal ranges for this specific patient so the Frontend can highlight fields in red before saving.,/api/v1/residents/{residentId}/vitals-thresholds,GET,Bearer Token (Role:  CNA),Content-Type: application/json,"Path:
+
+
+{residentId} (UUID)",,,,,
+48,http://localhost:8080,getCostEstimate,"Fetch aggregated daily/monthly cost estimates, itemized cost breakdown, and Medicare coverage status for a specific Care Plan.",/api/v1/care-plans/{carePlanId}/cost-estimate,GET,Bearer Token (Role:  DON),Content-Type: application/json,"Path:
+{carePlanId} (UUID)
+",,,,,

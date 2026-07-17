@@ -83,3 +83,4 @@ public class User {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

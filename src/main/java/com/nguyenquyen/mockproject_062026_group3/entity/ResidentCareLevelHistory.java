@@ -44,3 +44,4 @@ public class ResidentCareLevelHistory {
     @JoinColumn(name = "care_level_id", nullable = false)
     private CareLevel careLevel;
 }
+

@@ -45,3 +45,4 @@ public class PreAdmissionScreening {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

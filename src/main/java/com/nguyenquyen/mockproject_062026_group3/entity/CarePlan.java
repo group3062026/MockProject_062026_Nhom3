@@ -47,6 +47,7 @@ public class CarePlan {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 
+
     @Column(name = "review_due_date")
     private LocalDate reviewDueDate; // Ngày đến hạn đánh giá (Ví dụ chu kỳ 90 ngày)
 
@@ -65,4 +66,9 @@ public class CarePlan {
 
     @OneToMany(mappedBy = "carePlan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CareIntervention> careInterventions;
+
+  @Column(name = "rejection_reason", length = 1000)
+  private String rejectionReason;
+
 }
+

@@ -60,3 +60,4 @@ public class ShiftAssignment {
     @Builder.Default
     private BigDecimal payMultiplier = new BigDecimal("1.00");
 }
+

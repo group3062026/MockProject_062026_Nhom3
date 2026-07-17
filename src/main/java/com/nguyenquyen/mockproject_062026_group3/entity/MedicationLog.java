@@ -56,3 +56,4 @@ public class MedicationLog {
     @Builder.Default
     private OffsetDateTime loggedAt = OffsetDateTime.now();
 }
+

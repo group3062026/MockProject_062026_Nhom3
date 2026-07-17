@@ -31,3 +31,4 @@ public class InsuranceProvider {
     @Column(name = "provider_type", nullable = false, length = 20)
     private String providerType; // MEDICARE, MEDICAID, PRIVATE, OTHER
 }
+

@@ -35,3 +35,4 @@ public class CareLevel {
     @Builder.Default
     private Boolean isDeleted = false;
 }
+

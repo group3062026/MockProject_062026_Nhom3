@@ -42,3 +42,4 @@ public class Room {
     @Builder.Default
     private Boolean isDeleted = false;
 }
+

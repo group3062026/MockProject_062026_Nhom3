@@ -54,3 +54,4 @@ public class ResidentSensitiveInfo {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

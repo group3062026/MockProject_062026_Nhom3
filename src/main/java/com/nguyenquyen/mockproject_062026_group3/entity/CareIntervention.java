@@ -39,3 +39,4 @@ public class CareIntervention {
     @JoinColumn(name = "care_plan_id", nullable = false)
     private CarePlan carePlan;
 }
+

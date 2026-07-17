@@ -14,3 +14,4 @@ public interface CarePlanRepository extends JpaRepository<CarePlan, Long> {
             "WHERE cp.status IN ('ACTIVE', 'REVIEW_DUE', 'NEEDS_UPDATE') AND cp.isDeleted = false")
     List<CarePlan> findAllDashboardPlans();
 }
+

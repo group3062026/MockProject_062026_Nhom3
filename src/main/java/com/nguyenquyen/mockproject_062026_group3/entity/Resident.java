@@ -82,3 +82,4 @@ public class Resident {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

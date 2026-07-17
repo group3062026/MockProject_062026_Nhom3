@@ -26,3 +26,4 @@ public class RolePermissionId implements Serializable {
     @Column(name = "permission_id")
     private Long permissionId;
 }
+

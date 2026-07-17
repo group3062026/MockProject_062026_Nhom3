@@ -58,3 +58,4 @@ public class Incident {
     @Builder.Default
     private OffsetDateTime reportedAt = OffsetDateTime.now();
 }
+

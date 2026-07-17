@@ -42,3 +42,4 @@ public class AssessmentDetail {
     @JoinColumn(name = "metric_id", nullable = false)
     private AssessmentMetric metric;
 }
+

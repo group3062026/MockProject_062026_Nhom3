@@ -79,3 +79,4 @@ public class Invoice {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

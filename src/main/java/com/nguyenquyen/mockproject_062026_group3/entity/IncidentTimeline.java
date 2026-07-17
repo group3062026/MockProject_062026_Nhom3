@@ -48,3 +48,4 @@ public class IncidentTimeline {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+
