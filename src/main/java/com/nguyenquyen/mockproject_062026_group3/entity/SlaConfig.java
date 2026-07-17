@@ -35,3 +35,4 @@ public class SlaConfig {
     @JoinColumn(name = "severity_id", nullable = false)
     private IncidentSeverity severity;
 }
+

@@ -57,3 +57,4 @@ public class Assessment {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

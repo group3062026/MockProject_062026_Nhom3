@@ -61,3 +61,4 @@ public class Facility {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

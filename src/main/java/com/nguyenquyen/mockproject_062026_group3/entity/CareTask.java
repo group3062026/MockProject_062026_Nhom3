@@ -54,3 +54,4 @@ public class CareTask {
     @Column(name = "completed_at")
     private OffsetDateTime completedAt;
 }
+

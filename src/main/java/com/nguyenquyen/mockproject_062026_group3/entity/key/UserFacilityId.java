@@ -26,3 +26,4 @@ public class UserFacilityId implements Serializable {
     @Column(name = "facility_id")
     private Long facilityId;
 }
+

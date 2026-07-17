@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity 
 @Table(name = "beds")
 public class Bed {
 
@@ -38,3 +38,4 @@ public class Bed {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 }
+

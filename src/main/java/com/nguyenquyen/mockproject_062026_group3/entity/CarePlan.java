@@ -53,3 +53,4 @@ public class CarePlan {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

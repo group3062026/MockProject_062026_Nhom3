@@ -77,3 +77,4 @@ public class ConsumableSupply {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

@@ -63,3 +63,4 @@ public class ResidentInsurancePolicy {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

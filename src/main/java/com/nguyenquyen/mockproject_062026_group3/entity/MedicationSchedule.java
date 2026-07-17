@@ -41,3 +41,4 @@ public class MedicationSchedule {
     @Builder.Default
     private Boolean isActive = true;
 }
+

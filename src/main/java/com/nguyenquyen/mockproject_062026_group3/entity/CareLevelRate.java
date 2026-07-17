@@ -48,3 +48,4 @@ public class CareLevelRate {
     @Column(name = "effective_to")
     private LocalDate effectiveTo;
 }
+

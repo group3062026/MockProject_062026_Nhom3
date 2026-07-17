@@ -64,3 +64,4 @@ public class Contact {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

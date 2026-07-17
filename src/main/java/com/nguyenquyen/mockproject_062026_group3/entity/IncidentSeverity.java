@@ -32,3 +32,4 @@ public class IncidentSeverity {
     @Builder.Default
     private Boolean chartLockTrigger = false;
 }
+

@@ -67,3 +67,4 @@ public class VitalSign {
     @Builder.Default
     private OffsetDateTime recordedAt = OffsetDateTime.now();
 }
+

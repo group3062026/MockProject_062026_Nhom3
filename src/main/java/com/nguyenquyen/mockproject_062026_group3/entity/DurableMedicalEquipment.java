@@ -72,3 +72,4 @@ public class DurableMedicalEquipment {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

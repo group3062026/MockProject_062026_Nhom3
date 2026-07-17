@@ -43,3 +43,4 @@ public class Shift {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 }
+

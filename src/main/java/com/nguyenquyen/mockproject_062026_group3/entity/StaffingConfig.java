@@ -45,3 +45,4 @@ public class StaffingConfig {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

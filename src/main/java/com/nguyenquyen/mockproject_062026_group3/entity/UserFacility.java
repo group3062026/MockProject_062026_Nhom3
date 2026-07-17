@@ -41,3 +41,4 @@ public class UserFacility {
     @Builder.Default
     private Boolean isPrimary = false;
 }
+

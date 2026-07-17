@@ -52,3 +52,4 @@ public class Admission {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

@@ -36,3 +36,4 @@ public class RolePermission {
     @JoinColumn(name = "permission_id")
     private Permission permission;
 }
+

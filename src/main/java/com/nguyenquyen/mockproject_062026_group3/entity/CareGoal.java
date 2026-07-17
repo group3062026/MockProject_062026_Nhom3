@@ -35,3 +35,4 @@ public class CareGoal {
     @JoinColumn(name = "care_plan_id", nullable = false)
     private CarePlan carePlan;
 }
+

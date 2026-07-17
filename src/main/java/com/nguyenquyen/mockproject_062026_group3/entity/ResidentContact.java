@@ -61,3 +61,4 @@ public class ResidentContact {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

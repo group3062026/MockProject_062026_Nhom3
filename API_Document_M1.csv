@@ -1,0 +1,513 @@
+###,Domain,Function,Description,URL/API,Method,Authorization,Header,RequestParam,RequestBody,Respone,Dev,Note,Reference
+1,http://localhost:8080,getCareLevels,Returns the catalog of 5 standard care levels; supports filtering soft-deleted records.,/api/v1/care-levels,GET,All authenticated roles,Content-Type: application/json,"include_deleted (bool, optional)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""careLevels"": [
+      {
+        ""id"": 1,
+        ""levelCode"": ""MEMORY_CARE"",
+        ""levelName"": ""Memory Care"",
+        ""isDeleted"": false
+      }
+    ]
+  }
+",,"Static catalog, no POST create endpoint exposed",
+2,http://localhost:8080,getCareLevelById,Returns detail of a single care level by id.,/api/v1/care-levels/{id},GET,All authenticated roles,Content-Type: application/json,"id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""careLevel"": {
+      ""id"": 1,
+      ""levelCode"": ""MEMORY_CARE"",
+      ""levelName"": ""Memory Care"",
+      ""isDeleted"": false
+    }
+  }
+}",,,
+3,http://localhost:8080,updateCareLevelName,Only level_name can be updated; level_code is immutable.,/api/v1/care-levels/{id},PATCH,"System_Administrator, DON",Content-Type: application/json,"id (path, required)","{
+  ""levelName"": ""Memory Care Wing""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""careLevel"": {
+      ""id"": 1,
+      ""levelName"": ""Memory Care Wing""
+    }
+  }
+}",,level_code is UNIQUE + CHECK constrained to 5 fixed values,
+4,http://localhost:8080,deleteCareLevel,Sets is_deleted=true; blocked if any ACTIVE resident still references this level.,/api/v1/care-levels/{id},DELETE,System_Administrator,Content-Type: application/json,"id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""isDeleted"": true
+  }
+}",,"Soft delete only, no hard delete",
+5,http://localhost:8080,getCareLevelRates,Returns pricing per facility/care level; supports filtering to currently active rates only.,/api/v1/care-level-rates,GET,"Facility_Manager, Accountant/Billing_Staff, System_Administrator",Content-Type: application/json,"facility_id, care_level_id, active_only (query, optional)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""rates"": [
+      {
+        ""id"": 10,
+        ""careLevelId"": 1,
+        ""facilityId"": 5,
+        ""dailyRate"": 150.0,
+        ""effectiveFrom"": ""2026-01-01"",
+        ""effectiveTo"": null
+      }
+    ],
+    ""meta"": {
+      ""total"": 1
+    }
+  }
+}",,,
+6,http://localhost:8080,createCareLevelRate,"Creates a new rate for (care_level_id, facility_id); automatically closes the previous active rate's effective_to.",/api/v1/care-level-rates,POST,"Accountant/Billing_Staff, System_Administrator",Content-Type: application/json,(none),"{
+  ""careLevelId"": 1,
+  ""facilityId"": 5,
+  ""dailyRate"": 160.0,
+  ""effectiveFrom"": ""2026-07-01""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Created"",
+  ""data"": {
+    ""newRate"": {
+      ""id"": 11,
+      ""careLevelId"": 1,
+      ""facilityId"": 5,
+      ""dailyRate"": 160.0,
+      ""effectiveFrom"": ""2026-07-01"",
+      ""effectiveTo"": null
+    },
+    ""previousRateClosed"": {
+      ""id"": 10,
+      ""effectiveTo"": ""2026-06-30""
+    }
+  }
+}",,"daily_rate must be > 0; effective_from cannot be in the past (except for Accountant/Billing_Staff, System_Administrator)",
+7,http://localhost:8080,getCurrentCareLevelRates,Returns all currently active rates (effective_to IS NULL) for a facility.,/api/v1/care-level-rates/current,GET,"Facility_Manager, Accountant/Billing_Staff, Admission_Staff",Content-Type: application/json,"facility_id (query, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""rates"": [
+      {
+        ""careLevelId"": 1,
+        ""facilityId"": 5,
+        ""dailyRate"": 150.0
+      }
+    ]
+  }
+}",,Used on the pricing/quote screen during intake consultation,
+8,http://localhost:8080,updateCareLevelRate,Only allows editing daily_rate while effective_from is still in the future.,/api/v1/care-level-rates/{id},PUT,"Accountant/Billing_Staff, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""dailyRate"": 170.0
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""rate"": {
+      ""id"": 12,
+      ""dailyRate"": 170.0
+    }
+  }
+}",,An already-active rate must be superseded by a new record instead of edited,
+9,http://localhost:8080,deleteCareLevelRate,Hard-delete only allowed if effective_from is in the future (never applied).,/api/v1/care-level-rates/{id},DELETE,System_Administrator,Content-Type: application/json,"id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""deleted"": true
+  }
+}",,,
+10,http://localhost:8080,getResidents,"List of resident profiles, filterable by status/bed/name search.",/api/v1/residents,GET,"Nurse, CNA, DON, Admission_Staff, Facility_Manager, System_Administrator",Content-Type: application/json,"status, bed_id, search, page, page_size (query, optional)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""residents"": [
+      {
+        ""id"": 101,
+        ""firstName"": ""John"",
+        ""lastName"": ""Doe"",
+        ""currentCareLevel"": ""MEMORY_CARE""
+      }
+    ],
+    ""meta"": {
+      ""total"": 1,
+      ""page"": 1,
+      ""pageSize"": 10
+    }
+  }
+}",,current_care_level is a derived field (joined from resident_care_level_history),
+11,http://localhost:8080,getResidentById,"Returns full demographic info, excluding sensitive info.",/api/v1/residents/{id},GET,"Nurse, CNA, DON, Admission_Staff, Facility_Manager, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""firstName"": ""John"",
+  ""middleName"": ""Robert"",
+  ""lastName"": ""Doe"",
+  ""dateOfBirth"": ""1945-05-15"",
+  ""gender"": ""MALE"",
+  ""maritalStatus"": ""MARRIED"",
+  ""religionPreference"": ""NONE"",
+  ""addressId"": 20
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": 101,
+      ""firstName"": ""John"",
+      ""middleName"": ""Robert"",
+      ""lastName"": ""Doe"",
+      ""dateOfBirth"": ""1945-05-15"",
+      ""gender"": ""MALE"",
+      ""status"": ""ACTIVE""
+    }
+  }
+}",,,
+12,http://localhost:8080,createResident,"Creates a new resident, defaulting status=PENDING, is_chart_locked=false.",/api/v1/residents,POST,"Admission_Staff, System_Administrator",Content-Type: application/json,(none),"{
+  ""firstName"": ""Susan"",
+  ""middleName"": ""Ann"",
+  ""lastName"": ""Harris"",
+  ""dateOfBirth"": ""1948-11-23"",
+  ""gender"": ""FEMALE"",
+  ""maritalStatus"": ""WIDOWED"",
+  ""religionPreference"": ""CHRISTIANITY"",
+  ""addressId"": 45
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": ""a1b2c3d4-..."",
+      ""firstName"": ""Susan"",
+      ""lastName"": ""Harris"",
+      ""status"": ""PENDING""
+    }
+  }
+}",,bed_id is not set at creation; must go through the separate assign-bed endpoint,
+13,http://localhost:8080,updateResident,Updates basic demographic information.,/api/v1/residents/{id},PATCH,"Nurse, CNA (if not locked), Admission_Staff, DON, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""firstName"": ""Johnny"",
+  ""maritalStatus"": ""WIDOWED""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": 101,
+      ""firstName"": ""Johnny""
+    }
+  }
+}",,,
+14,http://localhost:8080,updateResidentStatus,Changes status (PENDING/ACTIVE/DISCHARGED/DECEASED) with automatic side-effects.,/api/v1/residents/{id}/status,PATCH,"DON, Admission_Staff, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""status"": ""DISCHARGED"",
+  ""reason"": ""Family relocation"",
+  ""effectiveDate"": ""2026-07-07""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": 101,
+      ""status"": ""DISCHARGED""
+    }
+  }
+}",,DISCHARGED/DECEASED auto-clears bed_id; DECEASED auto-locks the chart,
+15,http://localhost:8080,assignResidentBed,"Assigns bed_id to resident, checking bed availability.",/api/v1/residents/{id}/assign-bed,PATCH,"Nurse, Admission_Staff, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""bedId"": 402
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": 101,
+      ""bedId"": 402
+    }
+  }
+}",,,
+16,http://localhost:8080,lockResidentChart,"Sets is_chart_locked=true, blocking all clinical modifications.",/api/v1/residents/{id}/lock-chart,PATCH,"DON, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""reason"": ""Discharge file audit completed""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": 101,
+      ""isChartLocked"": true
+    }
+  }
+}",,reason is required for audit logging,
+17,http://localhost:8080,unlockResidentChart,Sets is_chart_locked=false.,/api/v1/residents/{id}/unlock-chart,PATCH,"DON, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""reason"": ""Late entry of medication documentation error""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""resident"": {
+      ""id"": 101,
+      ""isChartLocked"": false
+    }
+  }
+}",,reason is required for audit logging,
+18,http://localhost:8080,deleteResident,Hard delete is not supported via public API due to PHI retention requirements.,/api/v1/residents/{id},DELETE,Not permitted via API,Content-Type: application/json,"id (path, required)",,,,Fully blocked at the API layer,
+19,http://localhost:8080,getResidentSensitiveInfo,Returns SSN/MRN/insurance/bank data masked; MFA required to reveal full values.,/api/v1/residents/{resident_id}/sensitive-info,GET,"System_Administrator, Accountant/Billing_Staff, DON",Content-Type: application/json,"resident_id (path, required); reveal (query, optional)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""ssnMasked"": ""***-**-6789"",
+    ""medicalRecordNumberMasked"": ""MRN-****5"",
+    ""primaryInsuranceId"": ""INS-99231"",
+    ""bankAccount"": ""XXXXXX1234""
+  }
+}",,reveal=true requires VIEW_FULL_PHI permission + detailed audit logging,
+20,http://localhost:8080,createResidentSensitiveInfo,"Creates a new record (one per resident only, UNIQUE resident_id); server encrypts with AES-256.",/api/v1/residents/{resident_id}/sensitive-info,POST,"System_Administrator, Admission_Staff",Content-Type: application/json,"resident_id (path, required)","{
+  ""ssn"": ""123456789"",
+  ""medicalRecordNumber"": ""MRN12345"",
+  ""primaryInsuranceId"": ""INS-99231"",
+  ""bankAccount"": ""1234567890""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Created"",
+  ""data"": {
+    ""residentId"": 101,
+    ""encrypted"": true
+  }
+}",,Plaintext values are never returned in logs,
+21,http://localhost:8080,updateResidentSensitiveInfo,"Updates the full record, typically used when bank/insurance details change.",/api/v1/residents/{resident_id}/sensitive-info,PUT,"System_Administrator, Accountant/Billing_Staff",Content-Type: application/json,"resident_id (path, required)","{
+  ""ssn"": ""000112222"",
+  ""medicalRecordNumber"": ""MRN-998877"",
+  ""primaryInsuranceId"": ""INS-ABC-999"",
+  ""bankAccount"": ""1122334455""
+}","
+{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""sensitiveInfo"": {
+      ""id"": 8,
+      ""residentId"": ""9f3a1c2e-...""
+    }
+  }
+}",,"Audit log records which fields changed, never the plaintext values",
+22,http://localhost:8080,deleteResidentSensitiveInfo,Deletes data to comply with a legal right-to-erasure request.,/api/v1/residents/{resident_id}/sensitive-info,DELETE,System_Administrator,Content-Type: application/json,"resident_id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""deleted"": true
+  }
+}",,Typically accompanied by a separate legal process outside the system,
+23,http://localhost:8080,getResidentCareLevelHistory,Returns the full history of care level changes for a resident.,/api/v1/residents/{resident_id}/care-level-history,GET,"Nurse, CNA, DON, Doctor/Clinical_Specialist, System_Administrator",Content-Type: application/json,"resident_id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""careLevelHistory"": [
+      {
+        ""id"": ""h1..."",
+        ""careLevelId"": 4,
+        ""levelCode"": ""SKILLED_NURSING"",
+        ""startDate"": ""2025-04-01"",
+        ""endDate"": null
+      }
+    ]
+  }
+}",,Sorted by start_date DESC,
+24,http://localhost:8080,transitionResidentCareLevel,"Creates a new history record, automatically closing the current record's end_date.",/api/v1/residents/{resident_id}/care-level-history,POST,"Nurse, DON, Doctor/Clinical_Specialist, System_Administrator",Content-Type: application/json,"resident_id (path, required)","{
+  ""careLevelId"": 4,
+  ""startDate"": ""2026-07-10""
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Success"",
+  ""data"": {
+    ""newRecord"": {
+      ""id"": ""h3..."",
+      ""careLevelId"": 4,
+      ""startDate"": ""2026-07-10"",
+      ""endDate"": null
+    },
+    ""closedRecord"": {
+      ""id"": ""h1..."",
+      ""endDate"": ""2026-07-10""
+    }
+  }
+}",,start_date must be after the current record's start_date,
+25,http://localhost:8080,getCareLevelActiveSummary,"Count of active residents per care level, filterable by facility.",/api/v1/care-level-history/active-summary,GET,"Facility_Manager, DON, System_Administrator",Content-Type: application/json,"facility_id (query, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""summary"": [
+      {
+        ""levelCode"": ""MEMORY_CARE"",
+        ""activeResidentCount"": 34
+      }
+    ]
+  }
+}",,Used for the operations dashboard,
+26,http://localhost:8080,updateCareLevelHistory,Only allows editing non-current records; a reason is required.,/api/v1/care-level-history/{id},PATCH,"DON, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""careLevelId"": 4,
+  ""startDate"": ""2025-04-05"",
+  ""reason"": ""Correction of historical data-entry error""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""careLevelHistory"": {
+      ""id"": ""h1..."",
+      ""careLevelId"": 4
+    }
+  }
+}",,Use endpoint 7.2 to properly transition the current record instead,
+27,http://localhost:8080,deleteCareLevelHistory,"Fully blocked, including for System_Administrator.",/api/v1/care-level-history/{id},DELETE,Not permitted via API,Content-Type: application/json,"id (path, required)",,,,Mandatory retention data; deletion via API is not allowed,
+28,http://localhost:8080,getContacts,"List of contacts, supports search and filtering of soft-deleted records.",/api/v1/contacts,GET,"Admission_Staff, Facility_Manager, Accountant/Billing_Staff, System_Administrator",Content-Type: application/json,"search, include_deleted, page, page_size (query, optional)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contacts"": [
+      {
+        ""id"": 1,
+        ""firstName"": ""Michael"",
+        ""lastName"": ""Anderson"",
+        ""phoneSecondary"": null,
+        ""isDeleted"": false,
+        ""createdAt"": ""2026-07-04T09:00:00-04:00""
+      }
+    ]
+  }
+}",,,
+29,http://localhost:8080,getContactById,Returns detail of a single contact by id.,/api/v1/contacts/{id},GET,"Admission_Staff, Facility_Manager, System_Administrator",Content-Type: application/json,"id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contact"": {
+      ""id"": 1,
+      ""firstName"": ""Michael"",
+      ""lastName"": ""Anderson""
+    }
+  }
+}",,,
+30,http://localhost:8080,createContact,Creates a new contact (not yet linked to any resident).,/api/v1/contacts,POST,"Admission_Staff, System_Administrator",Content-Type: application/json,(none),"{
+  ""firstName"": ""Michael"",
+  ""middleName"": ""James"",
+  ""lastName"": ""Anderson"",
+  ""phonePrimary"": ""1-212-555-0143"",
+  ""phoneSecondary"": ""1-212-555-0199"",
+  ""email"": ""michael.anderson@example.com"",
+  ""addressId"": 102
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contact"": {
+      ""id"": 25,
+      ""firstName"": ""Michael"",
+      ""lastName"": ""Anderson""
+    }
+  }
+}",,"phone_primary is required, format 1-XXX-XXX-XXXX",
+31,http://localhost:8080,updateContact,Updates contact details; server automatically updates updated_at.,/api/v1/contacts/{id},PATCH,"Admission_Staff, System_Administrator",Content-Type: application/json,"id (path, required)","{
+  ""phoneSecondary"": ""1-212-555-0199""
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contact"": {
+      ""id"": 1,
+      ""phoneSecondary"": ""1-212-555-0199""
+    }
+  }
+}",,,
+32,http://localhost:8080,deleteContact,Sets is_deleted=true; blocked if the contact is guarantor for an ACTIVE resident.,/api/v1/contacts/{id},DELETE,System_Administrator,Content-Type: application/json,"id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contact"": {
+      ""id"": 1,
+      ""isDeleted"": true
+    }
+  }
+}",,,
+33,http://localhost:8080,getResidentsByContact,Returns residents linked to this contact.,/api/v1/contacts/{id}/residents,GET,"Admission_Staff, Facility_Manager, System_Administrator",Content-Type: application/json,"id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""residents"": [
+      {
+        ""residentId"": ""9f3a1c2e-..."",
+        ""firstName"": ""Robert"",
+        ""lastName"": ""Anderson"",
+        ""relationshipType"": ""SON""
+      }
+    ]
+  }
+}",,Useful when one contact is family to multiple residents,
+34,http://localhost:8080,getResidentContacts,"Returns all contacts linked to a resident, with role/financial split details.",/api/v1/residents/{resident_id}/contacts,GET,"Nurse, CNA, DON, Admission_Staff, Accountant/Billing_Staff, System_Administrator",Content-Type: application/json,"resident_id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contacts"": [
+      {
+        ""id"": 1,
+        ""contactId"": 1,
+        ""relationshipType"": ""SON"",
+        ""isGuarantor"": true,
+        ""isEmergencyContact"": true,
+        ""isPrimary"": true,
+        ""financialResponsibilityPct"": 60.0
+      }
+    ]
+  }
+}",,,
+35,http://localhost:8080,createResidentContact,Creates a new resident-contact link with a specific role.,/api/v1/residents/{resident_id}/contacts,POST,"Admission_Staff, System_Administrator",Content-Type: application/json,"resident_id (path, required)","{
+  ""contactId"": 3,
+  ""relationshipType"": ""LEGAL_GUARDIAN"",
+  ""isGuarantor"": true,
+  ""isEmergencyContact"": true,
+  ""isPrimary"": false,
+  ""financialResponsibilityPct"": 40.0
+}","{
+  ""statusCode"": 201,
+  ""message"": ""Success"",
+  ""data"": {
+    ""residentContact"": {
+      ""id"": 25,
+      ""contactId"": 3,
+      ""relationshipType"": ""LEGAL_GUARDIAN""
+    }
+  }
+}",,Only one is_primary=true per resident at a time (previous contact auto-set to false),
+36,http://localhost:8080,updateResidentContact,"Updates relationship_type, is_guarantor, financial_responsibility_pct, etc. of an existing link.",/api/v1/residents/{resident_id}/contacts/{id},PATCH,"Admission_Staff, System_Administrator",Content-Type: application/json,"resident_id, id (path, required)","{
+  ""financialResponsibilityPct"": 50.0
+}","{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""residentContact"": {
+      ""id"": 1,
+      ""financialResponsibilityPct"": 50.0
+    }
+  }
+}",,Re-applies total % and single-primary validation,
+37,http://localhost:8080,deleteResidentContact,Hard-deletes the resident-contact link.,/api/v1/residents/{resident_id}/contacts/{id},DELETE,"Admission_Staff, System_Administrator",Content-Type: application/json,"resident_id, id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""deleted"": true
+  }
+}",,"No PHI involved, hard delete allowed",
+38,http://localhost:8080,getResidentGuarantorContact,Quickly returns the guarantor contact for billing purposes.,/api/v1/residents/{resident_id}/contacts/guarantor,GET,"Accountant/Billing_Staff, Admission_Staff, System_Administrator",Content-Type: application/json,"resident_id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contact"": {
+      ""id"": 1,
+      ""firstName"": ""Michael"",
+      ""isGuarantor"": true
+    }
+  }
+}",,Used on the billing/invoice screen,
+39,http://localhost:8080,getResidentPrimaryContact,"Quickly returns the contact marked is_primary=true, used as the official legal point of contact.",/api/v1/residents/{resident_id}/contacts/primary,GET,"Admission_Staff, DON, System_Administrator",Content-Type: application/json,"resident_id (path, required)",none,"{
+  ""statusCode"": 200,
+  ""message"": ""Success"",
+  ""data"": {
+    ""contact"": {
+      ""id"": 1,
+      ""firstName"": ""Michael"",
+      ""isPrimary"": true
+    }
+  }
+}",,,

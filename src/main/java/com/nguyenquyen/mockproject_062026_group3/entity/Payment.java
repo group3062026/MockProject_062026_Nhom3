@@ -55,3 +55,4 @@ public class Payment {
     @Builder.Default
     private OffsetDateTime paidAt = OffsetDateTime.now();
 }
+

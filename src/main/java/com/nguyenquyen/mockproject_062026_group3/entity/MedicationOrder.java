@@ -69,3 +69,4 @@ public class MedicationOrder {
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 }
+

@@ -38,3 +38,4 @@ public class Permission {
     @Builder.Default
     private OffsetDateTime createdAt = OffsetDateTime.now();
 }
+

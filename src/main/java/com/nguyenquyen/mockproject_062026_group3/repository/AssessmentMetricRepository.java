@@ -7,3 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AssessmentMetricRepository extends JpaRepository<AssessmentMetric, Long> {
 }
+
