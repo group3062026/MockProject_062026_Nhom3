@@ -6,10 +6,11 @@ import com.nguyenquyen.mockproject_062026_group3.entity.CareTask;
 import com.nguyenquyen.mockproject_062026_group3.entity.Resident;
 import com.nguyenquyen.mockproject_062026_group3.entity.Shift;
 import com.nguyenquyen.mockproject_062026_group3.entity.ShiftAssignment;
+import com.nguyenquyen.mockproject_062026_group3.exception.AppException;
+import com.nguyenquyen.mockproject_062026_group3.exception.ErrorCode;
 import com.nguyenquyen.mockproject_062026_group3.repository.CareTaskRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.ShiftAssignmentRepository;
 import com.nguyenquyen.mockproject_062026_group3.service.CareTaskService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ import java.util.stream.Collectors;
 
             // TÌM CA LÀM VIỆC CỦA HỘ LÝ
             ShiftAssignment assignment = shiftAssignmentRepository.findConfirmedShiftForUser(currentCnaId, queryDate)
-                    .orElseThrow(() -> new EntityNotFoundException("Bạn không có lịch trực được xác nhận trong ngày " + queryDate));
+                    .orElseThrow(() -> new AppException(ErrorCode.SHIFT_ASSIGNMENT_NOT_FOUND));
 
             //  LẤY GIỜ BẮT ĐẦU VÀ KẾT THÚC TỪ DATABASE
             Shift shift = assignment.getShift();
@@ -101,9 +102,9 @@ import java.util.stream.Collectors;
         @Override
 
         public void updateTaskStatus(Long taskId, TaskStatusUpdateRequestDTO request) {
-            // Tìm Task, nếu không thấy thì ném lỗi 404
+            // Tìm Task, nếu không thấy thì ném lỗi
             CareTask task = careTaskRepository.findById(taskId)
-                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc với ID: " + taskId));
+                    .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
             // Cập nhật trạng thái
             task.setStatus(request.getStatus());

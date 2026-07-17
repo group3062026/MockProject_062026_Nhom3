@@ -3,12 +3,13 @@ package com.nguyenquyen.mockproject_062026_group3.service.impl;
 import com.nguyenquyen.mockproject_062026_group3.dto.request.RecordVitalsRequestDTO;
 import com.nguyenquyen.mockproject_062026_group3.entity.CareTask;
 import com.nguyenquyen.mockproject_062026_group3.entity.VitalSign;
+import com.nguyenquyen.mockproject_062026_group3.exception.AppException;
+import com.nguyenquyen.mockproject_062026_group3.exception.ErrorCode;
 import com.nguyenquyen.mockproject_062026_group3.repository.CareTaskRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.ResidentRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.UserRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.VitalSignRepository;
 import com.nguyenquyen.mockproject_062026_group3.service.VitalSignService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,33 +34,33 @@ public class VitalSignServiceImpl implements VitalSignService {
     @Autowired
     private final ModelMapper modelMapper;
     @Transactional
-    @Override
-    public void recordVitalsAndCompleteTask(RecordVitalsRequestDTO request) {
+     @Override
+     public void recordVitalsAndCompleteTask(RecordVitalsRequestDTO request) {
 
-        Long currentUserId = 13L; //  Lấy ID từ Security Context
+         Long currentUserId = 13L; //  Lấy ID từ Security Context
 
-        // KIỂM TRA NGƯỠNG BẤT THƯỜNG (Abnormal Thresholds)
-        boolean isAbnormal = checkAbnormalVitals(request);
+         // KIỂM TRA NGƯỠNG BẤT THƯỜNG (Abnormal Thresholds)
+         boolean isAbnormal = checkAbnormalVitals(request);
 
-        //  LƯU BẢN GHI VÀO BẢNG VITAL_SIGNS
-        VitalSign vs = modelMapper.map(request, VitalSign.class);
-        vs.setResident(residentRepository.getReferenceById(request.getResidentId())); // Tối ưu: Chỉ lấy ID thay vì query nguyên object
-        vs.setRecordedBy(userRepository.getReferenceById(currentUserId));
-        vitalSignRepository.save(vs);
+         //  LƯU BẢN GHI VÀO BẢNG VITAL_SIGNS
+         VitalSign vs = modelMapper.map(request, VitalSign.class);
+         vs.setResident(residentRepository.getReferenceById(request.getResidentId())); // Tối ưu: Chỉ lấy ID thay vì query nguyên object
+         vs.setRecordedBy(userRepository.getReferenceById(currentUserId));
+         vitalSignRepository.save(vs);
 
-        // CẬP NHẬT TASK
-        CareTask task = careTaskRepository.findById(request.getTaskId())
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy Task ID: " + request.getTaskId()));
+         // CẬP NHẬT TASK
+         CareTask task = careTaskRepository.findById(request.getTaskId())
+                 .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
-        task.setStatus("COMPLETED");
-        task.setCompletedAt(OffsetDateTime.now());
+         task.setStatus("COMPLETED");
+         task.setCompletedAt(OffsetDateTime.now());
 
-        // Nếu sinh hiệu có vấn đề, bật cờ đỏ cho Task
-        if (isAbnormal) {
-            task.setIsAbnormalFlagged(true);
-            log.warn("CẢNH BÁO MỨC ĐỘ CAO: Bệnh nhân ID {} có sinh hiệu bất thường! Gửi thông báo cho RN...", request.getResidentId());
+         // Nếu sinh hiệu có vấn đề, bật cờ đỏ cho Task
+         if (isAbnormal) {
+             task.setIsAbnormalFlagged(true);
+             log.warn("CẢNH BÁO MỨC ĐỘ CAO: Bệnh nhân ID {} có sinh hiệu bất thường! Gửi thông báo cho RN...", request.getResidentId());
 
-        }
+         }
 
 
     }

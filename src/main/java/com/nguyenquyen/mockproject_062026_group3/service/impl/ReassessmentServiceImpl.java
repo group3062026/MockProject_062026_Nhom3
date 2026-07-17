@@ -6,11 +6,12 @@ import com.nguyenquyen.mockproject_062026_group3.dto.response.ReassessmentDashbo
 import com.nguyenquyen.mockproject_062026_group3.entity.CareGoal;
 import com.nguyenquyen.mockproject_062026_group3.entity.CareIntervention;
 import com.nguyenquyen.mockproject_062026_group3.entity.CarePlan;
+import com.nguyenquyen.mockproject_062026_group3.exception.AppException;
+import com.nguyenquyen.mockproject_062026_group3.exception.ErrorCode;
 import com.nguyenquyen.mockproject_062026_group3.repository.CareGoalRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.CareInterventionRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.CarePlanRepository;
 import com.nguyenquyen.mockproject_062026_group3.service.ReassessmentService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
 
         // 1. Lấy bản gốc lên
         CarePlan oldPlan = carePlanRepository.findById(oldPlanId)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy Care Plan với ID: " + oldPlanId));
+                .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
         // 2. TẠO BẢN NHÁP MỚI (Version 2)
         CarePlan newPlan = new CarePlan();
@@ -83,7 +84,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
     public CarePlanReassessmentResponseDTO getCarePlanForReassessment(Long planId) {
         // 1. Lấy Plan gốc
         CarePlan plan = carePlanRepository.findById(planId)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy Care Plan với ID: " + planId));
+                .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
         // 2. Map danh sách Mục tiêu (Goals)
         List<CarePlanReassessmentResponseDTO.GoalResponseDTO> goalDTOs = plan.getCareGoals().stream()
