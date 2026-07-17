@@ -273,9 +273,14 @@ GO
 
 CREATE TABLE [care_plans] (
   [id] BIGINT IDENTITY(1,1) PRIMARY KEY,
-  [status] VARCHAR(20) NOT NULL CHECK (status IN ('DRAFT','ACTIVE','RESOLVED','DISCONTINUED')),
+  [status] VARCHAR(20) NOT NULL CHECK (status IN ('DRAFT','ACTIVE','RESOLVED','DISCONTINUED','PENDING_REVIEW')),
   [significant_change_flag] BIT NOT NULL DEFAULT (0),
   [resident_id] BIGINT NOT NULL,
+  [version] INT NOT NULL DEFAULT (1),
+  [parent_plan_id] BIGINT,
+  [review_trigger] VARCHAR(50),
+  [review_due_date] DATE,
+  [rejection_reason] NVARCHAR(1000),
   [is_deleted] BIT NOT NULL DEFAULT (0),
   [created_at] DATETIMEOFFSET(0) NOT NULL DEFAULT (SYSDATETIMEOFFSET()),
   [updated_at] DATETIMEOFFSET(0) NOT NULL DEFAULT (SYSDATETIMEOFFSET())
@@ -284,6 +289,11 @@ GO
 
 CREATE TABLE [care_goals] (
   [id] BIGINT IDENTITY(1,1) PRIMARY KEY,
+  [care_area_name] NVARCHAR(200),
+  [source_type] VARCHAR(50),
+  [goal_description] NVARCHAR(MAX),
+  [measure] NVARCHAR(200),
+  [target_date] DATE,
   [status] VARCHAR(20) NOT NULL CHECK (status IN ('IN_PROGRESS','ACHIEVED','NOT_MET')),
   [care_plan_id] BIGINT NOT NULL
 )
@@ -292,6 +302,8 @@ GO
 CREATE TABLE [care_interventions] (
   [id] BIGINT IDENTITY(1,1) PRIMARY KEY,
   [assigned_role] VARCHAR(50) NOT NULL,
+  [description] NVARCHAR(MAX) NOT NULL,
+  [frequency] NVARCHAR(100),
   [care_plan_id] BIGINT NOT NULL
 )
 GO

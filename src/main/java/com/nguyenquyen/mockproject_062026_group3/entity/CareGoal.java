@@ -2,13 +2,7 @@ package com.nguyenquyen.mockproject_062026_group3.entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +17,7 @@ import lombok.Setter;
 @Entity
 @Table(name="care_goals")
 public class CareGoal {
+
 
 
   @Id
@@ -49,12 +44,17 @@ public class CareGoal {
   @Column(name="target_date")
   private LocalDate targetDate;
 
+    @Column(name = "status", nullable = false, length = 20)
+    private String status; // IN_PROGRESS, ACHIEVED, NOT_MET
 
-  private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "care_plan_id", nullable = false)
+    private CarePlan carePlan;
 
 
-  @ManyToOne
-  @JoinColumn(name="care_plan_id")
-  private CarePlan carePlan;
+
+
+
 
 }

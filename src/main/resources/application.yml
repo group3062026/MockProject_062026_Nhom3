@@ -2,14 +2,16 @@ spring:
   application:
     name: MockProject_062026_Group3
   datasource:
-    url: jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=nursing_home_db;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=nursing_home_db;encrypt=true;trustServerCertificate=true
     username: sa
+
     password: 12345678
+
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
