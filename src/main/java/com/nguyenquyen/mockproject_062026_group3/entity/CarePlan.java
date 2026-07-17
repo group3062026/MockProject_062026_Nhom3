@@ -52,5 +52,7 @@ public class CarePlan {
     @Column(name = "updated_at", nullable = false)
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
+  @Column(name = "rejection_reason", length = 1000)
+  private String rejectionReason;
 }
 
