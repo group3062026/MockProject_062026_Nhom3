@@ -1,0 +1,159 @@
+### ============================================================
+### IDTSignatureController - API Tests
+### Base URL: http://localhost:8080/api/v1/care-plans/{carePlanId}/idt-signatures
+### sc-036 - IDT Acknowledgment
+### ============================================================
+
+### [1] GET IDT signatures - care plan có signatures
+GET http://localhost:8080/api/v1/care-plans/1/idt-signatures
+X-User-Role: DON
+
+###
+
+### [2] GET IDT signatures - as ADMIN
+GET http://localhost:8080/api/v1/care-plans/1/idt-signatures
+X-User-Role: ADMIN
+
+###
+
+### [3] GET IDT signatures - care plan chưa có ai ký
+GET http://localhost:8080/api/v1/care-plans/2/idt-signatures
+X-User-Role: DON
+
+###
+
+### [4] GET IDT signatures - care plan not found
+GET http://localhost:8080/api/v1/care-plans/9999/idt-signatures
+X-User-Role: DON
+
+###
+
+### [5] POST submit IDT signature - PHYSICIAN ký, có comments
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: PHYSICIAN
+
+{
+  "userId": 1,
+  "comments": "Reviewed and acknowledged. Care plan aligns with medical orders."
+}
+
+###
+
+### [6] POST submit IDT signature - DIETITIAN ký, có comments
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: DIETITIAN
+
+{
+  "userId": 2,
+  "comments": "Nutritional goals reviewed. Diet plan consistent with care plan."
+}
+
+###
+
+### [7] POST submit IDT signature - không có comments (null)
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: PHYSICIAN
+
+{
+  "userId": 3,
+  "comments": null
+}
+
+###
+
+### [8] POST submit IDT signature - care plan khác
+POST http://localhost:8080/api/v1/care-plans/2/idt-signatures
+Content-Type: application/json
+X-User-Role: PHYSICIAN
+
+{
+  "userId": 1,
+  "comments": "Acknowledged for care plan 2."
+}
+
+###
+
+### [9] POST submit IDT signature - duplicate (user đã ký rồi -> 409 CONFLICT)
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: PHYSICIAN
+
+{
+  "userId": 1,
+  "comments": "Trying to sign again"
+}
+
+###
+
+### [10] POST submit IDT signature - user not found
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: PHYSICIAN
+
+{
+  "userId": 9999,
+  "comments": "Test with invalid user"
+}
+
+###
+
+### [11] POST submit IDT signature - care plan not found
+POST http://localhost:8080/api/v1/care-plans/9999/idt-signatures
+Content-Type: application/json
+X-User-Role: DIETITIAN
+
+{
+  "userId": 1,
+  "comments": "Test with invalid care plan"
+}
+
+###
+
+### [12] FORBIDDEN - NURSE không được GET (chỉ DON/ADMIN)
+GET http://localhost:8080/api/v1/care-plans/1/idt-signatures
+X-User-Role: NURSE
+
+###
+
+### [13] FORBIDDEN - DON không được POST (chỉ PHYSICIAN/DIETITIAN)
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: DON
+
+{
+  "userId": 1,
+  "comments": "DON trying to sign"
+}
+
+###
+
+### [14] FORBIDDEN - CNA không được POST
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "userId": 1,
+  "comments": "CNA trying to sign"
+}
+
+###
+
+### [15] UNAUTHORIZED - không có role header (GET)
+GET http://localhost:8080/api/v1/care-plans/1/idt-signatures
+
+###
+
+### [16] UNAUTHORIZED - không có role header (POST)
+POST http://localhost:8080/api/v1/care-plans/1/idt-signatures
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "comments": "No auth header"
+}
+
+###

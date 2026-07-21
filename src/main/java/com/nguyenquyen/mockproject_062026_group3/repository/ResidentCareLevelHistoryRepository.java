@@ -13,25 +13,24 @@ import java.util.Optional;
 @Repository
 public interface ResidentCareLevelHistoryRepository extends JpaRepository<ResidentCareLevelHistory, Long> {
     boolean existsByCareLevelIdAndEndDateIsNullAndResidentStatus(Long careLevelId, String status);
-    
+
     // Find the current active care level record for a resident
-    java.util.Optional<ResidentCareLevelHistory> findByResidentIdAndEndDateIsNull(Long residentId);
+    Optional<ResidentCareLevelHistory> findByResidentIdAndEndDateIsNull(Long residentId);
     
     // Find history records for a resident sorted by start date descending
-    java.util.List<ResidentCareLevelHistory> findAllByResidentIdOrderByStartDateDesc(Long residentId);
+    List<ResidentCareLevelHistory> findAllByResidentIdOrderByStartDateDesc(Long residentId);
 
-  Optional<ResidentCareLevelHistory>
-  findFirstByResidentIdAndEndDateIsNullOrderByStartDateDesc(Long residentId);
+    Optional<ResidentCareLevelHistory> findFirstByResidentIdAndEndDateIsNullOrderByStartDateDesc(Long residentId);
 
-}
+
 
     List<ResidentCareLevelHistory> findByResidentIdOrderByStartDateDesc(Long residentId);
 
-    List<ResidentCareLevelHistory> findAllByResidentIdOrderByStartDateDesc(Long residentId);
 
-    Optional<ResidentCareLevelHistory> findByResidentIdAndEndDateIsNull(Long residentId);
 
-    boolean existsByCareLevelIdAndEndDateIsNullAndResidentStatus(Long careLevelId, String status);
+
+
+
 
     @Query("SELECT h.careLevel.levelCode, COUNT(h) FROM ResidentCareLevelHistory h " +
            "JOIN h.resident r JOIN r.bed b JOIN b.room rm " +

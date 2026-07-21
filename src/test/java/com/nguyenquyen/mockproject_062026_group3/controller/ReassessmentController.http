@@ -1,0 +1,116 @@
+### ============================================================
+### ReassessmentController - API Tests
+### Base URL: http://localhost:8080/api/v1/reassessment
+### ============================================================
+
+### [1] GET reassessment dashboard
+GET http://localhost:8080/api/v1/reassessment
+X-User-Role: NURSE
+
+###
+
+### [2] GET reassessment dashboard - as MANAGER
+GET http://localhost:8080/api/v1/reassessment
+X-User-Role: MANAGER
+
+###
+
+### [3] GET reassessment form for a care plan
+GET http://localhost:8080/api/v1/reassessment/1
+X-User-Role: NURSE
+
+###
+
+### [4] GET reassessment form - plan not found
+GET http://localhost:8080/api/v1/reassessment/9999
+X-User-Role: NURSE
+
+###
+
+### [5] POST submit reassessment - full payload
+POST http://localhost:8080/api/v1/reassessment/1
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "reassessmentReason": "90-day cycle review",
+  "goals": [
+    {
+      "description": "Improve mobility with walker assistance",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "description": "Maintain skin integrity - no new pressure ulcers",
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "interventions": [
+    {
+      "description": "Assist with ambulation twice daily",
+      "assignedRole": "CNA",
+      "frequency": "TWICE_DAILY"
+    },
+    {
+      "description": "Reposition every 2 hours",
+      "assignedRole": "CNA",
+      "frequency": "EVERY_2_HOURS"
+    }
+  ]
+}
+
+###
+
+### [6] POST submit reassessment - significant change trigger
+POST http://localhost:8080/api/v1/reassessment/2
+Content-Type: application/json
+X-User-Role: MANAGER
+
+{
+  "reassessmentReason": "Significant Change in Status (SCS) - fall incident",
+  "goals": [
+    {
+      "description": "Prevent fall recurrence",
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "interventions": [
+    {
+      "description": "Fall prevention protocol - bed alarm, non-slip socks",
+      "assignedRole": "RN",
+      "frequency": "DAILY"
+    }
+  ]
+}
+
+###
+
+### [7] POST submit reassessment - minimal payload (no goals/interventions)
+POST http://localhost:8080/api/v1/reassessment/3
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "reassessmentReason": "Routine review",
+  "goals": [],
+  "interventions": []
+}
+
+###
+
+### [8] FORBIDDEN - wrong role (CNA cannot submit reassessment)
+POST http://localhost:8080/api/v1/reassessment/1
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "reassessmentReason": "Test",
+  "goals": [],
+  "interventions": []
+}
+
+###
+
+### [9] UNAUTHORIZED - no role header
+GET http://localhost:8080/api/v1/reassessment
+
+###

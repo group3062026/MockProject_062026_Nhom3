@@ -1,5 +1,6 @@
 package com.nguyenquyen.mockproject_062026_group3.service.impl;
 
+import com.nguyenquyen.mockproject_062026_group3.common.SecurityUtils;
 import com.nguyenquyen.mockproject_062026_group3.dto.request.RecordVitalsRequestDTO;
 import com.nguyenquyen.mockproject_062026_group3.entity.CareTask;
 import com.nguyenquyen.mockproject_062026_group3.entity.VitalSign;
@@ -33,11 +34,13 @@ public class VitalSignServiceImpl implements VitalSignService {
     private final UserRepository userRepository;
     @Autowired
     private final ModelMapper modelMapper;
+    @Autowired
+    private final SecurityUtils securityUtils;
     @Transactional
      @Override
      public void recordVitalsAndCompleteTask(RecordVitalsRequestDTO request) {
 
-         Long currentUserId = 13L; //  Lấy ID từ Security Context
+         Long currentUserId = securityUtils.getCurrentUser().getId();
 
          // KIỂM TRA NGƯỠNG BẤT THƯỜNG (Abnormal Thresholds)
          boolean isAbnormal = checkAbnormalVitals(request);

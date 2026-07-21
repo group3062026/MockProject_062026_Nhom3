@@ -59,7 +59,7 @@ public class CareTaskController {
         careTaskService.updateTaskStatus(taskId, request);
         
         return ApiResponse.<Void>builder()
-                .code(ErrorCode.SUCCESS.getCode())
+                .statusCode(ErrorCode.SUCCESS.getCode())
                 .message("Cập nhật trạng thái công việc thành công")
                 .build();
     }

@@ -5,7 +5,7 @@ spring:
     url: jdbc:sqlserver://localhost:1433;databaseName=nursing_home_db;encrypt=true;trustServerCertificate=true
     username: sa
 
-    password: 12345678
+    password: 123456
 
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 

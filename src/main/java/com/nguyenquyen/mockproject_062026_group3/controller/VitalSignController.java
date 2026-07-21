@@ -38,7 +38,7 @@ public class VitalSignController {
         vitalSignService.recordVitalsAndCompleteTask(request);
 
         return ApiResponse.<Void>builder()
-                .code(ErrorCode.SUCCESS.getCode())
+                .statusCode(ErrorCode.SUCCESS.getCode())
                 .message("Lưu sinh hiệu thành công và đã cập nhật công việc!")
                 .build();
     }

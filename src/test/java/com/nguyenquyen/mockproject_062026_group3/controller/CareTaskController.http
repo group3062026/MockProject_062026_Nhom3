@@ -1,0 +1,85 @@
+### ============================================================
+### CareTaskController - API Tests
+### Base URL: http://localhost:8080/api/v1/care-task
+### ============================================================
+
+### [1] GET care tasks - today (no date param)
+GET http://localhost:8080/api/v1/care-task/tasks
+X-User-Role: CNA
+
+###
+
+### [2] GET care tasks - specific date
+GET http://localhost:8080/api/v1/care-task/tasks?localDate=2026-07-10
+X-User-Role: NURSE
+
+###
+
+### [3] GET care tasks - as MANAGER
+GET http://localhost:8080/api/v1/care-task/tasks?localDate=2026-07-10
+X-User-Role: MANAGER
+
+###
+
+### [4] PATCH update task status - COMPLETED
+PATCH http://localhost:8080/api/v1/care-task/statustasks/1
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "status": "COMPLETED",
+  "isAbnormalFlagged": false,
+  "notes": "Task completed successfully"
+}
+
+###
+
+### [5] PATCH update task status - MISSED
+PATCH http://localhost:8080/api/v1/care-task/statustasks/2
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "status": "MISSED",
+  "isAbnormalFlagged": true,
+  "notes": "Resident was not available"
+}
+
+###
+
+### [6] PATCH update task status - REFUSED
+PATCH http://localhost:8080/api/v1/care-task/statustasks/3
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "status": "REFUSED",
+  "isAbnormalFlagged": false,
+  "notes": "Resident refused bathing assistance"
+}
+
+###
+
+### [7] PATCH update task status - back to PENDING
+PATCH http://localhost:8080/api/v1/care-task/statustasks/4
+Content-Type: application/json
+X-User-Role: ADMIN
+
+{
+  "status": "PENDING",
+  "isAbnormalFlagged": false,
+  "notes": null
+}
+
+###
+
+### [8] FORBIDDEN - wrong role
+GET http://localhost:8080/api/v1/care-task/tasks
+X-User-Role: DON
+
+###
+
+### [9] UNAUTHORIZED - no role header
+GET http://localhost:8080/api/v1/care-task/tasks
+
+###

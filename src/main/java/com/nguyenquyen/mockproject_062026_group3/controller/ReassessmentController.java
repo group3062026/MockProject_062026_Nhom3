@@ -40,7 +40,7 @@ public class ReassessmentController {
         reassessmentService.submitReassessment(planId, request);
         
         return ApiResponse.<Void>builder()
-                .code(ErrorCode.SUCCESS.getCode())
+                .statusCode(ErrorCode.SUCCESS.getCode())
                 .message(ErrorCode.SUCCESS.getMessage())
                 .build();
     }
