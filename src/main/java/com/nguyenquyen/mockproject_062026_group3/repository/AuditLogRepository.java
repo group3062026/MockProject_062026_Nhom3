@@ -33,7 +33,6 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
             @Param("start") OffsetDateTime start,
             @Param("end") OffsetDateTime end,
             Pageable pageable);
-  List<AuditLog> findByEntityIdOrderByCreatedAtDesc(Long entityId);
 
 
     @Query("SELECT a FROM AuditLog a WHERE a.tableName = :tableName AND a.performedAt BETWEEN :start AND :end")
