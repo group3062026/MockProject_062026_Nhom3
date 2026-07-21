@@ -12,7 +12,16 @@ public interface ResidentContactRepository extends JpaRepository<ResidentContact
 
     List<ResidentContact> findByContactId(Long contactId);
 
+    List<ResidentContact> findByResidentId(Long residentId);
+
+    Optional<ResidentContact> findByResidentIdAndId(Long residentId, Long id);
+
+    Optional<ResidentContact> findByResidentIdAndIsGuarantorTrue(Long residentId);
+
+    Optional<ResidentContact> findByResidentIdAndIsPrimaryTrue(Long residentId);
+
     boolean existsByContactIdAndIsGuarantorTrueAndResidentStatusAndResidentIsDeletedFalse(
             Long contactId, String residentStatus);
 }
+
 

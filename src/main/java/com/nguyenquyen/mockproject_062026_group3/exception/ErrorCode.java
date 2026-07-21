@@ -29,6 +29,9 @@ public enum ErrorCode {
     RESIDENT_ALREADY_EXISTS(3002, "Resident already exists", HttpStatus.CONFLICT),
     CARE_LEVEL_NOT_FOUND(3003, "Care level not found", HttpStatus.NOT_FOUND),
     ADMISSION_NOT_FOUND(3004, "Admission record not found", HttpStatus.NOT_FOUND),
+    CONTACT_NOT_FOUND(3005, "Contact not found", HttpStatus.NOT_FOUND),
+    RESIDENT_CONTACT_NOT_FOUND(3006, "Resident-contact link not found", HttpStatus.NOT_FOUND),
+    CARE_LEVEL_HISTORY_NOT_FOUND(3007, "Care level history record not found", HttpStatus.NOT_FOUND),
 
     // Facility & Infrastructure Domain (4000 - 4999)
     FACILITY_NOT_FOUND(4001, "Facility not found", HttpStatus.NOT_FOUND),
