@@ -45,6 +45,15 @@ public enum ErrorCode {
     MEDICATION_ORDER_NOT_FOUND(5003, "Medication order not found", HttpStatus.NOT_FOUND),
     VITAL_SIGN_NOT_FOUND(5004, "Vital sign record not found", HttpStatus.NOT_FOUND),
 
+    // M3 - eMAR Domain (5200 - 5299)
+    MAR_RESIDENT_NOT_FOUND(5201, "Resident not found", HttpStatus.NOT_FOUND),
+    MAR_NO_ACTIVE_ORDERS(5202, "No active medication orders found for this resident", HttpStatus.NOT_FOUND),
+    MAR_NO_SCHEDULES(5203, "No medication schedules found", HttpStatus.NOT_FOUND),
+    MAR_INVALID_SHIFT(5204, "Invalid shift parameter. Must be DAY, EVENING, or NIGHT", HttpStatus.BAD_REQUEST),
+    MAR_INVALID_DATE_RANGE(5205, "Invalid date range. End date must be after start date", HttpStatus.BAD_REQUEST),
+    MAR_FACILITY_REQUIRED(5206, "Facility ID is required", HttpStatus.BAD_REQUEST),
+    MAR_PDF_GENERATION_FAILED(5207, "Failed to generate PDF report", HttpStatus.INTERNAL_SERVER_ERROR),
+
     // Billing & Insurance Domain (6000 - 6999)
     INVOICE_NOT_FOUND(6001, "Invoice not found", HttpStatus.NOT_FOUND),
     PAYMENT_NOT_FOUND(6002, "Payment not found", HttpStatus.NOT_FOUND),
@@ -55,10 +64,48 @@ public enum ErrorCode {
     SHIFT_ASSIGNMENT_NOT_FOUND(7002, "Shift assignment not found", HttpStatus.NOT_FOUND),
     HOLIDAY_NOT_FOUND(7003, "Public holiday not found", HttpStatus.NOT_FOUND),
 
-    // Inventory & Incident Domain (8000 - 8999)
-    INCIDENT_NOT_FOUND(8001, "Incident not found", HttpStatus.NOT_FOUND),
-    INVENTORY_ITEM_NOT_FOUND(8002, "Inventory item not found", HttpStatus.NOT_FOUND),
-    OUT_OF_STOCK(8003, "Item is out of stock", HttpStatus.BAD_REQUEST);
+    // M3 - Medication Order Domain (5400 - 5499)
+    MAR_ORDER_NOT_FOUND(5401, "Medication order not found", HttpStatus.NOT_FOUND),
+    MAR_ORDER_ALREADY_DISCONTINUED(5402, "Medication order is already discontinued", HttpStatus.BAD_REQUEST),
+    MAR_ORDER_HAS_PENDING_DOSES(5403, "Cannot discontinue order with pending doses. Please administer or reschedule first", HttpStatus.BAD_REQUEST),
+    MAR_ORDER_DUPLICATE(5404, "Duplicate medication order detected", HttpStatus.CONFLICT),
+    MAR_INVALID_SCHEDULE_TIME(5405, "Invalid schedule time format. Use HH:mm:ss", HttpStatus.BAD_REQUEST),
+    MAR_PRESCRIBER_NOT_FOUND(5406, "Prescriber not found", HttpStatus.NOT_FOUND),
+    MAR_ORDER_UPDATE_NOT_ALLOWED(5407, "Cannot update discontinued order", HttpStatus.BAD_REQUEST),
+    MAR_RESIDENT_NO_ACTIVE_ORDERS(5408, "No active medication orders found for this resident", HttpStatus.NOT_FOUND),
+    // M3 - Med-Pass Domain (5300 - 5399)
+    MAR_SESSION_EXPIRED(5301, "Med-Pass session has expired. Please start a new session", HttpStatus.BAD_REQUEST),
+    MAR_SESSION_NOT_FOUND(5302, "Med-Pass session not found", HttpStatus.NOT_FOUND),
+    MAR_SCHEDULE_NOT_FOUND(5304, "Medication schedule not found", HttpStatus.NOT_FOUND),
+    MAR_BARCODE_MISMATCH(5305, "Barcode verification failed", HttpStatus.BAD_REQUEST),
+    MAR_TIME_WINDOW_EXCEPTION(5306, "Outside medication time window", HttpStatus.BAD_REQUEST),
+    MAR_OVERRIDE_REASON_REQUIRED(5307, "Override reason is required", HttpStatus.BAD_REQUEST),
+    MAR_OTHER_REASON_REQUIRED(5308, "Other reason text is required when override reason is OTHER", HttpStatus.BAD_REQUEST),
+    MAR_CLINICAL_JUSTIFICATION_REQUIRED(5309, "Clinical justification must be confirmed", HttpStatus.BAD_REQUEST),
+    MAR_WITNESS_REQUIRED(5310, "Witness is required for controlled substances", HttpStatus.BAD_REQUEST),
+    MAR_ALREADY_ADMINISTERED(5311, "This medication has already been administered", HttpStatus.BAD_REQUEST),
+    MAR_OVERRIDE_REQUIRED(5312, "Override is required for this verification failure", HttpStatus.BAD_REQUEST),
+    MAR_SCAN_FAILED(5313, "Barcode scan failed. Please try again", HttpStatus.BAD_REQUEST),
+    MAR_INVALID_SESSION(5314, "Invalid session. Please start a new Med-Pass session", HttpStatus.BAD_REQUEST),// M3 - Batch & Regenerate Domain (5500 - 5599)
+    MAR_BATCH_EMPTY(5501, "Batch request cannot be empty. Please select at least one medication", HttpStatus.BAD_REQUEST),
+    MAR_BATCH_SIZE_MISMATCH(5502, "Order IDs and Schedule IDs count must match", HttpStatus.BAD_REQUEST),
+    MAR_BATCH_ORDER_NOT_FOUND(5503, "One or more medication orders not found", HttpStatus.NOT_FOUND),
+    MAR_BATCH_SCHEDULE_NOT_FOUND(5504, "One or more medication schedules not found", HttpStatus.NOT_FOUND),
+    MAR_BATCH_ALREADY_ADMINISTERED(5505, "One or more medications have already been administered", HttpStatus.BAD_REQUEST),
+    MAR_BATCH_OVERRIDE_REQUIRED(5506, "One or more medications require override. Please handle individually", HttpStatus.BAD_REQUEST),
+    MAR_BATCH_WITNESS_REQUIRED(5507, "Witness is required for controlled substances in batch", HttpStatus.BAD_REQUEST),
+    MAR_REGENERATE_ORDER_NOT_FOUND(5508, "Medication order not found for regeneration", HttpStatus.NOT_FOUND),
+    MAR_REGENERATE_ORDER_NOT_ACTIVE(5509, "Cannot regenerate schedules for discontinued or on-hold orders", HttpStatus.BAD_REQUEST),
+    MAR_REGENERATE_NO_TIMES(5510, "At least one scheduled time is required", HttpStatus.BAD_REQUEST),
+    MAR_REGENERATE_INVALID_TIME(5511, "Invalid scheduled time format. Use HH:mm:ss", HttpStatus.BAD_REQUEST),
+    // M3 - Audit Domain (5600 - 5699)
+    MAR_AUDIT_NO_DATA(5601, "No audit data found for the specified criteria", HttpStatus.NOT_FOUND),
+    MAR_AUDIT_INVALID_DATE_RANGE(5602, "Invalid date range for audit query", HttpStatus.BAD_REQUEST),
+    MAR_AUDIT_EXPORT_FAILED(5603, "Failed to export audit report", HttpStatus.INTERNAL_SERVER_ERROR),
+    MAR_PHI_ACCESS_NOT_FOUND(5604, "No PHI access logs found", HttpStatus.NOT_FOUND),
+    MAR_PHI_ACCESS_REQUIRED(5605, "Resident ID is required for PHI access log", HttpStatus.BAD_REQUEST),
+    MAR_AUDIT_ACTION_INVALID(5606, "Invalid audit action. Must be INSERT, UPDATE, or DELETE", HttpStatus.BAD_REQUEST),
+    MAR_AUDIT_ACCESS_TYPE_INVALID(5607, "Invalid access type. Must be VIEW, PRINT, EXPORT, or DOWNLOAD", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

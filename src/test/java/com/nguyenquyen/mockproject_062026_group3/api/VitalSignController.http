@@ -1,0 +1,143 @@
+### ============================================================
+### VitalSignController - API Tests
+### Base URL: http://localhost:8080/api/v1/vitalsign
+### ============================================================
+
+### [1] POST record vitals - normal readings
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "taskId": 1,
+  "residentId": 1,
+  "bloodPressureSystolic": 120,
+  "bloodPressureDiastolic": 80,
+  "heartRateBpm": 72,
+  "spo2Percentage": 98,
+  "temperatureFahrenheit": 98.6,
+  "respiratoryRate": 16,
+  "painScale": 2,
+  "notes": "Resident calm and cooperative"
+}
+
+###
+
+### [2] POST record vitals - abnormal readings (high BP, low SpO2)
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "taskId": 2,
+  "residentId": 2,
+  "bloodPressureSystolic": 180,
+  "bloodPressureDiastolic": 110,
+  "heartRateBpm": 105,
+  "spo2Percentage": 88,
+  "temperatureFahrenheit": 101.2,
+  "respiratoryRate": 24,
+  "painScale": 7,
+  "notes": "Resident complained of chest tightness. RN notified."
+}
+
+###
+
+### [3] POST record vitals - no taskId (standalone vital recording)
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "taskId": null,
+  "residentId": 3,
+  "bloodPressureSystolic": 130,
+  "bloodPressureDiastolic": 85,
+  "heartRateBpm": 78,
+  "spo2Percentage": 96,
+  "temperatureFahrenheit": 99.1,
+  "respiratoryRate": 18,
+  "painScale": 0,
+  "notes": null
+}
+
+###
+
+### [4] POST record vitals - minimal fields
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "taskId": 5,
+  "residentId": 4,
+  "bloodPressureSystolic": 115,
+  "bloodPressureDiastolic": 75,
+  "heartRateBpm": 68,
+  "spo2Percentage": 99,
+  "temperatureFahrenheit": 98.2,
+  "respiratoryRate": 14,
+  "painScale": 1,
+  "notes": null
+}
+
+###
+
+### [5] POST record vitals - as MANAGER
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+X-User-Role: MANAGER
+
+{
+  "taskId": 6,
+  "residentId": 5,
+  "bloodPressureSystolic": 125,
+  "bloodPressureDiastolic": 82,
+  "heartRateBpm": 80,
+  "spo2Percentage": 97,
+  "temperatureFahrenheit": 98.9,
+  "respiratoryRate": 17,
+  "painScale": 3,
+  "notes": "Routine morning vitals"
+}
+
+###
+
+### [6] FORBIDDEN - wrong role (DON cannot record vitals)
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+X-User-Role: DON
+
+{
+  "taskId": 1,
+  "residentId": 1,
+  "bloodPressureSystolic": 120,
+  "bloodPressureDiastolic": 80,
+  "heartRateBpm": 72,
+  "spo2Percentage": 98,
+  "temperatureFahrenheit": 98.6,
+  "respiratoryRate": 16,
+  "painScale": 0,
+  "notes": null
+}
+
+###
+
+### [7] UNAUTHORIZED - no role header
+POST http://localhost:8080/api/v1/vitalsign/recordvital
+Content-Type: application/json
+
+{
+  "taskId": 1,
+  "residentId": 1,
+  "bloodPressureSystolic": 120,
+  "bloodPressureDiastolic": 80,
+  "heartRateBpm": 72,
+  "spo2Percentage": 98,
+  "temperatureFahrenheit": 98.6,
+  "respiratoryRate": 16,
+  "painScale": 0,
+  "notes": null
+}
+
+###

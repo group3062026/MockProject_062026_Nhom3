@@ -153,4 +153,20 @@ public class ResidentController {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
                 .body(ApiResponse.error(HttpStatus.METHOD_NOT_ALLOWED.value(), "Method Not Allowed"));
     }
+
+
+
+
+  @GetMapping("/{residentId}/loc-status")
+  public ResponseEntity<ApiResponse<LocStatusResponse>> getLocStatus(
+      @PathVariable Long residentId
+  ){
+
+    return ResponseEntity.ok(
+        ApiResponse.success(
+            residentService.getLocStatus(residentId)
+        )
+    );
+
+  }
 }
