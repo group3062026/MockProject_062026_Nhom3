@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.nguyenquyen.mockproject_062026_group3.MockProjectM1ApiTests
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.879 s -- in com.nguyenquyen.mockproject_062026_group3.MockProjectM1ApiTests
