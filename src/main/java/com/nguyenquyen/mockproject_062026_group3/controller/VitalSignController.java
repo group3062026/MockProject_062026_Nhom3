@@ -12,8 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * API để ghi nhận các chỉ số sống của bệnh nhân (Vital Signs)
+
+ * API for recording patient vital signs
+
  * sc-033
+
  */
 @RestController
 @RequestMapping("/api/v1/vitalsign")
@@ -24,10 +27,10 @@ public class VitalSignController {
     private final VitalSignService vitalSignService;
 
     /**
-     * Ghi nhận các chỉ số sống của bệnh nhân và cập nhật công việc liên quan
-     * 
-     * @param request DTO chứa thông tin chỉ số sống
-     * @return Thông báo thành công
+     * Record patient vital signs and update related tasks
+     *
+     * @param request DTO containing vital sign information
+     * @return Success notification
      */
     @PostMapping("/recordvital")
     @RequireRole({"CNA", "NURSE", "MANAGER", "ADMIN"})
