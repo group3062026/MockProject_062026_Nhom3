@@ -2,10 +2,10 @@ spring:
   application:
     name: MockProject_062026_Group3
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=nursing_home_db;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=NursingHomeManagement_V3;encrypt=true;trustServerCertificate=true
     username: sa
 
-    password: 12345678
+    password: 123123
 
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
