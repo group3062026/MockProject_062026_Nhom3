@@ -1,6 +1,8 @@
--- SQL Seed Data for nursing_home_db
+USE [nursing_home_db];
+GO
 
 -- 1. Insert Default Roles
+
 INSERT INTO [roles] ([role_name], [description], [is_deleted]) VALUES
 ('System_Administrator', 'System Administrator with full access', 0),
 ('DON', 'Director of Nursing - Clinical leadership role', 0),
