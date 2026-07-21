@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "mockproject-062026-group3-collection",
-    "name": "MockProject_062026_Group3 API Collection",
-    "description": "Comprehensive Postman Collection for US Nursing Home Management System APIs (M1, Admin, M2, M3, M7)",
+    "_postman_id": "mockproject-062026-group3-full-collection",
+    "name": "MockProject_062026_Group3 Complete API Collection",
+    "description": "Full Postman Collection for Admin, M1, M2, and M3 modules.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -20,783 +20,5114 @@
       "key": "userId",
       "value": "1",
       "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "YOUR_JWT_TOKEN_HERE",
+      "type": "string"
     }
   ],
   "item": [
     {
-      "name": "1. Care Levels (APIs 1-4)",
+      "name": "Admin Module",
       "item": [
         {
-          "name": "API 1: Get Care Levels List",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "{{userRole}}"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-levels?include_deleted=false",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-levels"
-              ],
-              "query": [
-                {
-                  "key": "include_deleted",
-                  "value": "false"
+          "name": "AdminCareLevelController",
+          "item": [
+            {
+              "name": "getCareLevel [GET /care-levels]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-levels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-levels"
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 2: Get Care Level Details",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "{{userRole}}"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
               }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-levels/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-levels",
-                "1"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 3: Update Care Level Name",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "DON"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"levelName\": \"Memory Care Specialized Unit\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-levels/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-levels",
-                "1"
-              ]
+            {
+              "name": "updateCareLevelChange [PATCH /care-levels/{careLevelId}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-levels/{careLevelId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-levels",
+                    "{careLevelId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getLOCRate [GET /care-level-rates]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-level-rates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-level-rates"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createLOCRate [POST /care-level-rates]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-level-rates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-level-rates"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateLOCRate [PUT /care-level-rates/{rateId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-level-rates/{rateId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-level-rates",
+                    "{rateId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteLOCRate [DELETE /care-level-rates/{rateId}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-level-rates/{rateId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-level-rates",
+                    "{rateId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "seedSampleLOCRate [POST /care-level-rates/seed]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/care-level-rates/seed",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "care-level-rates",
+                    "seed"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
             }
-          }
+          ]
         },
         {
-          "name": "API 4: Soft Delete Care Level",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "System_Administrator"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+          "name": "AdminEquipmentController",
+          "item": [
+            {
+              "name": "getCategories [GET /categories]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "categories"
+                  ]
+                }
               }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-levels/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-levels",
-                "1"
-              ]
+            },
+            {
+              "name": "createCategory [POST /categories]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "categories"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateCategory [PUT /categories/{categoryId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories/{categoryId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "categories",
+                    "{categoryId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteCategory [DELETE /categories/{categoryId}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories/{categoryId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "categories",
+                    "{categoryId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getEquipment [GET /equipment]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createEquipment [POST /equipment]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getEquipmentDetail [GET /equipment/{equipmentId}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/{equipmentId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment",
+                    "{equipmentId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "updateEquipment [PUT /equipment/{equipmentId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/{equipmentId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment",
+                    "{equipmentId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteEquipment [DELETE /equipment/{equipmentId}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/{equipmentId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment",
+                    "{equipmentId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "patchEquipmentStatus [PATCH /equipment/{equipmentId}/status]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/{equipmentId}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment",
+                    "{equipmentId}",
+                    "status"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "assignEquipment [POST /equipment/{equipmentId}/assign]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/{equipmentId}/assign",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment",
+                    "{equipmentId}",
+                    "assign"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "unassignEquipment [POST /equipment/{equipmentId}/unassign]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/{equipmentId}/unassign",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "equipment",
+                    "{equipmentId}",
+                    "unassign"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
             }
-          }
+          ]
+        },
+        {
+          "name": "AdminFacilityController",
+          "item": [
+            {
+              "name": "getFacilityInfo [GET ]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                }
+              }
+            },
+            {
+              "name": "updateFacilityInfo [PUT ]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminIncidentSeverityController",
+          "item": [
+            {
+              "name": "getIncidentSeverityLevels [GET /incident-severity-levels]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/incident-severity-levels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "incident-severity-levels"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createSeverityLevel [POST /incident-severity-levels]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/incident-severity-levels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "incident-severity-levels"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateSeverityLevel [PUT /incident-severity-levels/{severityId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/incident-severity-levels/{severityId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "incident-severity-levels",
+                    "{severityId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getSLAConfig [GET /sla-configs]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sla-configs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sla-configs"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createSLA [POST /sla-configs]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sla-configs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sla-configs"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateSLA [PUT /sla-configs/{slaConfigId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sla-configs/{slaConfigId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sla-configs",
+                    "{slaConfigId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminRoleController",
+          "item": [
+            {
+              "name": "getRoleList [GET ]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminRoomBedController",
+          "item": [
+            {
+              "name": "getRoomList [GET /rooms]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rooms",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rooms"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createRoom [POST /rooms]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rooms",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rooms"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateRoomInfo [PUT /rooms/{roomId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rooms/{roomId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rooms",
+                    "{roomId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteRoomById [DELETE /rooms/{roomId}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rooms/{roomId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rooms",
+                    "{roomId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getBedListByRoomId [GET /rooms/{roomId}/beds]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rooms/{roomId}/beds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rooms",
+                    "{roomId}",
+                    "beds"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createBed [POST /rooms/{roomId}/beds]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rooms/{roomId}/beds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rooms",
+                    "{roomId}",
+                    "beds"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateBedStatus [PUT /beds/{bedId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/beds/{bedId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "beds",
+                    "{bedId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminStaffingConfigController",
+          "item": [
+            {
+              "name": "getStaffingRatio [GET ]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                }
+              }
+            },
+            {
+              "name": "updateStaffingRatio [PUT ]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminSupplyController",
+          "item": [
+            {
+              "name": "getSupplies [GET ]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                }
+              }
+            },
+            {
+              "name": "createSupply [POST ]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getSupplyDetail [GET /{supplyId}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{supplyId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{supplyId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "updateSupply [PUT /{supplyId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{supplyId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{supplyId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteSupply [DELETE /{supplyId}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{supplyId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{supplyId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "receiveStock [POST /{supplyId}/receive]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{supplyId}/receive",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{supplyId}",
+                    "receive"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "consumeStock [POST /{supplyId}/consume]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{supplyId}/consume",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{supplyId}",
+                    "consume"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "adjustStock [POST /{supplyId}/adjust]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{supplyId}/adjust",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{supplyId}",
+                    "adjust"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getLowStockAlerts [GET /alerts/low-stock]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/alerts/low-stock",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "alerts",
+                    "low-stock"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminUserController",
+          "item": [
+            {
+              "name": "getUsers [GET ]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                }
+              }
+            },
+            {
+              "name": "createUser [POST ]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": []
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getUserById [GET /{userId}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{userId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{userId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "updateUserById [PUT /{userId}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{userId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{userId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "changeUserStatus [PATCH /{userId}/status]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{userId}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{userId}",
+                    "status"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "resetUserPassword [POST /{userId}/password-reset]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/{userId}/password-reset",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "{userId}",
+                    "password-reset"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "2. Care Level Rates (APIs 5-9)",
+      "name": "Module 1 (M1 - Resident & Care Level)",
       "item": [
         {
-          "name": "API 5: Get Pricing Rates",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "{{userRole}}"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-level-rates?facility_id=1&care_level_id=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-level-rates"
-              ],
-              "query": [
-                {
-                  "key": "facility_id",
-                  "value": "1"
-                },
-                {
-                  "key": "care_level_id",
-                  "value": "1"
+          "name": "CareLevelController",
+          "item": [
+            {
+              "name": "getCareLevels [GET /api/v1/care-levels]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-levels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-levels"
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 6: Create New Pricing Rate",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "System_Administrator"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"careLevelId\": 1,\n  \"facilityId\": 1,\n  \"dailyRate\": 160.0,\n  \"effectiveFrom\": \"2026-08-01\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-level-rates",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-level-rates"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 7: Get Current Active Rate",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "{{userRole}}"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-level-rates/current?facility_id=1&care_level_id=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-level-rates",
-                "current"
-              ],
-              "query": [
-                {
-                  "key": "facility_id",
-                  "value": "1"
-                },
-                {
-                  "key": "care_level_id",
-                  "value": "1"
+            {
+              "name": "getCareLevelById [GET /api/v1/care-levels/{id}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-levels/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-levels",
+                    "{id}"
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 8: Update Future Pricing Rate",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "Accountant/Billing_Staff"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"dailyRate\": 175.0,\n  \"effectiveFrom\": \"2026-09-01\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-level-rates/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-level-rates",
-                "1"
-              ]
+            {
+              "name": "updateCareLevelName [PATCH /api/v1/care-levels/{id}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-levels/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-levels",
+                    "{id}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteCareLevel [DELETE /api/v1/care-levels/{id}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-levels/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-levels",
+                    "{id}"
+                  ]
+                }
+              }
             }
-          }
+          ]
         },
         {
-          "name": "API 9: Delete Future Pricing Rate",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "System_Administrator"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+          "name": "CareLevelHistoryController",
+          "item": [
+            {
+              "name": "getCareLevelActiveSummary [GET /api/v1/care-level-history/active-summary]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-history/active-summary",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-history",
+                    "active-summary"
+                  ]
+                }
               }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/care-level-rates/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "care-level-rates",
-                "1"
-              ]
+            },
+            {
+              "name": "updateCareLevelHistory [PATCH /api/v1/care-level-history/{id}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-history/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-history",
+                    "{id}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteCareLevelHistory [DELETE /api/v1/care-level-history/{id}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-history/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-history",
+                    "{id}"
+                  ]
+                }
+              }
             }
-          }
+          ]
+        },
+        {
+          "name": "CareLevelRateController",
+          "item": [
+            {
+              "name": "getCareLevelRates [GET /api/v1/care-level-rates]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-rates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-rates"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createCareLevelRate [POST /api/v1/care-level-rates]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-rates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-rates"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getCurrentCareLevelRates [GET /api/v1/care-level-rates/current]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-rates/current",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-rates",
+                    "current"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "updateCareLevelRate [PUT /api/v1/care-level-rates/{id}]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-rates/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-rates",
+                    "{id}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteCareLevelRate [DELETE /api/v1/care-level-rates/{id}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-level-rates/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-level-rates",
+                    "{id}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ContactController",
+          "item": [
+            {
+              "name": "getContacts [GET /api/v1/contacts]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "contacts"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getContactById [GET /api/v1/contacts/{id}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/contacts/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "contacts",
+                    "{id}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createContact [POST /api/v1/contacts]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "contacts"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateContact [PATCH /api/v1/contacts/{id}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/contacts/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "contacts",
+                    "{id}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteContact [DELETE /api/v1/contacts/{id}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/contacts/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "contacts",
+                    "{id}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getResidentsByContact [GET /api/v1/contacts/{id}/residents]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/contacts/{id}/residents",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "contacts",
+                    "{id}",
+                    "residents"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ResidentCareLevelHistoryController",
+          "item": [
+            {
+              "name": "getResidentCareLevelHistory [GET /api/v1/residents/{resident_id}/care-level-history]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/care-level-history",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "care-level-history"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "transitionResidentCareLevel [POST /api/v1/residents/{resident_id}/care-level-history]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/care-level-history",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "care-level-history"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ResidentContactController",
+          "item": [
+            {
+              "name": "getResidentContacts [GET /api/v1/residents/{resident_id}/contacts]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "contacts"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createResidentContact [POST /api/v1/residents/{resident_id}/contacts]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "contacts"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateResidentContact [PATCH /api/v1/residents/{resident_id}/contacts/{id}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/contacts/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "contacts",
+                    "{id}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteResidentContact [DELETE /api/v1/residents/{resident_id}/contacts/{id}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/contacts/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "contacts",
+                    "{id}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getResidentGuarantorContact [GET /api/v1/residents/{resident_id}/contacts/guarantor]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/contacts/guarantor",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "contacts",
+                    "guarantor"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getResidentPrimaryContact [GET /api/v1/residents/{resident_id}/contacts/primary]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/contacts/primary",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "contacts",
+                    "primary"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ResidentController",
+          "item": [
+            {
+              "name": "getResidents [GET /api/v1/residents]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getResidentById [GET /api/v1/residents/{id}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createResident [POST /api/v1/residents]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateResident [PATCH /api/v1/residents/{id}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateResidentStatus [PATCH /api/v1/residents/{id}/status]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}",
+                    "status"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "assignResidentBed [PATCH /api/v1/residents/{id}/assign-bed]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}/assign-bed",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}",
+                    "assign-bed"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "lockResidentChart [PATCH /api/v1/residents/{id}/lock-chart]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}/lock-chart",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}",
+                    "lock-chart"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "unlockResidentChart [PATCH /api/v1/residents/{id}/unlock-chart]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}/unlock-chart",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}",
+                    "unlock-chart"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteResident [DELETE /api/v1/residents/{id}]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{id}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getLocStatus [GET /api/v1/residents/{residentId}/loc-status]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{residentId}/loc-status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{residentId}",
+                    "loc-status"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ResidentSensitiveInfoController",
+          "item": [
+            {
+              "name": "getResidentSensitiveInfo [GET /api/v1/residents/{resident_id}/sensitive-info]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/sensitive-info",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "sensitive-info"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createResidentSensitiveInfo [POST /api/v1/residents/{resident_id}/sensitive-info]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/sensitive-info",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "sensitive-info"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "updateResidentSensitiveInfo [PUT /api/v1/residents/{resident_id}/sensitive-info]",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/sensitive-info",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "sensitive-info"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "deleteResidentSensitiveInfo [DELETE /api/v1/residents/{resident_id}/sensitive-info]",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/residents/{resident_id}/sensitive-info",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "residents",
+                    "{resident_id}",
+                    "sensitive-info"
+                  ]
+                }
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "3. Residents (APIs 10-18)",
+      "name": "Module 2 (M2 - Clinical & Care Plan)",
       "item": [
         {
-          "name": "API 10: Get Residents List (Paginated)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "Nurse"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents?status=ACTIVE&page=1&page_size=10",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents"
-              ],
-              "query": [
-                {
-                  "key": "status",
-                  "value": "ACTIVE"
-                },
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "page_size",
-                  "value": "10"
+          "name": "CarePlanController",
+          "item": [
+            {
+              "name": "getCarePlans [GET /api/v1/care-plans]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans"
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 11: Get Resident Details",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "Nurse"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
               }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 12: Create Resident Profile",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "Admission_Staff"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"1945-05-15\",\n  \"gender\": \"Male\",\n  \"admissionDate\": \"2026-07-01\",\n  \"status\": \"ACTIVE\",\n  \"careLevelId\": 1\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 13: Update Resident Profile",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "Nurse"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+            {
+              "name": "getCarePlanDetail [GET /api/v1/care-plans/{id}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{id}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{id}"
+                  ]
+                }
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 14: Update Resident Status",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "DON"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+            {
+              "name": "GET /api/v1/care-plans/{id}/compliance-checklist",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{id}/compliance-checklist",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{id}",
+                    "compliance-checklist"
+                  ]
+                }
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"DISCHARGED\",\n  \"dischargeDate\": \"2026-07-21\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/status",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "status"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 15: Assign Bed to Resident",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "Nurse"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+            {
+              "name": "GET /api/v1/care-plans/{id}/idt-acknowledgment",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{id}/idt-acknowledgment",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{id}",
+                    "idt-acknowledgment"
+                  ]
+                }
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"bedId\": 1\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/assign-bed",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "assign-bed"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 16: Lock Resident Medical Chart",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "DON"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+            {
+              "name": "POST /api/v1/care-plans/{id}/reject",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{id}/reject",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{id}",
+                    "reject"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"lockReason\": \"Investigation pending\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/lock-chart",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "lock-chart"
-              ]
+            {
+              "name": "approveWithSign [POST /api/v1/care-plans/{id}/approve-sign]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{id}/approve-sign",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{id}",
+                    "approve-sign"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
             }
-          }
+          ]
         },
         {
-          "name": "API 17: Unlock Resident Medical Chart",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "System_Administrator"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+          "name": "CareTaskController",
+          "item": [
+            {
+              "name": "getCareTask [GET api/v1/care-task/tasks]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}api/v1/care-task/tasks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-task",
+                    "tasks"
+                  ]
+                }
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"unlockReason\": \"Investigation completed\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/unlock-chart",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "unlock-chart"
-              ]
+            {
+              "name": "updateTaskStatus [PATCH api/v1/care-task/statustasks/{taskId}]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}api/v1/care-task/statustasks/{taskId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-task",
+                    "statustasks",
+                    "{taskId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
             }
-          }
+          ]
         },
         {
-          "name": "API 18: Delete Resident (Blocked 405)",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "System_Administrator"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+          "name": "IDTSignatureController",
+          "item": [
+            {
+              "name": "getIDTSignatures [GET /api/v1/care-plans/{carePlanId}/idt-signatures]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{carePlanId}/idt-signatures",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{carePlanId}",
+                    "idt-signatures"
+                  ]
+                }
               }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1"
-              ]
+            },
+            {
+              "name": "submitIDTSignature [POST /api/v1/care-plans/{carePlanId}/idt-signatures]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/care-plans/{carePlanId}/idt-signatures",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "care-plans",
+                    "{carePlanId}",
+                    "idt-signatures"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
             }
-          }
+          ]
+        },
+        {
+          "name": "ReassessmentController",
+          "item": [
+            {
+              "name": "submitReassessment [POST /api/v1/reassessment/{planId}]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/reassessment/{planId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "reassessment",
+                    "{planId}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getReassessmentForm [GET /api/v1/reassessment/{planId}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/reassessment/{planId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "reassessment",
+                    "{planId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getDashboard [GET /api/v1/reassessment]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/reassessment",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "reassessment"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "VitalSignController",
+          "item": [
+            {
+              "name": "recordVitals [POST /api/v1/vitalsign/recordvital]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/vitalsign/recordvital",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "vitalsign",
+                    "recordvital"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "4. Resident Sensitive Info (APIs 19-22)",
+      "name": "Module 3 (M3 - Medication, MAR & Billing)",
       "item": [
         {
-          "name": "API 19: Get Sensitive Info (Masked / Revealed)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "DON"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
-              },
-              {
-                "key": "X-Access-Reason",
-                "value": "Annual audit verification"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/sensitive-info?reveal=false",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "sensitive-info"
-              ],
-              "query": [
-                {
-                  "key": "reveal",
-                  "value": "false"
+          "name": "AuditController",
+          "item": [
+            {
+              "name": "getMedicationAuditLog [GET /api/v1/audit/medication]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/audit/medication",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "audit",
+                    "medication"
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 20: Create Sensitive Info (Encrypted)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "Admission_Staff"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"ssn\": \"123456789\",\n  \"medicalRecordNumber\": \"MRN12345\",\n  \"primaryInsuranceId\": \"INS-99231\",\n  \"bankAccount\": \"1234567890\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/sensitive-info",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "sensitive-info"
-              ]
-            }
-          }
-        },
-        {
-          "name": "API 21: Update Sensitive Info",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "X-User-Role",
-                "value": "Accountant/Billing_Staff"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+            {
+              "name": "getPhiAccessLog [GET /api/v1/audit/phi-access]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/audit/phi-access",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "audit",
+                    "phi-access"
+                  ]
+                }
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"bankAccount\": \"9876543210\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/sensitive-info",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "sensitive-info"
-              ]
+            {
+              "name": "GET /api/v1",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1"
+                  ]
+                }
+              }
             }
-          }
+          ]
         },
         {
-          "name": "API 22: Delete Sensitive Info",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-User-Role",
-                "value": "System_Administrator"
-              },
-              {
-                "key": "X-User-Id",
-                "value": "{{userId}}"
+          "name": "BatchController",
+          "item": [
+            {
+              "name": "batchAdminister [POST /api/v1/mar/med-pass/batch-administer]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/batch-administer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "batch-administer"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
               }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/residents/1/sensitive-info",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "residents",
-                "1",
-                "sensitive-info"
-              ]
+            },
+            {
+              "name": "regenerateSchedules [POST /api/v1/medication-orders/{orderId}/regenerate-schedules]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/medication-orders/{orderId}/regenerate-schedules",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "medication-orders",
+                    "{orderId}",
+                    "regenerate-schedules"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
             }
-          }
+          ]
+        },
+        {
+          "name": "BillingController",
+          "item": [
+            {
+              "name": "getBillingDashboard [GET /api/v1/billing/residents/{residentId}/dashboard]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/residents/{residentId}/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "residents",
+                    "{residentId}",
+                    "dashboard"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "listInvoices [GET /api/v1/billing/residents/{residentId}/invoices]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/residents/{residentId}/invoices",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "residents",
+                    "{residentId}",
+                    "invoices"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getInvoiceDetail [GET /api/v1/billing/invoices/{invoiceId}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/invoices/{invoiceId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "invoices",
+                    "{invoiceId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getMonthlyCostSummary [GET /api/v1/billing/residents/{residentId}/monthly-cost]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/residents/{residentId}/monthly-cost",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "residents",
+                    "{residentId}",
+                    "monthly-cost"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "listPayments [GET /api/v1/billing/residents/{residentId}/payments]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/residents/{residentId}/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "residents",
+                    "{residentId}",
+                    "payments"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "listInsurancePolicies [GET /api/v1/billing/residents/{residentId}/insurance-policies]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/residents/{residentId}/insurance-policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "residents",
+                    "{residentId}",
+                    "insurance-policies"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "estimateCost [POST /api/v1/billing/residents/{residentId}/estimate-cost]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/billing/residents/{residentId}/estimate-cost",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "billing",
+                    "residents",
+                    "{residentId}",
+                    "estimate-cost"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "MarController",
+          "item": [
+            {
+              "name": "getDashboard [GET /api/v1/mar/dashboard]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "dashboard"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getResidentMar [GET /api/v1/mar/residents/{residentId}/mar]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/residents/{residentId}/mar",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "residents",
+                    "{residentId}",
+                    "mar"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "GET /api/v1/mar",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getShiftSchedule [GET /api/v1/mar/schedule/shift]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/schedule/shift",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "schedule",
+                    "shift"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "MedPassController",
+          "item": [
+            {
+              "name": "startSession [POST /api/v1/mar/med-pass/start]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/start",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "start"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "scanBarcode [POST /api/v1/mar/med-pass/scan]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/scan",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "scan"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "administerMedication [POST /api/v1/mar/med-pass/administer]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/administer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "administer"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "overrideVerification [POST /api/v1/mar/med-pass/override]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/override",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "override"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "refuseMedication [POST /api/v1/mar/med-pass/refuse]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/refuse",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "refuse"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "holdMedication [POST /api/v1/mar/med-pass/hold]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/hold",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "hold"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "MedicationOrderController",
+          "item": [
+            {
+              "name": "getMedicationOrders [GET /api/v1/medication-orders]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/medication-orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "medication-orders"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getMedicationOrderDetail [GET /api/v1/medication-orders/{orderId}]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/medication-orders/{orderId}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "medication-orders",
+                    "{orderId}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "createMedicationOrder [POST /api/v1/medication-orders]",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/medication-orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "medication-orders"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "discontinueMedicationOrder [PATCH /api/v1/medication-orders/{orderId}/discontinue]",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/medication-orders/{orderId}/discontinue",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "medication-orders",
+                    "{orderId}",
+                    "discontinue"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  // Request Body Payload\n}"
+                }
+              }
+            },
+            {
+              "name": "getResidentPendingMedications [GET /api/v1/mar/med-pass/resident/{residentId}/pending]",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Role",
+                    "value": "{{userRole}}"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/mar/med-pass/resident/{residentId}/pending",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mar",
+                    "med-pass",
+                    "resident",
+                    "{residentId}",
+                    "pending"
+                  ]
+                }
+              }
+            }
+          ]
         }
       ]
     }
