@@ -224,7 +224,7 @@ public class CarePlanService {
 
 
     return auditLogRepository
-        .findByEntityIdOrderByCreatedAtDesc(id)
+        .findByIdOrderByPerformedAtDesc(id)
         .stream()
         .map(log ->
             CareActivityResponse.builder()

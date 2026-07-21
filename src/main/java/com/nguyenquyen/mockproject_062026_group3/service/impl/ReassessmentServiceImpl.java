@@ -64,7 +64,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
         for (ReassessmentSubmitRequestDTO.GoalDTO goalDto : request.getGoals()) {
             CareGoal goal = new CareGoal();
             goal.setCarePlan(savedNewPlan);
-            goal.setDescription(goalDto.getDescription());
+            goal.setGoalDescription(goalDto.getDescription());
             goal.setStatus(goalDto.getStatus() != null ? goalDto.getStatus() : "IN_PROGRESS");
             careGoalRepository.save(goal);
         }
@@ -90,7 +90,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
         List<CarePlanReassessmentResponseDTO.GoalResponseDTO> goalDTOs = plan.getCareGoals().stream()
                 .map(g -> CarePlanReassessmentResponseDTO.GoalResponseDTO.builder()
                         .id(g.getId())
-                        .description(g.getDescription())
+                        .description(g.getGoalDescription())
                         .status(g.getStatus())
                         .build())
                 .collect(Collectors.toList());
