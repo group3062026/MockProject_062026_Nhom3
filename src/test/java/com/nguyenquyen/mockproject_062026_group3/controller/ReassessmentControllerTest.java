@@ -237,8 +237,8 @@ class ReassessmentControllerTest {
         request.setGoals(Collections.emptyList());
         request.setInterventions(Collections.emptyList());
 
-        when(reassessmentService.submitReassessment(eq(9999L), any()))
-                .thenThrow(new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
+        doThrow(new AppException(ErrorCode.CARE_PLAN_NOT_FOUND))
+                .when(reassessmentService).submitReassessment(eq(9999L), any());
 
         mockMvc.perform(post("/api/v1/reassessment/9999")
                         .header("X-User-Role", "NURSE")

@@ -67,7 +67,7 @@ class MarServiceTest {
         // Setup mock data
         mockUser = TestDataFactory.createUser(7L, "RN");
         mockResident = TestDataFactory.createResident(residentId);
-        mockOrder = TestDataFactory.createMedicationOrder(1L, mockResident, mockUser, MedicationStatus.ACTIVE);
+        mockOrder = TestDataFactory.createMedicationOrder(1L, mockResident, mockUser, MedicationStatus.ACTIVE, false);
         mockSchedule = TestDataFactory.createMedicationSchedule(1L, mockOrder, LocalTime.of(8, 0), true);
         mockLog = TestDataFactory.createMedicationLog(1L, mockOrder, mockUser, MedicationStatus.ADMINISTERED, OffsetDateTime.now());
     }
@@ -334,8 +334,8 @@ class MarServiceTest {
             Resident resident2 = TestDataFactory.createResident(2L);
             List<Resident> residents = Arrays.asList(resident1, resident2);
 
-            MedicationOrder order1 = TestDataFactory.createMedicationOrder(1L, resident1, mockUser, MedicationStatus.ACTIVE);
-            MedicationOrder order2 = TestDataFactory.createMedicationOrder(2L, resident2, mockUser, MedicationStatus.ACTIVE);
+            MedicationOrder order1 = TestDataFactory.createMedicationOrder(1L, resident1, mockUser, MedicationStatus.ACTIVE, false);
+            MedicationOrder order2 = TestDataFactory.createMedicationOrder(2L, resident2, mockUser, MedicationStatus.ACTIVE, false);
             List<MedicationOrder> orders = Arrays.asList(order1, order2);
 
             MedicationSchedule schedule1 = TestDataFactory.createMedicationSchedule(1L, order1, LocalTime.of(8, 0), true);
@@ -677,8 +677,8 @@ class MarServiceTest {
             LocalDate startDate = LocalDate.now().minusDays(7);
             LocalDate endDate = LocalDate.now();
 
-            MedicationOrder order1 = TestDataFactory.createMedicationOrder(1L, mockResident, mockUser, MedicationStatus.ACTIVE);
-            MedicationOrder order2 = TestDataFactory.createMedicationOrder(2L, mockResident, mockUser, MedicationStatus.ACTIVE);
+            MedicationOrder order1 = TestDataFactory.createMedicationOrder(1L, mockResident, mockUser, MedicationStatus.ACTIVE, false);
+            MedicationOrder order2 = TestDataFactory.createMedicationOrder(2L, mockResident, mockUser, MedicationStatus.ACTIVE, false);
             List<MedicationOrder> orders = Arrays.asList(order1, order2);
 
             MedicationSchedule schedule1 = TestDataFactory.createMedicationSchedule(1L, order1, LocalTime.of(8, 0), true);
@@ -1110,8 +1110,8 @@ class MarServiceTest {
             Resident resident2 = TestDataFactory.createResident(2L);
             List<Resident> residents = Arrays.asList(resident1, resident2);
 
-            MedicationOrder order1 = TestDataFactory.createMedicationOrder(1L, resident1, mockUser, MedicationStatus.ACTIVE);
-            MedicationOrder order2 = TestDataFactory.createMedicationOrder(2L, resident2, mockUser, MedicationStatus.ACTIVE);
+            MedicationOrder order1 = TestDataFactory.createMedicationOrder(1L, resident1, mockUser, MedicationStatus.ACTIVE, false);
+            MedicationOrder order2 = TestDataFactory.createMedicationOrder(2L, resident2, mockUser, MedicationStatus.ACTIVE, false);
             List<MedicationOrder> orders = Arrays.asList(order1, order2);
 
             MedicationSchedule schedule1 = TestDataFactory.createMedicationSchedule(1L, order1, LocalTime.of(8, 0), true);
