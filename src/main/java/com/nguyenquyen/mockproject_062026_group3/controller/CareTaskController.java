@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 /**
- * API untuk quản lý công việc chăm sóc (Care Tasks)
+
+ * API for managing care tasks
+
  * sc-032
+
  */
 @RestController
 @RequestMapping("api/v1/care-task")
@@ -24,12 +27,16 @@ import java.time.LocalDate;
 public class CareTaskController {
     
     private final CareTaskService careTaskService;
-    
+
     /**
-     * Lấy danh sách công việc chăm sóc của ca làm việc
-     * 
-     * @param localDate Ngày cần lấy công việc (nếu null sẽ lấy ngày hiện tại)
-     * @return Danh sách công việc được gom nhóm theo bệnh nhân
+
+     * Get the list of care tasks for the shift
+
+     *
+     * @param localDate Date to retrieve tasks (if null, get the current date)
+
+     * @return Grouped task list by patient
+
      */
     @GetMapping("/tasks")
     @RequireRole({"CNA", "NURSE", "MANAGER", "ADMIN"})
@@ -43,11 +50,11 @@ public class CareTaskController {
     }
     
     /**
-     * Cập nhật trạng thái công việc chăm sóc
-     * 
-     * @param taskId ID của công việc
-     * @param request DTO chứa trạng thái mới và cảnh báo (nếu có)
-     * @return Thông báo thành công
+     * Update the status of a care task
+     *
+     * @param taskId ID of the task
+     * @param request DTO containing the new status and alert (if any)
+     * @return Success message
      */
     @PatchMapping("/statustasks/{taskId}")
     @RequireRole({"CNA", "NURSE", "MANAGER", "ADMIN"})

@@ -36,69 +36,18 @@
 35,http://localhost:8080,getAuthorAccountability,Returns care plan author information,/api/v1/care-plans/{id}/author,GET,DON / Nurse,Content-Type: application/json,"id (path, required)",-,"Author name, license, created date",Display Author Accountability,Prepared by,
 36,http://localhost:8080,approveCarePlan,Approves care plan and activates it,/api/v1/care-plans/{id}/approve,POST,DON,Content-Type: application/json,"id (path, required)",{signature},Updated care plan status,Approve button,Pending Review ? Active,
 37,http://localhost:8080,rejectCarePlan,Rejects care plan and returns to draft,/api/v1/care-plans/{id}/reject,POST,DON,Content-Type: application/json,"id (path, required)",{reason},Updated care plan status,Reject button,Pending Review ? Draft,
-41,http://localhost:8080,verify_e-Signature,"Handle ""Approve requires e-signature re-auth"" request. Re-authenticate DON's Password/PIN before allowing approval.",/api/v1/auth/verify-e-signature,POST,Bearer Token (Role: DON),Content-Type: application/json,"N/A
-
-
-",,,,,
-45,http://localhost:8080,updateTaskStatus,"Allow nurses to check off a task as completed, add execution notes, or flag abnormal findings.",/api/v1/care-tasks/{taskId}/status,PUT,Bearer Token (Role:  CNA),Content-Type: application/json,"Path:
-
-
-{taskId} (UUID)
-
-
-
-
-
-
-
-",,,,,
-38,http://localhost:8080,getCarePlanDetails,"Get Care Plan DetailsRetrieve resident information, author details, and list of Goals & Interventions (Left column of the screen).",/api/v1/care-plans/{carePlanId},GET,"Bearer Token (Role: DON, ADMIN)",Content-Type: application/json,"Path:
-
-
-{carePlanId} (UUID)",,,,,
-43,http://localhost:8080,x,"Allows an Interdisciplinary Team (IDT) member to digitally acknowledge and sign off on a Care Plan, with optional comments.",/api/v1/care-plans/{carePlanId}/idt-signatures,POST,"Bearer Token (Role: PHYSICIAN, DIETITIAN)",Content-Type: application/json,"Path:
-
-
-{carePlanId} (UUID)
-
-
-",,,,,
-39,http://localhost:8080,checkCompliance,"API to calculate and return the results of 4 medical compliance criteria (CMS, MDS, Title 22).",/api/v1/care-plans/{carePlanId}/compliance-checks,GET,"Bearer Token (Role: DON, ADMIN)",Content-Type: application/json,"Path:
-
-
-{carePlanId} (UUID)",,,,,
-40,http://localhost:8080,getIDTSignatures,"Extract the list of specialists (Physician, Dietary) who have acknowledged (signed) this plan.",/api/v1/care-plans/{carePlanId}/idt-signatures,GET,"Bearer Token (Role: DON, ADMIN)",Content-Type: application/json,"Path:
-
-
-{carePlanId} (UUID)",,,,,
-42,http://localhost:8080,submitReviewDecision,Update the status of the Care Plan based on DON's decision (Approve or Reject).,/api/v1/care-plans/{carePlanId}/status,PATCH,Bearer Token (Role: DON),Content-Type: application/json,"N/A
-
-
-",,,,,
-47,http://localhost:8080,submitVitals&CompleteTask,"Save the measured vitals, automatically evaluate for abnormal readings, trigger alerts to RN if necessary, and mark the linked task as ""Done"".",/api/v1/care-tasks/{taskId}/vitals,POST,Bearer Token (Role:  CNA),Content-Type: application/json,"Path:
-
-
-{taskId} (UUID)
-
-",,,,,
-44,http://localhost:8080,getDailyTaskList,"Fetch the list of care tasks assigned to the current nurse, filtered by date, shift, or resident.",/api/v1/care-tasks,GET,Bearer Token (Role:  CNA),Content-Type: application/json,"Query:
-
-
-date (YYYY-MM-DD, default: today)
-
-
-shift (String: AM, PM, NOC)
-
-
-residentId (UUID, optional)
-
-
-status (String, optional)
-",,,,,
-46,http://localhost:8080,fetchVitalsThresholds,(Optional but recommended) Fetch the normal ranges for this specific patient so the Frontend can highlight fields in red before saving.,/api/v1/residents/{residentId}/vitals-thresholds,GET,Bearer Token (Role:  CNA),Content-Type: application/json,"Path:
-
-
-{residentId} (UUID)",,,,,
-48,http://localhost:8080,getCostEstimate,"Fetch aggregated daily/monthly cost estimates, itemized cost breakdown, and Medicare coverage status for a specific Care Plan.",/api/v1/care-plans/{carePlanId}/cost-estimate,GET,Bearer Token (Role:  DON),Content-Type: application/json,"Path:
-{carePlanId} (UUID)
-",,,,,
+41,http://localhost:8080,getDailyTaskList,,/api/v1/care-task/tasks,GET,"CNA, NURSE, MANAGER",Content-Type: application/json,localDate (vd: 2026-07-10),N/A,,,,
+42,http://localhost:8080,updateTaskStatus,,/api/v1/care-task/status/tasks/{taskId},PATCH,"CNA, NURSE, ADMIN",Content-Type: application/json,Path: {taskId},"status, isAbnormalFlagged, notes",,,,
+43,http://localhost:8080,recordVitals,,/api/v1/vitalsign/recordvital,POST,"CNA, NURSE, MANAGER",Content-Type: application/json,N/A,"taskId, residentId, bloodPressureSystolic, bloodPressureDiastolic, heartRateBpm, spo2Percentage, temperatureFahrenheit, respiratoryRate, painScale, notes",,,,
+44,http://localhost:8080,getIDTSignatures,,/api/v1/care-plans/{carePlanId}/idt-signatures,GET,"DON, ADMIN",Content-Type: application/json,Path: {carePlanId},N/A,,,,
+45,http://localhost:8080,submitIDTSignature,,/api/v1/care-plans/{carePlanId}/idt-signatures,POST,"PHYSICIAN, DIETITIAN",Content-Type: application/json,Path: {carePlanId},"userId, comments",,,,
+46,http://localhost:8080,getReassessmentDashboard,,/api/v1/reassessment,GET,"NURSE, MANAGER",Content-Type: application/json,N/A,N/A,,,,
+47,http://localhost:8080,getReassessmentForm,,/api/v1/reassessment/{id},GET,NURSE,Content-Type: application/json,Path: {id},N/A,,,,
+48,http://localhost:8080,submitReassessment,,/api/v1/reassessment/{id},POST,"NURSE, MANAGER",Content-Type: application/json,Path: {id},"reassessmentReason, goals (List), interventions (List)",,,,
+49,http://localhost:8080,getBillingDashboard,,/api/v1/billing/residents/{id}/dashboard,GET,"ADMIN, MANAGER",Content-Type: application/json,Path: {id},N/A,,,,
+50,http://localhost:8080,getInvoices,,/api/v1/billing/residents/{id}/invoices,GET,"ADMIN, MANAGER",Content-Type: application/json,"Path: {id}; Query: page, pageSize, status",N/A,,,,
+51,http://localhost:8080,getInvoiceDetail,,/api/v1/billing/invoices/{invoiceId},GET,ADMIN,Content-Type: application/json,Path: {invoiceId},N/A,,,,
+52,http://localhost:8080,getMonthlyCostSummary,,/api/v1/billing/residents/{id}/monthly-cost,GET,"ADMIN, MANAGER",Content-Type: application/json,"Path: {id}; Query: fromDate, toDate",N/A,,,,
+53,http://localhost:8080,getPayments,,/api/v1/billing/residents/{id}/payments,GET,"ADMIN, MANAGER",Content-Type: application/json,"Path: {id}; Query: page, pageSize",N/A,,,,
+54,http://localhost:8080,getInsurancePolicies,,/api/v1/billing/residents/{id}/insurance-policies,GET,ADMIN,Content-Type: application/json,Path: {id},N/A,,,,
+55,http://localhost:8080,estimateCost,,/api/v1/billing/residents/{id}/estimate-cost,POST,"ADMIN, MANAGER",Content-Type: application/json,Path: {id}; Query: estimatedDays,N/A,,,,

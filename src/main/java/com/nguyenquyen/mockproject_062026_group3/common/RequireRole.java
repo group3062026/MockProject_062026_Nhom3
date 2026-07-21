@@ -6,10 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation để xác định các role có quyền truy cập vào method
- * Sử dụng kèm với RoleCheckAspect để kiểm tra quyền
- * 
- * Ví dụ: @RequireRole({"ADMIN", "MANAGER"})
+
+ * Annotation to identify roles that have access to the method
+
+ * Used in conjunction with RoleCheckAspect to check permissions
+
+ *
+ * Example: @RequireRole({"ADMIN", "MANAGER"})
+
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

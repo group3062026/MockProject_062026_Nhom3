@@ -39,11 +39,11 @@ public class ReassessmentServiceImpl implements ReassessmentService {
     @Override
     public void submitReassessment(Long oldPlanId, ReassessmentSubmitRequestDTO request) {
 
-        // 1. Lấy bản gốc lên
+        // 1. Get the original
         CarePlan oldPlan = carePlanRepository.findById(oldPlanId)
                 .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
-        // 2. TẠO BẢN NHÁP MỚI (Version 2)
+        // 2. CREATE A NEW DRAFT (Version 2)
         CarePlan newPlan = new CarePlan();
         newPlan.setResident(oldPlan.getResident());
         newPlan.setVersion(oldPlan.getVersion() + 1); // Tăng version
@@ -60,7 +60,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
 
         CarePlan savedNewPlan = carePlanRepository.save(newPlan);
 
-        // 3. LƯU MỤC TIÊU MỚI
+        // 3. SAVE NEW GOALS
         for (ReassessmentSubmitRequestDTO.GoalDTO goalDto : request.getGoals()) {
             CareGoal goal = new CareGoal();
             goal.setCarePlan(savedNewPlan);
@@ -69,7 +69,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
             careGoalRepository.save(goal);
         }
 
-        // 4. LƯU CAN THIỆP MỚI
+        // 4. SAVE NEW INTERVENTIONS
         for (ReassessmentSubmitRequestDTO.InterventionDTO intDto : request.getInterventions()) {
             CareIntervention intervention = new CareIntervention();
             intervention.setCarePlan(savedNewPlan);
@@ -82,11 +82,11 @@ public class ReassessmentServiceImpl implements ReassessmentService {
 
     @Override
     public CarePlanReassessmentResponseDTO getCarePlanForReassessment(Long planId) {
-        // 1. Lấy Plan gốc
+        // 1. Get the original Plan
         CarePlan plan = carePlanRepository.findById(planId)
                 .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
-        // 2. Map danh sách Mục tiêu (Goals)
+        // 2. Map the list of Goals
         List<CarePlanReassessmentResponseDTO.GoalResponseDTO> goalDTOs = plan.getCareGoals().stream()
                 .map(g -> CarePlanReassessmentResponseDTO.GoalResponseDTO.builder()
                         .id(g.getId())
@@ -95,7 +95,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
                         .build())
                 .collect(Collectors.toList());
 
-        // 3. Map danh sách Can thiệp (Interventions)
+        // 3. Map of Interventions
         List<CarePlanReassessmentResponseDTO.InterventionResponseDTO> interventionDTOs = plan.getCareInterventions().stream()
                 .map(i -> CarePlanReassessmentResponseDTO.InterventionResponseDTO.builder()
                         .id(i.getId())
@@ -105,7 +105,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
                         .build())
                 .collect(Collectors.toList());
 
-        // 4. Gói tất cả vào Response DTO
+        // 4. Wrap everything in a Response DTO
         return CarePlanReassessmentResponseDTO.builder()
                 .planId(plan.getId())
                 .currentStatus(plan.getStatus())
@@ -125,22 +125,22 @@ public class ReassessmentServiceImpl implements ReassessmentService {
         String escalationMsg = null;
 
         for (CarePlan cp : plans) {
-            // Lấy tên bệnh nhân
+            // Get patient's name
             String displayName = cp.getResident().getFirstName() + " " + cp.getResident().getLastName();
 
-            // Xử lý chữ hiển thị cho Trigger
+            // Handle the text display for the Trigger
             String triggerName = "90-day cycle";
             if ("SIGNIFICANT_CHANGE".equals(cp.getReviewTrigger())) {
                 triggerName = "Significant Change (SCS)";
             }
 
-            // Tính số ngày quá hạn
+            // Calculate the number of overdue days
             Integer overdueDays = null;
             boolean isEscalated = false;
 
             if (cp.getReviewDueDate() != null && cp.getReviewDueDate().isBefore(today)) {
                 overdueDays = (int) ChronoUnit.DAYS.between(cp.getReviewDueDate(), today);
-                // Nếu trễ quá 3 ngày (Grace Period) thì báo động đỏ
+                // If there is a delay of more than 3 days (Grace Period), a red alert will be triggered.
                 if (overdueDays > 3) {
                     isEscalated = true;
                     escalatedCount++;
@@ -148,7 +148,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
                 }
             }
 
-            // Xác định Hành động & Trạng thái UI
+            // Define UI Actions and States
             String action = "Start";
             String uiStatus = "Review Due";
 
@@ -160,7 +160,7 @@ public class ReassessmentServiceImpl implements ReassessmentService {
                 requireCount++;
             } else {
                 uiStatus = "Active";
-                action = "View"; // Nếu đang Active bình thường thì chỉ cho View
+                action = "View"; // If it's active normally, only allow View
             }
 
             itemDTOs.add(ReassessmentDashboardDTO.ReassessmentItemDTO.builder()

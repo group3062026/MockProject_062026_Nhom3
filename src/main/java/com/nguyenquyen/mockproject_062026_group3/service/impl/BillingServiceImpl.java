@@ -69,13 +69,13 @@ public class BillingServiceImpl implements BillingService {
             }
         }
 
-        // Tạo danh sách các hóa đơn gần đây (RecentInvoices)
-        // Tạo danh sách các hóa đơn gần đây (RecentInvoices)
+        // Create a list of recent invoices
+
         List<BillingDashboardDTO.RecentInvoiceDTO> recentInvoices = invoices.stream()
                 .sorted((i1, i2) -> i2.getCreatedAt().compareTo(i1.getCreatedAt()))
                 .limit(5)
                 .map(inv -> {
-                    // Tính lại số tiền đã thanh toán cho RIÊNG hóa đơn này
+                    // Recalculate the amount paid for THIS invoice ONLY
                     BigDecimal paidForThisInvoice = inv.getMedicareCoveredAmount()
                             .add(inv.getMedicaidCoveredAmount())
                             .add(inv.getPrivateInsuranceCoveredAmount())
@@ -143,7 +143,7 @@ public class BillingServiceImpl implements BillingService {
                     .build();
         }).collect(Collectors.toList());
 
-        // Sử dụng các thuộc tính chuẩn xác từ PageResponse của bạn
+        // Use the correct properties from your PageResponse
         return PageResponse.<InvoiceListDTO>builder()
                 .pageNo(invoicePage.getNumber())
                 .pageSize(invoicePage.getSize())
@@ -162,7 +162,7 @@ public class BillingServiceImpl implements BillingService {
 
         Resident res = inv.getResident();
 
-        // Map chi tiết hóa đơn (Line Items)
+        // Detailed invoice map (Line Items)
         List<InvoiceDetailDTO.LineItemDTO> lineItems = inv.getLineItems().stream()
                 .map(item -> InvoiceDetailDTO.LineItemDTO.builder()
                         .id(item.getId())
@@ -172,7 +172,7 @@ public class BillingServiceImpl implements BillingService {
                         .build())
                 .collect(Collectors.toList());
 
-        // Map danh sách thanh toán
+        // Map payment list
         List<InvoiceDetailDTO.PaymentDTO> payments = paymentRepository.findByInvoiceId(invoiceId).stream()
                 .map(p -> InvoiceDetailDTO.PaymentDTO.builder()
                         .id(p.getId())
@@ -204,7 +204,7 @@ public class BillingServiceImpl implements BillingService {
     @Override
     @Transactional(readOnly = true)
     public MonthlyCostSummaryDTO getMonthlyCostSummary(Long residentId, LocalDate fromDate, LocalDate toDate) {
-        // Tạm thời trả về đối tượng rỗng, sau này có thể implement query gom nhóm dữ liệu theo tháng
+        // Temporarily returns an empty object; a query to group data by month can be implemented later.
         return MonthlyCostSummaryDTO.builder()
                 .residentId(residentId)
                 .periodStart(fromDate)
@@ -230,7 +230,7 @@ public class BillingServiceImpl implements BillingService {
                         .build()
         ).collect(Collectors.toList());
 
-        // Phân trang chuẩn xác theo PageResponse
+
         return PageResponse.<PaymentListDTO>builder()
                 .pageNo(paymentPage.getNumber())
                 .pageSize(paymentPage.getSize())

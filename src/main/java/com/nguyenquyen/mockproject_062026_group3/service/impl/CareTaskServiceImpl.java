@@ -42,16 +42,16 @@ import java.util.stream.Collectors;
 
         public CareTaskResponseDTO getCareTasks( LocalDate date) {
 
-            // Lấy ID của điều dưỡng đang đăng nhập
+            // Get the ID of the currently logged-in nurse
             Long currentCnaId = getCurrentUserId();
 
             LocalDate queryDate = (date != null) ? date : LocalDate.now();
 
-            // TÌM CA LÀM VIỆC CỦA HỘ LÝ
+            // FIND NURSING ASSISTANT SHIFTS
             ShiftAssignment assignment = shiftAssignmentRepository.findConfirmedShiftForUser(currentCnaId, queryDate)
                     .orElseThrow(() -> new AppException(ErrorCode.SHIFT_ASSIGNMENT_NOT_FOUND));
 
-            //  LẤY GIỜ BẮT ĐẦU VÀ KẾT THÚC TỪ DATABASE
+            // Get start and end times from the database
             Shift shift = assignment.getShift();
             LocalTime dbStartTime = shift.getStartTime(); // VD: 06:00
             LocalTime dbEndTime = shift.getEndTime();     // VD: 14:00
@@ -59,9 +59,11 @@ import java.util.stream.Collectors;
             OffsetDateTime startTime = OffsetDateTime.of(queryDate, dbStartTime, ZoneOffset.ofHours(7));
             OffsetDateTime endTime = OffsetDateTime.of(queryDate, dbEndTime, ZoneOffset.ofHours(7));
 
-            // XỬ LÝ CA ĐÊM (NIGHT SHIFT):
-            // Nếu ca đêm bắt đầu lúc 22:00 và kết thúc lúc 06:00 sáng hôm sau.
-            // Giờ kết thúc sẽ NHỎ HƠN giờ bắt đầu, ta phải cộng thêm 1 ngày cho endTime.
+            // HANDLING NIGHT SHIFT:
+
+            // If the night shift starts at 22:00 and ends at 06:00 the next morning.
+
+            // The end time will be LOWER than the start time, so we must add 1 day to the end time.
             if (endTime.isBefore(startTime)) {
                 endTime = endTime.plusDays(1);
             }
@@ -69,17 +71,17 @@ import java.util.stream.Collectors;
 
             List<CareTask> flatTasks = careTaskRepository.findTasksForShift(currentCnaId, startTime, endTime);
 
-            // Tính toán Progress (Hoàn thành / Tổng số)
+            // Calculate Progress (Completed / Total)
             int totalTasks = flatTasks.size();
             int completedTasks = (int) flatTasks.stream()
                     .filter(t -> "COMPLETED".equals(t.getStatus()))
                     .count();
 
-            // Gom nhóm bằng Java Stream API (Khóa chính là Object Resident)
+            // Grouping using Java Stream API (Primary key is the Resident Object)
             Map<Resident, List<CareTask>> tasksByResident = flatTasks.stream()
                     .collect(Collectors.groupingBy(t -> t.getCareIntervention().getCarePlan().getResident()));
 
-            // Map dữ liệu vào DTO để trả về cho Controller
+            // Map data to the DTO to return to the Controller
             List<CareTaskResponseDTO.ResidentTasksDTO> residentDTOs = tasksByResident.entrySet().stream()
                     .map(entry -> {
                         Resident resident = entry.getKey();
@@ -107,19 +109,19 @@ import java.util.stream.Collectors;
         @Override
 
         public void updateTaskStatus(Long taskId, TaskStatusUpdateRequestDTO request) {
-            // Tìm Task, nếu không thấy thì ném lỗi
+            // Search for the task; if not found, throw an error.
             CareTask task = careTaskRepository.findById(taskId)
                     .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
-            // Cập nhật trạng thái
+            // Update the status
             task.setStatus(request.getStatus());
 
-            // Nếu đánh dấu hoàn thành, lưu lại thời gian hoàn thành chính xác
+            // If marked as complete, save the exact completion time.
             if ("COMPLETED".equals(request.getStatus())) {
                 task.setCompletedAt(OffsetDateTime.now());
             }
 
-            // Gắn cờ cảnh báo
+            // Flag a warning
             if (Boolean.TRUE.equals(request.getIsAbnormalFlagged())) {
                 task.setIsAbnormalFlagged(true);
                 log.warn("CẢNH BÁO: Bệnh nhân có dấu hiệu bất thường ");
@@ -129,7 +131,7 @@ import java.util.stream.Collectors;
         }
 
 
-        // CÁC HÀM PHỤ TRỢ
+    // AUXILIARY FUNCTIONS
         private Long getCurrentUserId() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || !authentication.isAuthenticated()) {
