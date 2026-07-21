@@ -1,0 +1,32 @@
+package com.nguyenquyen.mockproject_062026_group3.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class OverrideVerificationResponse {
+    private Long logId;
+    private Long orderId;
+    private Long scheduleId;
+    private String status;
+    private Boolean isClinicallyJustified;
+    private String overrideReason;
+    private AdminBy administeredBy;
+    private AdminBy witnessedBy;
+    private String loggedAt;
+    private Boolean auditLogged;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AdminBy {
+        private Long id;
+        private String displayName;
+    }
+}
