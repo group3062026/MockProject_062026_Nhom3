@@ -1,0 +1,129 @@
+### ============================================================
+### BillingController - API Tests
+### Base URL: http://localhost:8080/api/v1/billing
+### ============================================================
+
+### [1] GET billing dashboard for resident
+GET http://localhost:8080/api/v1/billing/residents/1/dashboard
+X-User-Role: ADMIN
+
+###
+
+### [2] GET billing dashboard - as MANAGER
+GET http://localhost:8080/api/v1/billing/residents/2/dashboard
+X-User-Role: MANAGER
+
+###
+
+### [3] GET billing dashboard - resident not found
+GET http://localhost:8080/api/v1/billing/residents/9999/dashboard
+X-User-Role: ADMIN
+
+###
+
+### [4] GET invoices - default pagination
+GET http://localhost:8080/api/v1/billing/residents/1/invoices
+X-User-Role: ADMIN
+
+###
+
+### [5] GET invoices - with pagination params
+GET http://localhost:8080/api/v1/billing/residents/1/invoices?page=0&pageSize=5
+X-User-Role: ADMIN
+
+###
+
+### [6] GET invoices - filter by status OVERDUE
+GET http://localhost:8080/api/v1/billing/residents/1/invoices?status=OVERDUE
+X-User-Role: MANAGER
+
+###
+
+### [7] GET invoices - filter by status PAID
+GET http://localhost:8080/api/v1/billing/residents/1/invoices?status=PAID&page=0&pageSize=10
+X-User-Role: ADMIN
+
+###
+
+### [8] GET invoices - filter by status PARTIALLY_PAID
+GET http://localhost:8080/api/v1/billing/residents/1/invoices?status=PARTIALLY_PAID
+X-User-Role: ADMIN
+
+###
+
+### [9] GET invoice detail
+GET http://localhost:8080/api/v1/billing/invoices/1
+X-User-Role: ADMIN
+
+###
+
+### [10] GET invoice detail - invoice not found
+GET http://localhost:8080/api/v1/billing/invoices/9999
+X-User-Role: ADMIN
+
+###
+
+### [11] GET monthly cost summary
+GET http://localhost:8080/api/v1/billing/residents/1/monthly-cost?fromDate=2026-01-01&toDate=2026-06-30
+X-User-Role: ADMIN
+
+###
+
+### [12] GET monthly cost summary - single month
+GET http://localhost:8080/api/v1/billing/residents/1/monthly-cost?fromDate=2026-07-01&toDate=2026-07-31
+X-User-Role: MANAGER
+
+###
+
+### [13] GET payments list - default pagination
+GET http://localhost:8080/api/v1/billing/residents/1/payments
+X-User-Role: ADMIN
+
+###
+
+### [14] GET payments list - with pagination
+GET http://localhost:8080/api/v1/billing/residents/1/payments?page=0&pageSize=5
+X-User-Role: MANAGER
+
+###
+
+### [15] GET insurance policies for resident
+GET http://localhost:8080/api/v1/billing/residents/1/insurance-policies
+X-User-Role: ADMIN
+
+###
+
+### [16] GET insurance policies - resident not found
+GET http://localhost:8080/api/v1/billing/residents/9999/insurance-policies
+X-User-Role: ADMIN
+
+###
+
+### [17] POST estimate cost - 30 days
+POST http://localhost:8080/api/v1/billing/residents/1/estimate-cost?estimatedDays=30
+X-User-Role: ADMIN
+
+###
+
+### [18] POST estimate cost - 90 days
+POST http://localhost:8080/api/v1/billing/residents/1/estimate-cost?estimatedDays=90
+X-User-Role: MANAGER
+
+###
+
+### [19] POST estimate cost - 1 day
+POST http://localhost:8080/api/v1/billing/residents/2/estimate-cost?estimatedDays=1
+X-User-Role: ADMIN
+
+###
+
+### [20] FORBIDDEN - wrong role (NURSE cannot access billing)
+GET http://localhost:8080/api/v1/billing/residents/1/dashboard
+X-User-Role: NURSE
+
+###
+
+### [21] UNAUTHORIZED - no role header
+GET http://localhost:8080/api/v1/billing/residents/1/dashboard
+
+###

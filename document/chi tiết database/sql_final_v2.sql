@@ -581,7 +581,16 @@ CREATE TABLE [consumable_supplies] (
   [updated_at] DATETIMEOFFSET(0) NOT NULL DEFAULT (SYSDATETIMEOFFSET())
 )
 GO
-
+CREATE TABLE idt_signatures (
+    id          BIGINT IDENTITY(1,1) PRIMARY KEY,
+    care_plan_id BIGINT NOT NULL,
+    user_id     BIGINT NOT NULL,
+    comments    NVARCHAR(1000),
+    signed_at   DATETIMEOFFSET NOT NULL DEFAULT SYSDATETIMEOFFSET(),
+    CONSTRAINT fk_idt_care_plan FOREIGN KEY (care_plan_id) REFERENCES care_plans(id),
+    CONSTRAINT fk_idt_user      FOREIGN KEY (user_id)      REFERENCES users(id),
+    CONSTRAINT uq_idt_care_plan_user UNIQUE (care_plan_id, user_id)
+);
 CREATE INDEX [idx_users_role_id] ON [users] ("role_id")
 GO
 

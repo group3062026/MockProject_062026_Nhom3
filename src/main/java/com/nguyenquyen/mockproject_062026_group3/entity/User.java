@@ -1,14 +1,6 @@
 package com.nguyenquyen.mockproject_062026_group3.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -82,5 +75,10 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
+    /* =========================================================
+     * THÊM MỚI: Định nghĩa thuộc tính 'facilities' để Query HQL hiểu được
+     * ========================================================= */
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserFacility> facilities;
 }
 

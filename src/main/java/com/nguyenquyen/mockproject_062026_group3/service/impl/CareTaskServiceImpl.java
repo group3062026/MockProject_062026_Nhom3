@@ -10,7 +10,10 @@ import com.nguyenquyen.mockproject_062026_group3.exception.AppException;
 import com.nguyenquyen.mockproject_062026_group3.exception.ErrorCode;
 import com.nguyenquyen.mockproject_062026_group3.repository.CareTaskRepository;
 import com.nguyenquyen.mockproject_062026_group3.repository.ShiftAssignmentRepository;
+import com.nguyenquyen.mockproject_062026_group3.repository.UserRepository;
 import com.nguyenquyen.mockproject_062026_group3.service.CareTaskService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,8 @@ import java.util.stream.Collectors;
         private final CareTaskRepository careTaskRepository;
         @Autowired
         private final ShiftAssignmentRepository shiftAssignmentRepository;
+        @Autowired
+        private final UserRepository userRepository;
         @Override
 
         public CareTaskResponseDTO getCareTasks( LocalDate date) {
@@ -126,8 +131,14 @@ import java.util.stream.Collectors;
 
         // CÁC HÀM PHỤ TRỢ
         private Long getCurrentUserId() {
-            // Tạm thời hardcode trả về ID 1. Ở thực tế sẽ lấy từ Spring Security (SecurityContextHolder)
-            return 13L;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
+            String email = authentication.getName();
+            return userRepository.findByEmailAndIsDeletedFalse(email)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND))
+                    .getId();
         }
 
 

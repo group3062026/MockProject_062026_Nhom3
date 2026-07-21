@@ -14,6 +14,10 @@ import java.util.List;
 @Repository
 public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
 
+  List<AuditLog> findByIdOrderByPerformedAtDesc(Long entityId);
+
+
+
     @Query("SELECT a FROM AuditLog a WHERE a.tableName = :tableName AND a.recordId = :recordId AND a.performedAt BETWEEN :start AND :end")
     Page<AuditLog> findByTableNameAndRecordIdAndPerformedAtBetween(
             @Param("tableName") String tableName,

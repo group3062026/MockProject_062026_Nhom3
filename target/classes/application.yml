@@ -4,7 +4,9 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=nursing_home_db;encrypt=true;trustServerCertificate=true
     username: sa
+
     password: 123456
+
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
@@ -15,3 +17,24 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
+
+# JWT Configuration
+app:
+  jwt:
+    secret: VGhpc0lzQVZlcnlTZWN1cmVTZWNyZXRLZXlGb3JKV1RUb2tlbkdlbmVyYXRpb25Gb3JOdXJzaW5nSG9tZUFwcA==
+    expiration-ms: 86400000      # 24 hours
+    refresh-expiration-ms: 604800000  # 7 days
+
+# Swagger / OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+# Logging
+logging:
+  level:
+    com.nguyenquyen.mockproject_062026_group3: DEBUG
+    org.springframework.security: DEBUG
