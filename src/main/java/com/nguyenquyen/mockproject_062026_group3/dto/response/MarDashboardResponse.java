@@ -28,6 +28,7 @@ public class MarDashboardResponse {
         private int completed;
         private int overdue;
         private int held;
+        private int refused;
         private int notAvailable;
     }
 
