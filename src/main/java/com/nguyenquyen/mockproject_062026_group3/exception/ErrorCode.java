@@ -102,7 +102,10 @@ public enum ErrorCode {
     MAR_PHI_ACCESS_NOT_FOUND(5604, "No PHI access logs found", HttpStatus.NOT_FOUND),
     MAR_PHI_ACCESS_REQUIRED(5605, "Resident ID is required for PHI access log", HttpStatus.BAD_REQUEST),
     MAR_AUDIT_ACTION_INVALID(5606, "Invalid audit action. Must be INSERT, UPDATE, or DELETE", HttpStatus.BAD_REQUEST),
-    MAR_AUDIT_ACCESS_TYPE_INVALID(5607, "Invalid access type. Must be VIEW, PRINT, EXPORT, or DOWNLOAD", HttpStatus.BAD_REQUEST);
+    MAR_AUDIT_ACCESS_TYPE_INVALID(5607, "Invalid access type. Must be VIEW, PRINT, EXPORT, or DOWNLOAD", HttpStatus.BAD_REQUEST),
+
+    // M7 - Incident Management Domain (8000 - 8999)
+    INCIDENT_NOT_FOUND(8001, "Incident not found",HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
