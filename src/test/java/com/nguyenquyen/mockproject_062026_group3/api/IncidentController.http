@@ -1,0 +1,201 @@
+### ============================================================
+### IncidentController - API Tests
+### SC_043 - M7-US-03b (incident-detail-unlocked)
+### SC_044 - M7-US-03  (incident-detail-nurse)
+### Base URL: http://localhost:8080/api/v1/incidents
+### ============================================================
+
+# ── SC_044: GET incident detail (Nurse/CNA read-only view) ───────────────────
+
+### [1] GET incident detail - as NURSE
+GET http://localhost:8080/api/v1/incidents/1
+X-User-Role: NURSE
+
+###
+
+### [2] GET incident detail - as CNA
+GET http://localhost:8080/api/v1/incidents/1
+X-User-Role: CNA
+
+###
+
+### [3] GET incident detail - as DON
+GET http://localhost:8080/api/v1/incidents/1
+X-User-Role: DON
+
+###
+
+### [4] GET incident detail - as ADMIN
+GET http://localhost:8080/api/v1/incidents/1
+X-User-Role: ADMIN
+
+###
+
+### [5] GET incident detail - incident not found (404)
+GET http://localhost:8080/api/v1/incidents/9999
+X-User-Role: NURSE
+
+###
+
+### [6] GET incident detail - UNAUTHORIZED (no role header)
+GET http://localhost:8080/api/v1/incidents/1
+
+###
+
+# ── SC_043: PUT unlock incident (DON only) ───────────────────────────────────
+
+### [7] PUT unlock incident - DON with reason and password
+PUT http://localhost:8080/api/v1/incidents/1
+Content-Type: application/json
+X-User-Role: DON
+
+{
+  "reason": "Problem resolved. Resident condition stable. No further investigation needed.",
+  "password": "securePassword123"
+}
+
+###
+
+### [8] PUT unlock incident - as ADMIN
+PUT http://localhost:8080/api/v1/incidents/2
+Content-Type: application/json
+X-User-Role: ADMIN
+
+{
+  "reason": "Incident reviewed and closed by admin.",
+  "password": "adminPass456"
+}
+
+###
+
+### [9] PUT unlock incident - missing reason (400)
+PUT http://localhost:8080/api/v1/incidents/1
+Content-Type: application/json
+X-User-Role: DON
+
+{
+  "reason": "",
+  "password": "securePassword123"
+}
+
+###
+
+### [10] PUT unlock incident - incident not found (404)
+PUT http://localhost:8080/api/v1/incidents/9999
+Content-Type: application/json
+X-User-Role: DON
+
+{
+  "reason": "Resolved",
+  "password": "pass"
+}
+
+###
+
+### [11] PUT unlock incident - FORBIDDEN (NURSE cannot unlock)
+PUT http://localhost:8080/api/v1/incidents/1
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "reason": "Trying to unlock",
+  "password": "pass"
+}
+
+###
+
+### [12] PUT unlock incident - FORBIDDEN (CNA cannot unlock)
+PUT http://localhost:8080/api/v1/incidents/1
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "reason": "Trying to unlock",
+  "password": "pass"
+}
+
+###
+
+### [13] PUT unlock incident - UNAUTHORIZED (no role header)
+PUT http://localhost:8080/api/v1/incidents/1
+Content-Type: application/json
+
+{
+  "reason": "Resolved",
+  "password": "pass"
+}
+
+###
+
+# ── SC_043: POST add timeline entry ─────────────────────────────────────────
+
+### [14] POST add timeline - NURSE adds update
+POST http://localhost:8080/api/v1/incidents/1/timelines
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "action": "Physician notified. Resident vitals monitored every 2 hours.",
+  "reason": null
+}
+
+###
+
+### [15] POST add timeline - CNA adds note
+POST http://localhost:8080/api/v1/incidents/1/timelines
+Content-Type: application/json
+X-User-Role: CNA
+
+{
+  "action": "Resident assisted back to bed. No visible injuries.",
+  "reason": null
+}
+
+###
+
+### [16] POST add timeline - DON adds investigation note
+POST http://localhost:8080/api/v1/incidents/1/timelines
+Content-Type: application/json
+X-User-Role: DON
+
+{
+  "action": "Investigation initiated. Family notified.",
+  "reason": "Significant incident requiring DON review"
+}
+
+###
+
+### [17] POST add timeline - missing action (400)
+POST http://localhost:8080/api/v1/incidents/1/timelines
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "action": "",
+  "reason": null
+}
+
+###
+
+### [18] POST add timeline - incident not found (404)
+POST http://localhost:8080/api/v1/incidents/9999/timelines
+Content-Type: application/json
+X-User-Role: NURSE
+
+{
+  "action": "Test action",
+  "reason": null
+}
+
+###
+
+### [19] POST add timeline - UNAUTHORIZED (no role header)
+POST http://localhost:8080/api/v1/incidents/1/timelines
+Content-Type: application/json
+
+{
+  "action": "Test",
+  "reason": null
+}
+
+###
