@@ -56,7 +56,10 @@ public class IDTSignatureServiceImpl implements IDTSignatureService {
         CarePlan carePlan = carePlanRepository.findById(carePlanId)
                 .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
-        User user = securityUtils.getCurrentUser();
+        String email = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getName();
+        User user = userRepository.findByEmailAndIsDeletedFalse(email)
+                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHORIZED));
 
         if (idtSignatureRepository.existsByCarePlanIdAndUserId(carePlanId, user.getId())) {
             throw new AppException(ErrorCode.RESOURCE_ALREADY_EXISTS);

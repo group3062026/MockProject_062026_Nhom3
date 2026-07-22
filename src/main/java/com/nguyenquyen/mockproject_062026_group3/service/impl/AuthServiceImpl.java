@@ -5,12 +5,14 @@ import com.nguyenquyen.mockproject_062026_group3.dto.request.ResetPasswordReques
 import com.nguyenquyen.mockproject_062026_group3.dto.response.LoginResponse;
 import com.nguyenquyen.mockproject_062026_group3.dto.response.ResetPasswordResponse;
 import com.nguyenquyen.mockproject_062026_group3.entity.User;
+import com.nguyenquyen.mockproject_062026_group3.exception.ResourceNotFoundException;
 import com.nguyenquyen.mockproject_062026_group3.repository.UserRepository;
 import com.nguyenquyen.mockproject_062026_group3.security.JwtTokenProvider;
 import com.nguyenquyen.mockproject_062026_group3.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Retrieve user to get roles, name and update lastLoginAt
         User user = userRepository.findByEmailAndIsDeletedFalse(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found after authentication"));
+                .orElseThrow(() -> new BadCredentialsException("User not found after authentication"));
 
         user.setLastLoginAt(OffsetDateTime.now());
         userRepository.save(user);
@@ -62,8 +64,7 @@ public class AuthServiceImpl implements AuthService {
         // Find user by email
         boolean exists = userRepository.findByEmailAndIsDeletedFalse(request.getEmail()).isPresent();
         if (!exists) {
-            // According to API document, return 404 Not Found if email doesn't exist
-            throw new com.nguyenquyen.mockproject_062026_group3.exception.ResourceNotFoundException("User", "email", request.getEmail()); 
+            throw new ResourceNotFoundException("User", "email", request.getEmail());
         }
 
         // Logic to send reset password email goes here (out of scope for this task)
