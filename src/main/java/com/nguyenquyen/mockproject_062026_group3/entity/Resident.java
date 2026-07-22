@@ -81,4 +81,11 @@ public class Resident {
     @Column(name = "updated_at", nullable = false)
     @Builder.Default
     private OffsetDateTime updatedAt = OffsetDateTime.now();
+
+  public String getDisplayName() {
+    return firstName
+        + (middleName != null ? " " + middleName : "")
+        + " "
+        + lastName;
+  }
 }

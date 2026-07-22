@@ -52,10 +52,24 @@ public enum ErrorCode {
     SHIFT_ASSIGNMENT_NOT_FOUND(7002, "Shift assignment not found", HttpStatus.NOT_FOUND),
     HOLIDAY_NOT_FOUND(7003, "Public holiday not found", HttpStatus.NOT_FOUND),
 
-    // Inventory & Incident Domain (8000 - 8999)
-    INCIDENT_NOT_FOUND(8001, "Incident not found", HttpStatus.NOT_FOUND),
-    INVENTORY_ITEM_NOT_FOUND(8002, "Inventory item not found", HttpStatus.NOT_FOUND),
-    OUT_OF_STOCK(8003, "Item is out of stock", HttpStatus.BAD_REQUEST);
+// Inventory & Incident Domain (8000 - 8999)
+
+  INCIDENT_NOT_FOUND(8001, "Incident not found", HttpStatus.NOT_FOUND),
+  INCIDENT_TYPE_NOT_FOUND(8002, "Incident type not found", HttpStatus.NOT_FOUND),
+  INCIDENT_SEVERITY_NOT_FOUND(8003, "Incident severity not found", HttpStatus.NOT_FOUND),
+  INCIDENT_ALREADY_RESOLVED(8004, "Incident already resolved", HttpStatus.BAD_REQUEST),
+  INCIDENT_CHART_ALREADY_UNLOCKED(8005, "Resident chart is already unlocked", HttpStatus.BAD_REQUEST),
+  INCIDENT_UNLOCK_REASON_REQUIRED(8006, "Unlock reason is required", HttpStatus.BAD_REQUEST),
+  INCIDENT_INVALID_STATUS(8007, "Invalid incident status", HttpStatus.BAD_REQUEST),
+  INCIDENT_EXTERNAL_REPORT_FAILED(8008, "External report failed", HttpStatus.BAD_REQUEST),
+  INCIDENT_TIMELINE_NOT_FOUND(8009, "Incident timeline not found", HttpStatus.NOT_FOUND),
+  INCIDENT_ATTACHMENT_NOT_FOUND(8010, "Incident attachment not found", HttpStatus.NOT_FOUND),
+
+  INVENTORY_ITEM_NOT_FOUND(8100, "Inventory item not found", HttpStatus.NOT_FOUND),
+  OUT_OF_STOCK(8101, "Item is out of stock", HttpStatus.BAD_REQUEST),
+
+  ;
+
 
     private final int code;
     private final String message;

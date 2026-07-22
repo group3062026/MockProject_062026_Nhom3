@@ -6,11 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -21,14 +23,28 @@ import lombok.Setter;
 @Table(name = "incident_severities")
 public class IncidentSeverity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(name = "level_name", nullable = false, length = 50)
-    private String levelName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "chart_lock_trigger", nullable = false)
-    @Builder.Default
-    private Boolean chartLockTrigger = false;
+
+  @Column(name = "level_name", nullable = false, length = 50)
+  private String levelName;
+
+
+  @Column(name = "chart_lock_trigger", nullable = false)
+  @Builder.Default
+  private Boolean chartLockTrigger = false;
+
+
+  @Column(name = "resolution_time", nullable = false)
+  @Builder.Default
+  private Integer resolutionTime = 24;
+
+
+  public Boolean getAutomaticLockChart() {
+    return chartLockTrigger;
+  }
+
 }
