@@ -15,8 +15,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * API để quản lý hóa đơn, thanh toán và chi phí chăm sóc (Cost/Billing Panel)
+
+ * API for managing invoices, payments, and care costs (Cost/Billing Panel)
+
  * sc-035, M2-US-09
+
  */
 @RestController
 @RequestMapping("/api/v1/billing")
@@ -25,13 +28,18 @@ import java.util.List;
 public class BillingController {
     
     private final BillingService billingService;
-    
+
     /**
-     * Lấy dashboard billing cho một cư dân
-     * Hiển thị: Tổng chi phí, tình trạng thanh toán, các hóa đơn gần đây
-     * 
-     * @param residentId ID của cư dân
+
+     * Get dashboard billing for a resident
+
+     * Display: Total cost, payment status, recent bills
+
+     *
+     * @param residentId Resident ID
+
      * @return Dashboard billing data
+
      */
     @GetMapping("/residents/{residentId}/dashboard")
     @RequireRole({"ADMIN", "MANAGER"})
@@ -40,15 +48,22 @@ public class BillingController {
         BillingDashboardDTO dashboard = billingService.getBillingDashboard(residentId);
         return ApiResponse.success(dashboard);
     }
-    
+
     /**
-     * Lấy danh sách hóa đơn của một cư dân (có phân trang)
-     * 
-     * @param residentId ID của cư dân
-     * @param page Trang (mặc định 0)
-     * @param pageSize Kích thước trang (mặc định 10, max 50)
-     * @param status Lọc theo trạng thái (DRAFT, SENT, PARTIALLY_PAID, PAID, OVERDUE, VOID)
-     * @return Danh sách hóa đơn
+
+     * Get a list of bills for a resident (with pagination)
+
+     *
+     * @param residentId Resident ID
+
+     * @param page Page (default 0)
+
+     * @param pageSize Page size (default 10, max 50)
+
+     * @param status Filter by status (DRAFT, SENT, PARTIALLY_PAID, PAID, OVERDUE, VOID)
+
+     * @return Bill list
+
      */
     @GetMapping("/residents/{residentId}/invoices")
     @RequireRole({"ADMIN", "MANAGER"})
@@ -68,13 +83,18 @@ public class BillingController {
         
         return ApiResponse.success(response);
     }
-    
+
     /**
-     * Lấy chi tiết một hóa đơn
-     * Bao gồm: Line items, danh sách thanh toán, bảo hiểm
-     * 
-     * @param invoiceId ID của hóa đơn
-     * @return Chi tiết hóa đơn
+
+     * Get details of an invoice
+
+     * Includes: Line items, payment list, insurance
+
+     *
+     * @param invoiceId Invoice ID
+
+     * @return Invoice details
+
      */
     @GetMapping("/invoices/{invoiceId}")
     @RequireRole({"ADMIN", "MANAGER"})
@@ -83,14 +103,20 @@ public class BillingController {
         InvoiceDetailDTO detail = billingService.getInvoiceDetail(invoiceId);
         return ApiResponse.success(detail);
     }
-    
+
     /**
-     * Lấy chi phí hàng tháng của một cư dân trong một khoảng thời gian
-     * 
-     * @param residentId ID của cư dân
-     * @param fromDate Ngày bắt đầu (yyyy-MM-dd)
-     * @param toDate Ngày kết thúc (yyyy-MM-dd)
-     * @return Tóm tắt chi phí hàng tháng
+
+     * Get a resident's monthly expenses for a period of time
+
+     *
+     * @param residentId Resident ID
+
+     * @param fromDate Start Date (yyyy-MM-dd)
+
+     * @param toDate End Date (yyyy-MM-dd)
+
+     * @return Monthly Expense Summary
+
      */
     @GetMapping("/residents/{residentId}/monthly-cost")
     @RequireRole({"ADMIN", "MANAGER"})
@@ -110,14 +136,20 @@ public class BillingController {
         
         return ApiResponse.success(summary);
     }
-    
+
     /**
-     * Lấy danh sách thanh toán của một cư dân
-     * 
-     * @param residentId ID của cư dân
-     * @param page Trang
-     * @param pageSize Kích thước trang
-     * @return Danh sách thanh toán
+
+     * Get a resident's payment list
+
+     *
+     * @param residentId Resident ID
+
+     * @param page Page
+
+     * @param pageSize Page size
+
+     * @return Payment list
+
      */
     @GetMapping("/residents/{residentId}/payments")
     @RequireRole({"ADMIN", "MANAGER"})
@@ -136,12 +168,16 @@ public class BillingController {
         
         return ApiResponse.success(response);
     }
-    
+
     /**
-     * Lấy danh sách chính sách bảo hiểm của cư dân
-     * 
-     * @param residentId ID của cư dân
-     * @return Danh sách chính sách bảo hiểm
+
+     * Get a list of residents' insurance policies
+
+     *
+     * @param residentId Resident ID
+
+     * @return List of insurance policies
+
      */
     @GetMapping("/residents/{residentId}/insurance-policies")
     @RequireRole({"ADMIN", "MANAGER"})
@@ -150,14 +186,20 @@ public class BillingController {
         List<InsurancePolicyDTO> policies = billingService.listInsurancePolicies(residentId);
         return ApiResponse.success(policies);
     }
-    
+
     /**
-     * Tính toán chi phí dự kiến cho khoảng thời gian
-     * Dựa trên: mức độ chăm sóc, bảo hiểm, thời gian nằm viện
-     * 
-     * @param residentId ID của cư dân
-     * @param estimatedDays Số ngày dự kiến
-     * @return Ước tính chi phí
+
+     * Calculate estimated cost for the period
+
+     * Based on: level of care, insurance, length of hospital stay
+
+     *
+     * @param residentId Resident ID
+
+     * @param estimatedDays Estimated number of days
+
+     * @return Estimated cost
+
      */
     @PostMapping("/residents/{residentId}/estimate-cost")
     @RequireRole({"ADMIN", "MANAGER"})

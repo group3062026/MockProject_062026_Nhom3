@@ -42,23 +42,23 @@ public class VitalSignServiceImpl implements VitalSignService {
 
          Long currentUserId = securityUtils.getCurrentUser().getId();
 
-         // KIỂM TRA NGƯỠNG BẤT THƯỜNG (Abnormal Thresholds)
+        // CHECK FOR ABNORMAL THRESHOLDS
          boolean isAbnormal = checkAbnormalVitals(request);
 
-         //  LƯU BẢN GHI VÀO BẢNG VITAL_SIGNS
+        // Save the record to the VITAL_SIGNS table
          VitalSign vs = modelMapper.map(request, VitalSign.class);
          vs.setResident(residentRepository.getReferenceById(request.getResidentId())); // Tối ưu: Chỉ lấy ID thay vì query nguyên object
          vs.setRecordedBy(userRepository.getReferenceById(currentUserId));
          vitalSignRepository.save(vs);
 
-         // CẬP NHẬT TASK
+        // TASK UPDATE
          CareTask task = careTaskRepository.findById(request.getTaskId())
                  .orElseThrow(() -> new AppException(ErrorCode.CARE_PLAN_NOT_FOUND));
 
          task.setStatus("COMPLETED");
          task.setCompletedAt(OffsetDateTime.now());
 
-         // Nếu sinh hiệu có vấn đề, bật cờ đỏ cho Task
+        // If there are any problems with the vital signs, turn on the red flag for Task
          if (isAbnormal) {
              task.setIsAbnormalFlagged(true);
              log.warn("CẢNH BÁO MỨC ĐỘ CAO: Bệnh nhân ID {} có sinh hiệu bất thường! Gửi thông báo cho RN...", request.getResidentId());
@@ -69,25 +69,25 @@ public class VitalSignServiceImpl implements VitalSignService {
     }
 
 
-     //Logic kiểm tra các chỉ số y khoa cơ bản
+    //Logic for checking basic medical indicators
     private boolean checkAbnormalVitals(RecordVitalsRequestDTO dto) {
         boolean abnormal = false;
 
-        // SpO2 dưới 92% là báo động đỏ
+        //SpO2 below 92% is a red alert.
         if (dto.getSpo2Percentage() != null && dto.getSpo2Percentage() < 92) {
             abnormal = true;
         }
-        // Huyết áp quá cao hoặc quá thấp
+        // Blood pressure is too high or too low
         if (dto.getBloodPressureSystolic() != null &&
                 (dto.getBloodPressureSystolic() > 160 || dto.getBloodPressureSystolic() < 90)) {
             abnormal = true;
         }
-        // Nhịp tim
+        //Heart rate
         if (dto.getHeartRateBpm() != null &&
                 (dto.getHeartRateBpm() > 110 || dto.getHeartRateBpm() < 50)) {
             abnormal = true;
         }
-        // Sốt (Trên 100.4 F)
+        // Fever (Above 100.4 F)
         if (dto.getTemperatureFahrenheit() != null && dto.getTemperatureFahrenheit() > 100.4) {
             abnormal = true;
         }

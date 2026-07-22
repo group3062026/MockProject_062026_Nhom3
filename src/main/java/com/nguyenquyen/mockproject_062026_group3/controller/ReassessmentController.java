@@ -12,8 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * API để quản lý tái đánh giá kế hoạch chăm sóc (Reassessment)
+
+ * API for managing care plan reassessment
+
  * sc-034
+
  */
 @RestController
 @RequestMapping("/api/v1/reassessment")
@@ -24,11 +27,16 @@ public class ReassessmentController {
     private final ReassessmentService reassessmentService;
 
     /**
-     * Gửi tái đánh giá cho một kế hoạch chăm sóc
-     * 
-     * @param planId ID của kế hoạch chăm sóc
-     * @param request DTO chứa dữ liệu tái đánh giá
-     * @return Thông báo thành công
+
+     * Submit a reassessment for a care plan
+
+     *
+     * @param planId ID of the care plan
+
+     * @param request DTO containing the reassessment data
+
+     * @return Notification of success
+
      */
     @PostMapping("/{planId}")
     @RequireRole({"NURSE", "MANAGER", "ADMIN"})
@@ -46,10 +54,14 @@ public class ReassessmentController {
     }
 
     /**
-     * Lấy thông tin kế hoạch chăm sóc để tái đánh giá
-     * 
-     * @param planId ID của kế hoạch chăm sóc
-     * @return Thông tin kế hoạch và dữ liệu cần tái đánh giá
+
+     * Retrieve care plan information for reassessment
+
+     *
+     * @param planId Care plan ID
+
+     * @return Plan information and data to be reassessed
+
      */
     @GetMapping("/{planId}")
     @RequireRole({"NURSE", "MANAGER", "ADMIN"})
@@ -61,9 +73,12 @@ public class ReassessmentController {
     }
 
     /**
-     * Lấy dashboard tái đánh giá chứa danh sách các kế hoạch cần tái đánh giá
-     * 
-     * @return Dashboard dữ liệu tái đánh giá
+
+     * Get the reassessment dashboard containing the list of plans to be reassessed
+
+     *
+     * @return Reassessment Dashboard data
+
      */
     @GetMapping
     @RequireRole({"NURSE", "MANAGER", "ADMIN"})
