@@ -40,7 +40,10 @@ public class VitalSignServiceImpl implements VitalSignService {
      @Override
      public void recordVitalsAndCompleteTask(RecordVitalsRequestDTO request) {
 
-         Long currentUserId = securityUtils.getCurrentUser().getId();
+         String email = org.springframework.security.core.context.SecurityContextHolder
+                 .getContext().getAuthentication().getName();
+         Long currentUserId = userRepository.findByEmailAndIsDeletedFalse(email)
+                 .orElseThrow(() -> new AppException(ErrorCode.UNAUTHORIZED)).getId();
 
         // CHECK FOR ABNORMAL THRESHOLDS
          boolean isAbnormal = checkAbnormalVitals(request);
